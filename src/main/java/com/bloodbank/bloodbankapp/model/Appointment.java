@@ -4,15 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Appointment extends Entity{
+@Entity
+@Table(name = "appointment")
+public class Appointment {
 
-    private LocalDateTime date;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private LocalDateTime scheduledDate;
     private int duration;
-    private double price;
-    private AppointmentDetails info;
+//    private AppointmentDetails info;
 }
