@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends Entity{
 
     private String email;
     private String password;
@@ -18,4 +18,5 @@ public class User {
     private String occupation;
     private boolean active;
     private int penalties;
+    private Address address;
 }
