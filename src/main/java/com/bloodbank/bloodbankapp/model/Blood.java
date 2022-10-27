@@ -13,4 +13,5 @@ public class Blood extends Entity {
     private BloodType bloodType;
     private RhFactor rhFactor;
     private double quantity;
+    private BloodBank bloodBank;
 }
