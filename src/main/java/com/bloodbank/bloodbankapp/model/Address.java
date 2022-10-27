@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Address {
+public class Address extends Entity{
 
     private String country;
     private String city;
