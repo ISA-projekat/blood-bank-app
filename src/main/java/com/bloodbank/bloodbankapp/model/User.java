@@ -18,4 +18,5 @@ public class User extends Entity{
     private String occupation;
     private boolean active;
     private int penalties;
+    private Address address;
 }
