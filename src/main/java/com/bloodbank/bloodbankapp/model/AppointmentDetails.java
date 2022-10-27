@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppointmentDetails {
+public class AppointmentDetails extends Entity{
 
     private String description;
 }

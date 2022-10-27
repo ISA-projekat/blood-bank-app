@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Appointment {
+public class Appointment extends Entity{
 
     private LocalDateTime date;
     private int duration;
