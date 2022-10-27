@@ -1,5 +1,7 @@
 package com.bloodbank.bloodbankapp.model;
 
+import com.bloodbank.bloodbankapp.enums.Gender;
+import com.bloodbank.bloodbankapp.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +21,6 @@ public class User extends Entity{
     private boolean active;
     private int penalties;
     private Address address;
+    private Role role;
+    private Gender gender;
 }
