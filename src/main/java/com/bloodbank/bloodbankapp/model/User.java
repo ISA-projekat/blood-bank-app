@@ -23,4 +23,5 @@ public class User extends Entity{
     private Address address;
     private Role role;
     private Gender gender;
+    private BloodBank bloodBank;
 }
