@@ -20,6 +20,10 @@ public class Appointment {
     private Long id;
 
     private LocalDateTime scheduledDate;
+
     private int duration;
-//    private AppointmentDetails info;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+    private AppointmentDetails details;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Blood extends Entity {
+public class Blood {
     private BloodType bloodType;
     private RhFactor rhFactor;
     private double quantity;
