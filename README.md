@@ -1,4 +1,4 @@
-#Running the app locally (Java 17)
+# Running the app locally (Java 17)
 
 ### Required software : Docker Desktop
 
