@@ -1,11 +1,14 @@
 package com.bloodbank.bloodbankapp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -31,4 +34,8 @@ public class BloodBank {
     private LocalTime startTime;
 
     private LocalTime endTime;
+
+    @OneToMany
+    @JoinColumn(name = "blood_bank_id")
+    private List<User> administrators;
 }

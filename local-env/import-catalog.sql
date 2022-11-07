@@ -51,3 +51,23 @@ INSERT INTO address (blood_bank_id, country, city, street, number) VALUES (1, 'c
 INSERT INTO address (blood_bank_id, country, city, street, number) VALUES (2, 'country2', 'city2', 'street2', 'number2');
 INSERT INTO address (blood_bank_id, country, city, street, number) VALUES (3, 'country3', 'city3', 'street3', 'number3');
 INSERT INTO address (blood_bank_id, country, city, street, number) VALUES (4, 'country4', 'city4', 'street4', 'number4');
+
+CREATE TABLE user (
+    id bigint not null auto_increment,
+    email varchar(255),
+    password varchar(255),
+    first_name varchar(255),
+    last_name varchar(255),
+    jmbg varchar(13),
+    phone_number varchar(255),
+    occupation varchar(255),
+    active Boolean,
+    penalties int,
+    blood_bank_id bigint,
+    PRIMARY KEY(id),
+    CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
+);
+
+INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user1@gmail.com', 'Name1', 'LastName1', 1);
+INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user2@gmail.com', 'Name2', 'LastName2', 1);
+INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user3@gmail.com', 'Name2', 'LastName3', 1);
