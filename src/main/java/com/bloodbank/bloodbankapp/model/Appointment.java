@@ -24,6 +24,6 @@ public class Appointment {
     private int duration;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "appointment_details_id", referencedColumnName = "id")
     private AppointmentDetails details;
 }
