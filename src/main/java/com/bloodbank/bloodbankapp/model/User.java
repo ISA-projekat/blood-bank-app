@@ -2,9 +2,7 @@ package com.bloodbank.bloodbankapp.model;
 
 import com.bloodbank.bloodbankapp.enums.Gender;
 import com.bloodbank.bloodbankapp.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -51,4 +49,11 @@ public class User {
 
     @Column(name = "blood_bank_id")
     private Long bloodBankId;
+
+    public void setAddressWithoutId(Address newAddress) {
+        address.setCountry(newAddress.getCountry());
+        address.setCity(newAddress.getCity());
+        address.setStreet(newAddress.getStreet());
+        address.setNumber(newAddress.getNumber());
+    }
 }
