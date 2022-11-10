@@ -14,7 +14,12 @@ public interface BloodBankRepository extends JpaRepository<BloodBank, Long> {
 
     // https://stackoverflow.com/questions/2747887/jpql-jpa-search-substring for LIKE
     // https://www.baeldung.com/spring-data-jpa-null-parameters for possible null params
-    @Query("SELECT bb FROM BloodBank bb WHERE (:name is null or bb.name LIKE CONCAT('%', :name, '%'))" +
+    @Query("SELECT bb FROM BloodBank bb WHERE" +
+            "(:name is null or bb.name LIKE CONCAT('%', :name, '%'))" +
             " and (:city is null or bb.address.city LIKE CONCAT('%', :city, '%'))")
     List<BloodBank> searchBloodBanks(@Param("name") String name, @Param("city") String city);
+
+    @Query("SELECT bb FROM BloodBank bb WHERE" +
+            "(:rating is null or bb.rating >= :rating)")
+    List<BloodBank> filterBloodBanks(@Param("rating") Double minRating);
 }

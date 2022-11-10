@@ -33,7 +33,14 @@ public class BloodBankController {
     }
 
     @GetMapping("/search")
-    public List<BloodBank> searchBloodBanks(@RequestParam(required = false) String name, @RequestParam(required = false) String city) {
+    public List<BloodBank> searchBloodBanks(@RequestParam(required = false) String name,
+                                            @RequestParam(required = false) String city) {
         return bloodBankService.searchBloodBanks(name, city);
+    }
+
+    // objects instead of primitives due to nullability
+    @GetMapping("/filter")
+    public List<BloodBank> filterBloodBanks(@RequestParam(required = false) Double minRating) {
+        return bloodBankService.filterBloodBanks(minRating);
     }
 }

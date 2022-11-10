@@ -44,7 +44,13 @@ public class BloodBankService {
 
     public List<BloodBank> searchBloodBanks(String name, String city) {
         List<BloodBank> bloodBanks = bloodBankRepository.searchBloodBanks(name, city);
-        if (bloodBanks.size() == 0) throw  new BloodBankException("No blood banks found");
+        if (bloodBanks.size() == 0) throw new BloodBankException("No blood banks found");
+        return bloodBanks;
+    }
+
+    public List<BloodBank> filterBloodBanks(Double minRating) {
+        List<BloodBank> bloodBanks = bloodBankRepository.filterBloodBanks(minRating);
+        if (bloodBanks.size() == 0) throw new BloodBankException("No blood banks found");
         return bloodBanks;
     }
 }
