@@ -27,11 +27,13 @@ public class BloodBankController {
         return bloodBankService.getByUser(userId);
     }
 
+    @CrossOrigin
     @GetMapping
     public List<BloodBank> getAll() {
         return bloodBankService.getAll();
     }
 
+    @CrossOrigin
     @GetMapping("/search")
     public List<BloodBank> searchBloodBanks(@RequestParam(required = false) String name,
                                             @RequestParam(required = false) String city) {
@@ -39,6 +41,7 @@ public class BloodBankController {
     }
 
     // objects instead of primitives due to nullability
+    @CrossOrigin
     @GetMapping("/filter")
     public List<BloodBank> filterBloodBanks(@RequestParam(required = false) Double minRating) {
         return bloodBankService.filterBloodBanks(minRating);
