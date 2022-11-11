@@ -8,6 +8,7 @@ import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,5 +34,23 @@ public class BloodBankService {
     public BloodBank getByUser(Long userId) {
         var user = userRepository.findById(userId).orElseThrow(() -> new UserException("The user doesn't exist"));
         return bloodBankRepository.findById(user.getBloodBankId()).orElseThrow(() -> new UserException("The user isn't a blood bank admin"));
+    }
+
+    public List<BloodBank> getAll() {
+        List<BloodBank> bloodBanks = bloodBankRepository.findAll();
+        if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
+        return bloodBanks;
+    }
+
+    public List<BloodBank> searchBloodBanks(String name, String city) {
+        List<BloodBank> bloodBanks = bloodBankRepository.searchBloodBanks(name, city);
+        if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
+        return bloodBanks;
+    }
+
+    public List<BloodBank> filterBloodBanks(Double minRating) {
+        List<BloodBank> bloodBanks = bloodBankRepository.filterBloodBanks(minRating);
+        if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
+        return bloodBanks;
     }
 }
