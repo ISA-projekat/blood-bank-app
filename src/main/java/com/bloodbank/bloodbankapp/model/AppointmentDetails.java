@@ -18,7 +18,5 @@ public class AppointmentDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long appointmentId;
-
     private String description;
 }

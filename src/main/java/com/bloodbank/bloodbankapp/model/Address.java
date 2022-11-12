@@ -17,8 +17,6 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long bloodBankId;
-
     private String country;
 
     private String city;

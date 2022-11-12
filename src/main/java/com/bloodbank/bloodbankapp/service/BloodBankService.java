@@ -19,7 +19,7 @@ public class BloodBankService {
     private final UserRepository userRepository;
 
     public void edit(BloodBank bloodBank) {
-        if (bloodBank == null) throw new BloodBankException("Not valid blood bank passed for edit");
+        if (bloodBank == null) throw new BloodBankException("Invalid blood bank passed for edit");
         var oldBloodBank = bloodBankRepository.findById(bloodBank.getId()).orElseThrow(() -> new BloodBankException("Blood bank you want to edit doesn't exist"));
         updateBloodBank(oldBloodBank, bloodBank);
         bloodBankRepository.save(oldBloodBank);

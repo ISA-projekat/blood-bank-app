@@ -28,7 +28,7 @@ public class BloodBank {
     private double rating;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     private LocalTime startTime;
