@@ -47,10 +47,4 @@ public class BloodBankService {
         if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
         return bloodBanks;
     }
-
-    public List<BloodBank> filterBloodBanks(Double minRating) {
-        List<BloodBank> bloodBanks = bloodBankRepository.filterBloodBanks(minRating);
-        if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
-        return bloodBanks;
-    }
 }
