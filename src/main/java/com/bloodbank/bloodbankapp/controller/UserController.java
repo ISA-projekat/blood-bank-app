@@ -1,11 +1,14 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.RegistrationDto;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import com.bloodbank.bloodbankapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -22,4 +25,7 @@ public class UserController {
     public User getByUser(@PathVariable("id") Long id) {
         return userService.getByUser(id);
     }
+
+    @PostMapping("register")
+    public User registerUser(@Valid @RequestBody RegistrationDto dto) { return userService.add(dto); }
 }
