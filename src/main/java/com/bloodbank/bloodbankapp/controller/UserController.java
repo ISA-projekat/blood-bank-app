@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
+    @CrossOrigin
     @PutMapping
     public void edit(@RequestBody User user) {
         userService.edit(user);
     }
 
+    @CrossOrigin
     @GetMapping("/{id}")
     public User getByUser(@PathVariable("id") Long id) {
         return userService.getByUser(id);
