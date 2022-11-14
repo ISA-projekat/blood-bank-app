@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -21,6 +22,7 @@ public class UserController {
         userService.edit(user);
     }
 
+    @CrossOrigin
     @GetMapping("/{id}")
     public User getByUser(@PathVariable("id") Long id) {
         return userService.getByUser(id);
@@ -28,4 +30,8 @@ public class UserController {
 
     @PostMapping("register")
     public User registerUser(@Valid @RequestBody RegistrationDto dto) { return userService.add(dto); }
+
+    @CrossOrigin
+    @GetMapping
+    public List<User> getAll() { return userService.getAll(); }
 }
