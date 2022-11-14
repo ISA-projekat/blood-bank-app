@@ -39,11 +39,4 @@ public class BloodBankController {
                                             @RequestParam(required = false) String city) {
         return bloodBankService.searchBloodBanks(name, city);
     }
-
-    // objects instead of primitives due to nullability
-    @CrossOrigin
-    @GetMapping("/filter")
-    public List<BloodBank> filterBloodBanks(@RequestParam(required = false) Double minRating) {
-        return bloodBankService.filterBloodBanks(minRating);
-    }
 }
