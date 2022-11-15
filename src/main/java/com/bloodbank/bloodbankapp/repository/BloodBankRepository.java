@@ -1,11 +1,13 @@
 package com.bloodbank.bloodbankapp.repository;
 
+import com.bloodbank.bloodbankapp.model.Address;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,4 +22,10 @@ public interface BloodBankRepository extends JpaRepository<BloodBank, Long> {
     @Query("SELECT bb FROM BloodBank bb WHERE" +
             "(:rating is null or bb.rating >= :rating)")
     List<BloodBank> filterBloodBanks(@Param("rating") Double minRating);
+
+    public default void CreateBloodBank(String name, String descripiton, Address adress, LocalTime startTime, LocalTime endTime){
+
+
+    }
+
 }

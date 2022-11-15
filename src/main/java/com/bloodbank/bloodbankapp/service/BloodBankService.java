@@ -2,14 +2,15 @@ package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.exception.BloodBankException;
 import com.bloodbank.bloodbankapp.exception.UserException;
+import com.bloodbank.bloodbankapp.model.Address;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.repository.BloodBankRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,5 +53,11 @@ public class BloodBankService {
         List<BloodBank> bloodBanks = bloodBankRepository.filterBloodBanks(minRating);
         if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
         return bloodBanks;
+    }
+
+    public void CreateBloodBank(String name, String descripiton, Address adress, LocalTime startTime, LocalTime endTime,long managerId ){
+
+
+
     }
 }
