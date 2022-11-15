@@ -17,6 +17,7 @@ public class BloodBankController {
 
     private final BloodBankService bloodBankService;
 
+    @CrossOrigin
     @PutMapping
     public void edit(@RequestBody BloodBank bloodBank) {
         bloodBankService.edit(bloodBank);
@@ -34,6 +35,11 @@ public class BloodBankController {
     }
 
     @CrossOrigin
+    @GetMapping("/{id}")
+    public BloodBank get(@PathVariable("id") Long id) {
+        return bloodBankService.get(id);
+    }
+
     @GetMapping("/search")
     public List<BloodBank> searchBloodBanks(@RequestParam(required = false) String name,
                                             @RequestParam(required = false) String city) {

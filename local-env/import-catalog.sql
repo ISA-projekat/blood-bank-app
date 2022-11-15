@@ -23,7 +23,7 @@ CREATE TABLE blood_bank (
     CONSTRAINT FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('bank1', 'description for bank1', 0.0, '08:00:00', '20:00:00', 2);
+INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('bank1', 'description for bank1', 2.5, '08:00:00', '20:00:00', 2);
 INSERT INTO blood_bank (name, description, rating, start_time, end_time) VALUES ('bank2', 'description for bank2', 0.0, '08:00:00', '20:00:00');
 INSERT INTO blood_bank (name, description, rating, start_time, end_time) VALUES ('bank3', 'description for bank3', 0.0, '08:00:00', '20:00:00');
 INSERT INTO blood_bank (name, description, rating, start_time, end_time) VALUES ('bank4', 'description for bank4', 0.0, '08:00:00', '20:00:00');
