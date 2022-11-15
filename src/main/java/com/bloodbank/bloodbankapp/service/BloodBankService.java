@@ -26,7 +26,7 @@ public class BloodBankService {
     }
 
     private void updateBloodBank(BloodBank oldBloodBank, BloodBank bloodBank) {
-        oldBloodBank.setAddress(bloodBank.getAddress());
+        oldBloodBank.updateAddress(bloodBank.getAddress());
         oldBloodBank.setDescription(bloodBank.getDescription());
         oldBloodBank.setName(bloodBank.getName());
     }
@@ -46,5 +46,9 @@ public class BloodBankService {
         List<BloodBank> bloodBanks = bloodBankRepository.searchBloodBanks(name, city);
         if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
         return bloodBanks;
+    }
+
+    public BloodBank get(Long id) {
+        return bloodBankRepository.findById(id).orElseThrow(() -> new BloodBankException("No banks found with that id"));
     }
 }

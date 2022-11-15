@@ -38,4 +38,11 @@ public class BloodBank {
     @OneToMany
     @JoinColumn(name = "blood_bank_id")
     private List<User> administrators;
+
+    public void updateAddress(Address newAddress) {
+        address.setCountry(newAddress.getCountry());
+        address.setCity(newAddress.getCity());
+        address.setStreet(newAddress.getStreet());
+        address.setNumber(newAddress.getNumber());
+    }
 }
