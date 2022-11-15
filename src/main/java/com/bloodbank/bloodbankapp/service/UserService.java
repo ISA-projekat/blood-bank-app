@@ -1,20 +1,26 @@
 package com.bloodbank.bloodbankapp.service;
 
+import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.exception.UserException;
+import com.bloodbank.bloodbankapp.mapper.UserMapper;
 import com.bloodbank.bloodbankapp.model.User;
+import com.bloodbank.bloodbankapp.repository.AddressRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final AddressRepository addressRepository;
 
     public User getByUser(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserException("User doesn't exist"));
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User doesn't exist"));
     }
 
     public void edit(User user) {
@@ -34,5 +40,20 @@ public class UserService {
 //        oldUser.setActive(user.getActive()); // should active status change be allowed?
         oldUser.setAddressWithoutId(user.getAddress());
         oldUser.setGender(user.getGender());
+    }
+
+    public User add(RegistrationDto dto) {
+        var existingUser = userRepository.findByEmail(dto.getEmail());
+        if (existingUser != null) throw new UserException("User with that email already exists");
+
+        User newUser = UserMapper.DtoToEntity(dto);
+
+        addressRepository.save(newUser.getAddress());
+        userRepository.save(newUser);
+        return newUser;
+    }
+
+    public List<User> getAll() {
+        return userRepository.findAll();
     }
 }
