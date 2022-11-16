@@ -56,4 +56,12 @@ public class UserService {
     public List<User> getAll() {
         return userRepository.findAll();
     }
+
+    public List<User> search(String firstName, String lastName){
+
+        List<User> users = userRepository.search(firstName,lastName);
+        if(users.isEmpty()) throw new UserException("List is empty :(");
+        return users;
+    }
+
 }

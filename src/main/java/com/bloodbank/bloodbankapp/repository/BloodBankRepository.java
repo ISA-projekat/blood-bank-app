@@ -23,9 +23,7 @@ public interface BloodBankRepository extends JpaRepository<BloodBank, Long> {
             "(:rating is null or bb.rating >= :rating)")
     List<BloodBank> filterBloodBanks(@Param("rating") Double minRating);
 
-    public default void CreateBloodBank(String name, String descripiton, Address adress, LocalTime startTime, LocalTime endTime){
 
 
-    }
 
 }

@@ -6,9 +6,11 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import com.bloodbank.bloodbankapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -34,4 +36,13 @@ public class UserController {
     @CrossOrigin
     @GetMapping
     public List<User> getAll() { return userService.getAll(); }
+
+
+    @GetMapping("/search")
+    public List<User> search(@RequestParam(required = false) String firstName,
+                                            @RequestParam(required = false) String lastName) {
+        return userService.search(firstName, lastName);
+    }
+
+
 }

@@ -1,15 +1,18 @@
 package com.bloodbank.bloodbankapp.service;
 
+import com.bloodbank.bloodbankapp.dto.CreateBloodBankDto;
 import com.bloodbank.bloodbankapp.exception.BloodBankException;
 import com.bloodbank.bloodbankapp.exception.UserException;
-import com.bloodbank.bloodbankapp.model.Address;
+import com.bloodbank.bloodbankapp.mapper.BloodBankMapper;
 import com.bloodbank.bloodbankapp.model.BloodBank;
+import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.BloodBankRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -53,9 +56,64 @@ public class BloodBankService {
         return bloodBankRepository.findById(id).orElseThrow(() -> new BloodBankException("No banks found with that id"));
     }
 
-    public void CreateBloodBank(String name, String descripiton, Address adress, LocalTime startTime, LocalTime endTime,long managerId ){
+    public BloodBank createBloodBank(CreateBloodBankDto dto){
 
+        if(dataIsValid(dto) == false) throw new BloodBankException("Data is incorrect1");
+
+        BloodBank bloodBank = BloodBankMapper.DtoToEntity(dto);
+
+        bloodBankRepository.save(bloodBank);
+        return bloodBank;
 
 
     }
+
+    private boolean dataIsValid(CreateBloodBankDto dto){
+
+        int result = dto.getEndTime().compareTo(dto.getStartTime());
+        return result > 0 ;
+
+
+    }
+
+    public boolean addAdministratorToBloodBank(long bloodBankId, long adminId){
+
+        User administrator = userRepository.getById(adminId);
+        BloodBank bloodBank = bloodBankRepository.getById(bloodBankId);
+        if(bloodBank == null && !administratorIsValid(administrator)){
+            throw new BloodBankException("Admin or hospital does not exist");
+        }
+
+        administrator.setBloodBankId(bloodBankId);
+        userRepository.save(administrator);
+        addAdministratorToList(bloodBank,administrator);
+        return true;
+    }
+
+    private boolean administratorIsValid(User admin){
+
+        if(admin != null && admin.getBloodBankId() == null) {
+            return true;
+        }
+        return false;
+    }
+
+    private void addAdministratorToList(BloodBank bloodBank, User administrator) {
+
+       List<User> administrators = bloodBank.getAdministrators();
+
+       if(administrators == null){
+           administrators = new ArrayList<User>();
+       }
+
+        administrators.add(administrator);
+
+        bloodBank.setAdministrators(administrators);
+        bloodBankRepository.save(bloodBank);
+    }
+
+
+
+
+
 }
