@@ -4,10 +4,10 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-  spring:
-    jackson:
-      serialization:
-        FAIL_ON_EMPTY_BEANS=false:
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
   jpa:
     hibernate:

@@ -57,7 +57,7 @@ public class BloodBankController {
 
     @CrossOrigin
     @PostMapping("/setAdministrator")
-    public boolean addAdministratorToBloodBank(@RequestBody  SetAdministratorToBloodBankDto dto){
+    public BloodBank addAdministratorToBloodBank(@RequestBody  SetAdministratorToBloodBankDto dto){
         return bloodBankService.addAdministratorToBloodBank(dto.getBloodBankId(),dto.getAdministratorId());
     }
 

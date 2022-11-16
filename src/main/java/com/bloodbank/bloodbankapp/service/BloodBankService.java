@@ -76,7 +76,7 @@ public class BloodBankService {
 
     }
 
-    public boolean addAdministratorToBloodBank(long bloodBankId, long adminId){
+    public BloodBank addAdministratorToBloodBank(long bloodBankId, long adminId){
 
         User administrator = userRepository.getById(adminId);
         BloodBank bloodBank = bloodBankRepository.getById(bloodBankId);
@@ -87,7 +87,7 @@ public class BloodBankService {
         administrator.setBloodBankId(bloodBankId);
         userRepository.save(administrator);
         addAdministratorToList(bloodBank,administrator);
-        return true;
+        return bloodBank;
     }
 
     private boolean administratorIsValid(User admin){
