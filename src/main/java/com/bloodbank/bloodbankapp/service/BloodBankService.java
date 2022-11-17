@@ -43,9 +43,7 @@ public class BloodBankService {
     }
 
     public List<BloodBank> searchBloodBanks(String name, String city) {
-        List<BloodBank> bloodBanks = bloodBankRepository.searchBloodBanks(name, city);
-        if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
-        return bloodBanks;
+        return bloodBankRepository.searchBloodBanks(name, city);
     }
 
     public BloodBank get(Long id) {
