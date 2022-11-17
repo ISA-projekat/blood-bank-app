@@ -19,6 +19,9 @@ public class Survey {
     @Column(nullable = false,updatable = false,unique = true)
     Long id;
 
+    @Column(name = "user_id")
+    Long user_id;
+
     @Column(nullable = false)
     Boolean weightOver50kg;
 
