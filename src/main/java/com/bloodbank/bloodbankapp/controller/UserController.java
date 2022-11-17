@@ -28,6 +28,7 @@ public class UserController {
         return userService.getByUser(id);
     }
 
+    @CrossOrigin
     @PostMapping("register")
     public User registerUser(@Valid @RequestBody RegistrationDto dto) { return userService.add(dto); }
 
