@@ -74,3 +74,22 @@ INSERT INTO appointment (scheduled_date, duration) VALUES ('2022-10-30 12:11:11'
 INSERT INTO appointment (scheduled_date, duration) VALUES ('2022-10-31 13:11:11', 30);
 INSERT INTO appointment (scheduled_date, duration) VALUES ('2022-10-31 14:11:11', 20);
 INSERT INTO appointment (scheduled_date, duration) VALUES ('2022-10-30 15:11:11', 30);
+
+CREATE TABLE survey (
+    id bigint not null auto_increment,
+    user_id bigint,
+    survey_date DATETIME not null,
+    weight_over50kg Boolean not null,
+    common_cold Boolean not null,
+    skin_diseases Boolean not null,
+    blood_pressure_problems Boolean not null,
+    antibiotics Boolean not null,
+    menstrual_cycle Boolean not null,
+    dental_intervention Boolean not null,
+    tattoo_piercing Boolean not null,
+    PRIMARY KEY(id),
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user(id)
+);
+
+INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (1, '2022-10-30 15:11:11', true, false, false, false, false, false, true, false);
+INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (2, '2022-10-31 15:11:11', true, true, true, true, true, false, true, false);

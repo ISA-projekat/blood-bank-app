@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/bloodbank")
 @RequiredArgsConstructor
@@ -40,6 +41,7 @@ public class BloodBankController {
         return bloodBankService.get(id);
     }
 
+    @CrossOrigin
     @GetMapping("/search")
     public List<BloodBank> searchBloodBanks(@RequestParam(required = false) String name,
                                             @RequestParam(required = false) String city) {
