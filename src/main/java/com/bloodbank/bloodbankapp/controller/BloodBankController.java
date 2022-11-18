@@ -1,5 +1,7 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.CreateBloodBankDto;
+import com.bloodbank.bloodbankapp.dto.SetAdministratorToBloodBankDto;
 import com.bloodbank.bloodbankapp.model.Address;
 import com.bloodbank.bloodbankapp.model.Blood;
 import com.bloodbank.bloodbankapp.model.BloodBank;
@@ -47,4 +49,19 @@ public class BloodBankController {
                                             @RequestParam(required = false) String city) {
         return bloodBankService.searchBloodBanks(name, city);
     }
+
+    @CrossOrigin
+    @PostMapping("/create")
+    public BloodBank create(@RequestBody  CreateBloodBankDto dto){
+
+        return bloodBankService.createBloodBank(dto);
+    }
+
+    @CrossOrigin
+    @PostMapping("/setAdministrator")
+    public BloodBank addAdministratorToBloodBank(@RequestBody  SetAdministratorToBloodBankDto dto){
+        return bloodBankService.addAdministratorToBloodBank(dto.getBloodBankId(),dto.getAdministratorId());
+    }
+
+
 }

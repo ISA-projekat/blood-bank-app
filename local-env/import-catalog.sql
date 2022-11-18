@@ -51,6 +51,13 @@ CREATE TABLE user (
 INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id) VALUES ('user1@gmail.com', '123', 'Name1', 'LastName1', 2, 3);
 INSERT INTO user (email, first_name, last_name, address_id) VALUES ('user2@gmail.com', 'Name2', 'LastName2', 2);
 INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user3@gmail.com', 'Name2', 'LastName3', 1);
+INSERT INTO user (email, first_name, last_name,role) VALUES ('administrator@gmail.com',"Marko","Markovic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, first_name, last_name,role) VALUES ('jovan@gmail.com',"Jovan","Jovanovic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, first_name, last_name,role) VALUES ('uros@gmail.com',"Uros","Urosevic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, first_name, last_name,role) VALUES ('djomla@gmail.com',"Djomla","Djomlic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, first_name, last_name,role) VALUES ('joca@gmail.com',"Jovan","Ivanovic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, first_name, last_name,role) VALUES ('dule@gmail.com',"Dusan","Urosevic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, first_name, last_name,role) VALUES ('markos@gmail.com',"Marko","Silva",'BLOOD_BANK_ADMIN');
 
 CREATE TABLE appointment_details (
     id bigint not null auto_increment,
