@@ -36,6 +36,7 @@ public class UserService {
         oldUser.setEmail(user.getEmail());
         oldUser.setFirstName(user.getFirstName());
         oldUser.setLastName(user.getLastName());
+        oldUser.setPassword(user.getPassword());
 //        oldUser.setJmbg(user.getJmbg()); // should jmbg change be allowed?
         oldUser.setPhoneNumber(user.getPhoneNumber());
         oldUser.setOccupation(user.getOccupation());

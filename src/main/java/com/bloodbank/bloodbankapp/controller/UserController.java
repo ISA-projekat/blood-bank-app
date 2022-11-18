@@ -1,9 +1,7 @@
 package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
-import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.User;
-import com.bloodbank.bloodbankapp.service.BloodBankService;
 import com.bloodbank.bloodbankapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
@@ -13,10 +11,12 @@ import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
+
     private final UserService userService;
 
     @PutMapping
@@ -24,14 +24,11 @@ public class UserController {
         userService.edit(user);
     }
 
-    @CrossOrigin
+
     @GetMapping("/{id}")
     public User getByUser(@PathVariable("id") Long id) {
         return userService.getByUser(id);
     }
-
-    @PostMapping("register")
-    public User registerUser(@Valid @RequestBody RegistrationDto dto) { return userService.add(dto); }
 
     @CrossOrigin
     @PostMapping("registerAdmin")
@@ -54,6 +51,11 @@ public class UserController {
     @GetMapping ("/availableAdministrators")
     public List<User> getAvailableAdministrators(){
         return userService.getAvailableAdministrators();
+    }
+
+    @PostMapping("register")
+    public User registerUser(@Valid @RequestBody RegistrationDto dto) {
+        return userService.add(dto);
     }
 
 }

@@ -43,6 +43,7 @@ public class BloodBankController {
         return bloodBankService.get(id);
     }
 
+    @CrossOrigin
     @GetMapping("/search")
     public List<BloodBank> searchBloodBanks(@RequestParam(required = false) String name,
                                             @RequestParam(required = false) String city) {
