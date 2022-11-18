@@ -48,7 +48,7 @@ CREATE TABLE user (
     CONSTRAINT FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id) VALUES ('user1@gmail.com', '123', 'Name1', 'LastName1', 2, 3);
+INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id) VALUES ('user1@gmail.com', '$2a$10$7QU4fyF.AGnRT33b7GfTSOsRk20O5bSl.5H6ecgXsA1G1Z2wGjb.2', 'Name1', 'LastName1', 2, 3);
 INSERT INTO user (email, first_name, last_name, address_id) VALUES ('user2@gmail.com', 'Name2', 'LastName2', 2);
 INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user3@gmail.com', 'Name2', 'LastName3', 1);
 INSERT INTO user (email, first_name, last_name,role) VALUES ('administrator@gmail.com',"Marko","Markovic",'BLOOD_BANK_ADMIN');
