@@ -1,6 +1,7 @@
 package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.mapper.UserMapper;
@@ -10,6 +11,7 @@ import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,8 +62,35 @@ public class UserService {
     public List<User> search(String firstName, String lastName){
 
         List<User> users = userRepository.search(firstName,lastName);
-        if(users.isEmpty()) throw new UserException("List is empty :(");
+        if(users.isEmpty())
+            users = new ArrayList<User>();
         return users;
+    }
+
+    public List<User> getAdministrators(){
+        return userRepository.findByRole(Role.BLOOD_BANK_ADMIN);
+    }
+
+    public List<User> getAvailableAdministrators(){
+        List<User> allAdministrators = getAdministrators();
+        List<User> availableAdministrators = new ArrayList<User>();
+        for(User u: allAdministrators){
+            if(u.getBloodBankId() == null)
+                availableAdministrators.add(u);
+        }
+        return availableAdministrators;
+    }
+
+    public User registerAdmin(RegistrationDto dto){
+        var existingUser = userRepository.findByEmail(dto.getEmail());
+        if (existingUser != null) throw new UserException("User with that email already exists");
+
+        User newUser = UserMapper.DtoToEntity(dto);
+        newUser.setRole(Role.BLOOD_BANK_ADMIN);
+
+        addressRepository.save(newUser.getAddress());
+        userRepository.save(newUser);
+        return newUser;
     }
 
 }

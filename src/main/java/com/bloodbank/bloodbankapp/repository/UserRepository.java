@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.repository;
 
+import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + " and (:lastName is null or u.lastName LIKE CONCAT('%', :lastName, '%'))")
     List<User> search(@Param("firstName") String firstName, @Param("lastName") String lastName);
 
-
+    List<User> findByRole(Role role);
 
 }

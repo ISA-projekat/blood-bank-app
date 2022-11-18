@@ -34,15 +34,26 @@ public class UserController {
     public User registerUser(@Valid @RequestBody RegistrationDto dto) { return userService.add(dto); }
 
     @CrossOrigin
+    @PostMapping("registerAdmin")
+    public User registerAdmin(@Valid @RequestBody RegistrationDto dto) { return userService.registerAdmin(dto); }
+
+
+    @CrossOrigin
     @GetMapping
     public List<User> getAll() { return userService.getAll(); }
 
 
+    @CrossOrigin
     @GetMapping("/search")
     public List<User> search(@RequestParam(required = false) String firstName,
                                             @RequestParam(required = false) String lastName) {
         return userService.search(firstName, lastName);
     }
 
+    @CrossOrigin
+    @GetMapping ("/availableAdministrators")
+    public List<User> getAvailableAdministrators(){
+        return userService.getAvailableAdministrators();
+    }
 
 }

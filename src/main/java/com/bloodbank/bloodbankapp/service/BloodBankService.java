@@ -1,6 +1,7 @@
 package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.dto.CreateBloodBankDto;
+import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.BloodBankException;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.mapper.BloodBankMapper;
@@ -47,6 +48,10 @@ public class BloodBankService {
     }
 
     public List<BloodBank> searchBloodBanks(String name, String city) {
+        if((name.equals("") || name ==null) && (city.equals("") || city ==null)){
+            return getAll();
+        }
+
         List<BloodBank> bloodBanks = bloodBankRepository.searchBloodBanks(name, city);
         if (bloodBanks.isEmpty()) throw new BloodBankException("No blood banks found");
         return bloodBanks;
@@ -92,7 +97,7 @@ public class BloodBankService {
 
     private boolean administratorIsValid(User admin){
 
-        if(admin != null && admin.getBloodBankId() == null) {
+        if(admin != null && admin.getBloodBankId() == null && admin.getRole().equals(Role.BLOOD_BANK_ADMIN)) {
             return true;
         }
         return false;
