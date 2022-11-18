@@ -7,9 +7,9 @@ CREATE TABLE address (
     PRIMARY KEY(id)
 );
 
-INSERT INTO address (country, city, street, number) VALUES ('country2', 'city2', 'street2', 'number2');
-INSERT INTO address (country, city, street, number) VALUES ('country3', 'city3', 'street3', 'number3');
-INSERT INTO address (country, city, street, number) VALUES ('country4', 'city4', 'street4', 'number4');
+INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Gunduliceva', '12');
+INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23');
+INSERT INTO address (country, city, street, number) VALUES ('Indonesia', 'Jakarta', 'Java', '19');
 
 CREATE TABLE blood_bank (
     id bigint not null auto_increment,
@@ -23,10 +23,10 @@ CREATE TABLE blood_bank (
     CONSTRAINT FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('bank1', 'description for bank1', 2.5, '08:00:00', '20:00:00', 2);
-INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('bank2', 'description for bank2', 0.0, '08:00:00', '20:00:00', 2);
-INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('bank3', 'description for bank3', 0.0, '08:00:00', '20:00:00', 1);
-INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('bank4', 'description for bank4', 0.0, '08:00:00', '20:00:00', 3);
+INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('Happy day', 'description for bank1', 2.5, '08:00:00', '20:00:00', 2);
+INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('There will be blood', 'description for bank2', 5.7, '08:00:00', '20:00:00', 2);
+INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('Bloody mary', 'description for bank3', 4.8, '08:00:00', '20:00:00', 1);
+INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('First needle', 'description for bank4', 9.6, '08:00:00', '20:00:00', 3);
 
 CREATE TABLE user (
     id bigint not null auto_increment,

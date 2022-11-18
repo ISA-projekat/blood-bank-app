@@ -25,6 +25,7 @@ public class SurveyController {
         return surveyService.getAll();
     }
 
+    @CrossOrigin
     @PostMapping
     public Survey add(@RequestBody Survey survey){
         return surveyService.add(survey);
