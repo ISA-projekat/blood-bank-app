@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "survey")
@@ -19,8 +20,11 @@ public class Survey {
     @Column(nullable = false,updatable = false,unique = true)
     Long id;
 
-    @Column(name = "user_id")
-    Long user_id;
+    @Column(name = "userId")
+    Long userId;
+
+    @Column(name = "surveyDate")
+    private LocalDateTime surveyDate;
 
     @Column(nullable = false)
     Boolean weightOver50kg;
