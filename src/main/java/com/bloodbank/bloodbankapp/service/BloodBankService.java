@@ -10,6 +10,8 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.BloodBankRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -112,7 +114,7 @@ public class BloodBankService {
     }
 
 
-
-
-
+    public Page<BloodBank> getPage(Pageable page) {
+        return bloodBankRepository.findAll(page);
+    }
 }
