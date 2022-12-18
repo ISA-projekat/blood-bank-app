@@ -1,11 +1,10 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.service.AppointmentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +18,10 @@ public class AppointmentController {
     @GetMapping
     public List<Appointment> getAll() {
         return appointmentService.getAll();
+    }
+
+    @PostMapping("/review")
+    public void review(@RequestBody AppointmentReviewDto appointmentReviewDto) {
+        appointmentService.review(appointmentReviewDto);
     }
 }
