@@ -20,6 +20,11 @@ public class AppointmentController {
         return appointmentService.getAll();
     }
 
+    @GetMapping("/user/{id}")
+    public List<Appointment> getAllByUser(@PathVariable("id") Long userId) {
+        return appointmentService.getAllByUser(userId);
+    }
+
     @PostMapping("/review")
     public void review(@RequestBody AppointmentReviewDto appointmentReviewDto) {
         appointmentService.review(appointmentReviewDto);

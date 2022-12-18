@@ -50,4 +50,8 @@ public class AppointmentService {
             default -> throw new NotFoundException("Appointment status not found");
         }
     }
+
+    public List<Appointment> getAllByUser(Long userId) {
+        return appointmentRepository.findAllByUserId(userId);
+    }
 }
