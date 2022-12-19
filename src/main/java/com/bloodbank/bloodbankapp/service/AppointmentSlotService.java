@@ -14,7 +14,6 @@ import java.util.List;
 public class AppointmentSlotService {
     private final AppointmentSlotRepository repo;
 
-    // delete
     public AppointmentSlot get(Long id) {
         return repo.findById(id).orElseThrow(() -> new AppointmentSlotException("No appointment slot with that id was found."));
     }
