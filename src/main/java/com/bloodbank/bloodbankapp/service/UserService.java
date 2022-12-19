@@ -94,4 +94,7 @@ public class UserService {
         return newUser;
     }
 
+    public void penalise(User user) {
+        user.setPenalties(user.getPenalties() + 1);
+    }
 }
