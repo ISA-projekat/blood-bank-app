@@ -10,9 +10,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/appointment-slot")
 @RequiredArgsConstructor
-public class AppointmentSlotService {
+public class AppointmentSlotController {
 
-    private final AppointmentSlotService service;
+    private final com.bloodbank.bloodbankapp.repo.AppointmentSlotService service;
 
     @CrossOrigin
     @GetMapping("/{id}")
@@ -24,7 +24,7 @@ public class AppointmentSlotService {
 
     @CrossOrigin
     @PostMapping()
-    public AppointmentSlot create(@RequestBody AppointmentSlot appointmentSlot) { return service.create(appointmentSlot); }
+    public AppointmentSlot create(@RequestBody AppointmentSlot appointmentSlot) { return service.createAppointmentSlot(appointmentSlot); }
 
     @CrossOrigin
     @DeleteMapping()
