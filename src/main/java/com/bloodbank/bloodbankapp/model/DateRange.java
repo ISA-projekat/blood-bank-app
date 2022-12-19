@@ -7,22 +7,22 @@ import java.time.LocalDateTime;
 
 @Value
 public class DateRange {
-    private LocalDateTime Start;
-    private LocalDateTime End;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     public Duration duration() {
-        return Duration.between(this.Start, this.End);
+        return Duration.between(this.start, this.end);
     }
 
     public static boolean isValid(DateRange range) {
         return range.getStart().isBefore(range.getEnd());
     }
 
-    public boolean dateIsBefore(LocalDateTime other) { return other.isBefore(this.Start); }
+    public boolean dateIsBefore(LocalDateTime other) { return other.isBefore(this.start); }
 
-    public boolean dateIsAfter(LocalDateTime other) { return other.isAfter(this.End); }
+    public boolean dateIsAfter(LocalDateTime other) { return other.isAfter(this.end); }
 
-    public boolean dateIsDuring(LocalDateTime other) { return other.isAfter(this.Start) && other.isBefore(this.End); }
+    public boolean dateIsDuring(LocalDateTime other) { return other.isAfter(this.start) && other.isBefore(this.end); }
 
-    public boolean rangeIsDuring(DateRange other) { return other.Start.isAfter(this.Start) && other.End.isBefore(this.End); }
+    public boolean rangeIsDuring(DateRange other) { return other.start.isAfter(this.start) && other.end.isBefore(this.end); }
 }

@@ -1,6 +1,7 @@
 package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
+import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AppointmentSlotController {
 
-    private final com.bloodbank.bloodbankapp.repo.AppointmentSlotService service;
+    private final AppointmentSlotService service;
 
     @CrossOrigin
     @GetMapping("/{id}")

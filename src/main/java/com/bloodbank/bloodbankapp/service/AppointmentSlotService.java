@@ -1,4 +1,4 @@
-package com.bloodbank.bloodbankapp.repo;
+package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
@@ -25,7 +25,7 @@ public class AppointmentSlotService {
     }
 
     public AppointmentSlot createAppointmentSlot(AppointmentSlot appointmentSlot) {
-        if(!DateRange.isValid(appointmentSlot.getRange())) throw new AppointmentSlotException("Date range is invalid");
+        if(!DateRange.isValid(appointmentSlot.getDateRange())) throw new AppointmentSlotException("Date range is invalid");
         repo.save(appointmentSlot);
         return appointmentSlot;
     }
