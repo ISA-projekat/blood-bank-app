@@ -14,6 +14,10 @@ public class DateRange {
         return Duration.between(this.Start, this.End);
     }
 
+    public static boolean isValid(DateRange range) {
+        return range.getStart().isBefore(range.getEnd());
+    }
+
     public boolean dateIsBefore(LocalDateTime other) { return other.isBefore(this.Start); }
 
     public boolean dateIsAfter(LocalDateTime other) { return other.isAfter(this.End); }
