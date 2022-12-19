@@ -118,3 +118,9 @@ CREATE TABLE blood_stock (
 );
 
 INSERT INTO blood_stock (blood_bank_id, type, rh_factor, quantity) VALUES (2, 'B', 'PLUS', 0.0);
+
+CREATE TABLE appointment_slot (
+    id bigint not null auto_increment,
+    date_range varchar(255) not null,
+    PRIMARY KEY(id)
+);
