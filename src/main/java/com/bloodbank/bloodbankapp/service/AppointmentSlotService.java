@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,11 @@ public class AppointmentSlotService {
     public AppointmentSlot delete(AppointmentSlot appointmentSlot) {
         repo.delete(appointmentSlot);
         return appointmentSlot;
+    }
+
+    public List<AppointmentSlot> getAllInDateRange(DateRange dateRange) {
+        List<AppointmentSlot> slots = getAll();
+        return slots.stream().filter(slot -> dateRange.rangeIsDuring(slot.getDateRange())).collect(Collectors.toList());
     }
 
 }

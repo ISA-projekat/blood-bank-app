@@ -54,4 +54,6 @@ public class AppointmentService {
     public List<Appointment> getAllByUser(Long userId) {
         return appointmentRepository.findAllByUserId(userId);
     }
+
+    public Appointment schedule(Appointment appointment) { return appointmentRepository.save(appointment); }
 }
