@@ -22,4 +22,8 @@ public class AppointmentSlot {
 
     @Convert(converter = DateRangeJSONConverter.class)
     private DateRange dateRange;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "blood_bank_id", referencedColumnName = "id")
+    private BloodBank bloodBank;
 }

@@ -122,5 +122,7 @@ INSERT INTO blood_stock (blood_bank_id, type, rh_factor, quantity) VALUES (2, 'B
 CREATE TABLE appointment_slot (
     id bigint not null auto_increment,
     date_range varchar(255) not null,
-    PRIMARY KEY(id)
+    blood_bank_id bigint not null,
+    PRIMARY KEY(id),
+    CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
 );
