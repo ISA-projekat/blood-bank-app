@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3308/bloodbank
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+server:
+  port: 8080
+  error:
+    include-message: always

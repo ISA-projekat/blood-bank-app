@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Package extends Entity{
+public class Package {
     private LocalDateTime date;
-    private Blood blood;
+    private BloodStock bloodStock;
     private Location location;
 }

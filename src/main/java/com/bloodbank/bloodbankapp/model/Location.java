@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location extends Entity {
+public class Location {
 
     private double longitude;
     private double latitude;
