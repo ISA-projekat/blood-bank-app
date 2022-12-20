@@ -3,6 +3,7 @@ package com.bloodbank.bloodbankapp.controller;
 import com.bloodbank.bloodbankapp.dto.AppointmentSlotDTO;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.BloodBank;
+import com.bloodbank.bloodbankapp.model.DateRange;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,9 @@ public class AppointmentSlotController {
     @CrossOrigin
     @DeleteMapping()
     public AppointmentSlot delete(@RequestBody AppointmentSlot appointmentSlot) { return service.delete(appointmentSlot); }
+
+    @CrossOrigin
+    @GetMapping("/available-slots")
+    public List<AppointmentSlot> availableSlots(@RequestBody DateRange dateRange) { return service.getAllInDateRange(dateRange); }
 
 }

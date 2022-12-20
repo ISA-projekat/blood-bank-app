@@ -40,6 +40,7 @@ public class AppointmentController {
         appointmentService.review(appointmentReviewDto);
     }
 
+    @CrossOrigin
     @PostMapping("/schedule")
     public Appointment schedule(@RequestBody AppointmentDTO appointmentDTO) {
         User user = userService.getByUser(appointmentDTO.getUserId());
@@ -53,5 +54,5 @@ public class AppointmentController {
 
         return appointmentService.schedule(appointment);
     }
-    
+
 }
