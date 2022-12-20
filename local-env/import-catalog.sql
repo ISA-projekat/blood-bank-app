@@ -29,6 +29,17 @@ INSERT INTO blood_bank (name, description, rating, start_time, end_time, address
 INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('Bloody mary', 'description for bank3', 4.8, '08:00:00', '20:00:00', 1);
 INSERT INTO blood_bank (name, description, rating, start_time, end_time, address_id) VALUES ('First needle', 'description for bank4', 9.6, '08:00:00', '20:00:00', 3);
 
+CREATE TABLE appointment_slot (
+    id bigint not null auto_increment,
+    date_range varchar(255) not null,
+    blood_bank_id bigint not null,
+    PRIMARY KEY(id),
+    CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
+);
+
+INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": \'2022-12-20T16:48:00.000Z\', "end": \'2022-12-20T16:49:00.000Z\'', 1);
+INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": \'2022-12-20T16:50:00.000Z\', "end": \'2022-12-20T16:51:00.000Z\'', 2);
+
 CREATE TABLE appointment_details (
     id bigint not null auto_increment,
     description varchar(255),
@@ -71,22 +82,17 @@ INSERT INTO user (email, first_name, last_name,role) VALUES ('markos@gmail.com',
 CREATE TABLE appointment (
     id bigint not null auto_increment,
     appointment_details_id bigint,
-    blood_bank_id bigint,
     user_id bigint,
+    appointment_slot_id bigint not null,
     status enum('SCHEDULED', 'CANCELED', 'FINISHED', 'NOT_ALLOWED') DEFAULT 'SCHEDULED',
-    scheduled_date DATETIME not null,
-    duration int not null,
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (appointment_details_id) REFERENCES appointment_details(id),
-    CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id),
-    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user(id)
+    CONSTRAINT FOREIGN KEY (user_id) REFERENCES user(id),
+    CONSTRAINT FOREIGN KEY (appointment_slot_id) REFERENCES appointment_slot(id)
 );
 
-INSERT INTO appointment (scheduled_date, duration, blood_bank_id, appointment_details_id, user_id, status) VALUES ('2022-12-30 11:11:11', 30, 1, 1, 2, 'SCHEDULED');
-INSERT INTO appointment (scheduled_date, duration, blood_bank_id, user_id) VALUES ('2022-12-30 12:11:11', 20, 1, 3);
-INSERT INTO appointment (scheduled_date, duration, blood_bank_id) VALUES ('2022-12-31 13:11:11', 30, 3);
-INSERT INTO appointment (scheduled_date, duration, blood_bank_id) VALUES ('2022-12-31 14:11:11', 20, 3);
-INSERT INTO appointment (scheduled_date, duration, blood_bank_id) VALUES ('2022-12-30 15:11:11', 30, 3);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'SCHEDULED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'SCHEDULED');
 
 CREATE TABLE survey (
     id bigint not null auto_increment,
@@ -118,11 +124,3 @@ CREATE TABLE blood_stock (
 );
 
 INSERT INTO blood_stock (blood_bank_id, type, rh_factor, quantity) VALUES (2, 'B', 'PLUS', 0.0);
-
-CREATE TABLE appointment_slot (
-    id bigint not null auto_increment,
-    date_range varchar(255) not null,
-    blood_bank_id bigint not null,
-    PRIMARY KEY(id),
-    CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
-);
