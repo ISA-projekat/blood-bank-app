@@ -8,7 +8,10 @@ import com.bloodbank.bloodbankapp.mapper.UserMapper;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AddressRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
+import com.bloodbank.bloodbankapp.utils.MailJetMailer;
+import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ public class UserService {
         if (existingUser != null) throw new UserException("User with that email already exists");
 
         User newUser = UserMapper.DtoToEntity(dto);
+        newUser.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
 
         addressRepository.save(newUser.getAddress());
         userRepository.save(newUser);
@@ -96,5 +100,12 @@ public class UserService {
 
     public void penalise(User user) {
         user.setPenalties(user.getPenalties() + 1);
+    }
+
+    public User activate(String email) {
+        User user = userRepository.findByEmail(email);
+        user.setActive(true);
+        userRepository.save(user);
+        return user;
     }
 }

@@ -68,10 +68,10 @@ CREATE TABLE user (
     CONSTRAINT FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id, role) VALUES ('user1@gmail.com', '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', 'Name1', 'LastName1', 2, 3, 'SYS_ADMIN');
+INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id, active, role) VALUES ('user1@gmail.com', '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', 'Name1', 'LastName1', 2, 3, true, 'SYS_ADMIN');
 INSERT INTO user (email, first_name, last_name, address_id) VALUES ('user2@gmail.com', 'Name2', 'LastName2', 2);
 INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user3@gmail.com', 'Name2', 'LastName3', 1);
-INSERT INTO user (email, first_name, last_name,role) VALUES ('administrator@gmail.com',"Marko","Markovic",'BLOOD_BANK_ADMIN');
+INSERT INTO user (email, password, first_name, last_name, active, role) VALUES ('administrator@gmail.com','$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', "Marko","Markovic",true, 'BLOOD_BANK_ADMIN');
 INSERT INTO user (email, first_name, last_name,role) VALUES ('jovan@gmail.com',"Jovan","Jovanovic",'BLOOD_BANK_ADMIN');
 INSERT INTO user (email, first_name, last_name,role) VALUES ('uros@gmail.com',"Uros","Urosevic",'BLOOD_BANK_ADMIN');
 INSERT INTO user (email, first_name, last_name,role) VALUES ('djomla@gmail.com',"Djomla","Djomlic",'BLOOD_BANK_ADMIN');

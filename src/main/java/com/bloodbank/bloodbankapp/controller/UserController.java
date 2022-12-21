@@ -3,6 +3,8 @@ package com.bloodbank.bloodbankapp.controller;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.UserService;
+import com.bloodbank.bloodbankapp.utils.MailJetMailer;
+import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -61,7 +63,20 @@ public class UserController {
 
     @PostMapping("register")
     public User registerUser(@Valid @RequestBody RegistrationDto dto) {
-        return userService.add(dto);
+
+        try {
+            User user = userService.add(dto);
+            MailJetMailer.SendActivateAccountMail(dto.getEmail());
+            return user;
+        } catch (MailjetException e){
+            return null;
+        }
+    }
+
+    @PutMapping("/activate")
+    @CrossOrigin
+    public User activateAccount(@RequestBody String email){
+        return userService.activate(email);
     }
 
 }

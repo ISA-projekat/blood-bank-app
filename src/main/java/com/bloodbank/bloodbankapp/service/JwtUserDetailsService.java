@@ -29,6 +29,11 @@ public class JwtUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorityList = new ArrayList<>();
         authorityList.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().toString()));
 
-        return new User(user.getEmail(), user.getPassword(), authorityList);
+        return new User(user.getEmail(), user.getPassword(), user.getActive(),true,true, true,  authorityList);
+    }
+
+    public long getUserId(String email){
+        var user = userRepository.findByEmail(email);
+        return user.getId();
     }
 }
