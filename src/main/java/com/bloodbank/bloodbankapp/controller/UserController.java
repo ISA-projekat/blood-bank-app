@@ -5,6 +5,7 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,22 +27,26 @@ public class UserController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('SYS_ADMIN') or hasRole('REGISTERED') or hasRole('BLOOD_BANK_ADMIN')")
     public User getByUser(@PathVariable("id") Long id) {
         return userService.getByUser(id);
     }
 
     @CrossOrigin
     @PostMapping("registerAdmin")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public User registerAdmin(@Valid @RequestBody RegistrationDto dto) { return userService.registerAdmin(dto); }
 
 
     @CrossOrigin
     @GetMapping
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public List<User> getAll() { return userService.getAll(); }
 
 
     @CrossOrigin
     @GetMapping("/search")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public List<User> search(@RequestParam(required = false) String firstName,
                                             @RequestParam(required = false) String lastName) {
         return userService.search(firstName, lastName);
@@ -49,6 +54,7 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping ("/availableAdministrators")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public List<User> getAvailableAdministrators(){
         return userService.getAvailableAdministrators();
     }
