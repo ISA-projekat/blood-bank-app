@@ -40,7 +40,7 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping
-    @PreAuthorize("hasRole('SYS_ADMIN')")
+    //@PreAuthorize("hasRole('SYS_ADMIN')")
     public List<User> getAll() { return userService.getAll(); }
 
 
