@@ -57,7 +57,9 @@ public class AppointmentService {
         return appointmentRepository.findAllByUserId(userId);
     }
 
-    public Appointment schedule(Appointment appointment) { return appointmentRepository.save(appointment); }
+    public Appointment schedule(Appointment appointment) {
+        appointment.getAppointmentSlot().setStatus(TAKEN);
+        return appointmentRepository.save(appointment); }
 
     public Appointment cancel(Appointment appointment) {
         appointment.setStatus(CANCELED);
