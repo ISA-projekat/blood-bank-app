@@ -41,4 +41,10 @@ public class AppointmentSlotService {
         return slots.stream().filter(slot -> dateRange.rangeIsDuring(slot.getDateRange())).collect(Collectors.toList());
     }
 
+    public List<AppointmentSlot> getAllByBloodBank(Long bloodBankId) {
+        List<AppointmentSlot> appointmentSlots = repo.findAllByBloodBankId(bloodBankId);
+        if(appointmentSlots.isEmpty()) throw new AppointmentSlotException("No appointments found");
+        return appointmentSlots;
+    }
+
 }

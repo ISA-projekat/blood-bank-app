@@ -48,4 +48,8 @@ public class AppointmentSlotController {
     @GetMapping("/available-slots")
     public List<AppointmentSlot> availableSlots(@RequestBody DateRange dateRange) { return service.getAllInDateRange(dateRange); }
 
+    @CrossOrigin
+    @GetMapping("/blood-bank/{id}")
+    public List<AppointmentSlot> getAllByBloodBank(Long id) { return service.getAllByBloodBank(id); }
+
 }
