@@ -33,12 +33,13 @@ CREATE TABLE appointment_slot (
     id bigint not null auto_increment,
     date_range varchar(255) not null,
     blood_bank_id bigint not null,
+    status enum('FREE', 'TAKEN') DEFAULT 'FREE',
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
 );
 
-INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1);
-INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T16:51:00.000Z"}', 2);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T16:51:00.000Z"}', 2, 'FREE');
 
 CREATE TABLE appointment_details (
     id bigint not null auto_increment,
