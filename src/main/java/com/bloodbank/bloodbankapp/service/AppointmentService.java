@@ -1,6 +1,7 @@
 package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
+import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.model.Appointment;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
+import static com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +60,10 @@ public class AppointmentService {
     public Appointment schedule(Appointment appointment) { return appointmentRepository.save(appointment); }
 
     public Appointment cancel(Appointment appointment) {
-        appointmentRepository.delete(appointment);
+        appointment.setStatus(CANCELED);
+        appointment.getAppointmentSlot().setStatus(FREE);
+        appointment.setAppointmentSlot(null);
+        appointmentRepository.save(appointment);
         return appointment;
     }
 
