@@ -27,7 +27,6 @@ public class SurveyController {
         return surveyService.getAll();
     }
 
-    @CrossOrigin
     @PostMapping
     @PreAuthorize("hasRole('REGISTERED')")
     public Survey add(@RequestBody Survey survey){
