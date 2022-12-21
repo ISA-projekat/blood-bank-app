@@ -3,17 +3,20 @@ package com.bloodbank.bloodbankapp.service;
 import com.bloodbank.bloodbankapp.dto.CreateBloodBankDto;
 import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.BloodBankException;
+import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.mapper.BloodBankMapper;
 import com.bloodbank.bloodbankapp.model.BloodBank;
+import com.bloodbank.bloodbankapp.model.BloodStock;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.BloodBankRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -112,7 +115,15 @@ public class BloodBankService {
     }
 
 
+    public Page<BloodBank> getPage(Pageable page) {
+        return bloodBankRepository.findAll(page);
+    }
 
-
-
+    public void updateBloodStockAndEquipment(BloodBank bloodBank, BloodStock bloodStock, Long equipmentSetsUsed) {
+        if (bloodBank.getEquipmentSets() - equipmentSetsUsed < 0) {
+            throw new NotFoundException("Not enough equipment sets found");
+        }
+        bloodBank.setEquipmentSets(bloodBank.getEquipmentSets() - equipmentSetsUsed);
+        bloodBank.updateBloodStock(bloodStock);
+    }
 }

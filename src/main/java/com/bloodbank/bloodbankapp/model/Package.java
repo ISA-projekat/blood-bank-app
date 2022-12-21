@@ -11,6 +11,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Package {
     private LocalDateTime date;
-    private Blood blood;
+    private BloodStock bloodStock;
     private Location location;
 }
