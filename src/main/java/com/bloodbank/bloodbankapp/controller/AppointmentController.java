@@ -55,4 +55,10 @@ public class AppointmentController {
         return appointmentService.schedule(appointment);
     }
 
+    @CrossOrigin
+    @DeleteMapping("/cancel")
+    public Appointment cancelAppointment(@RequestBody Appointment appointment) {
+        return appointmentService.cancel(appointment);
+    }
+
 }
