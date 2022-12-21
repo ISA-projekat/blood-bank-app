@@ -7,6 +7,7 @@ import com.bloodbank.bloodbankapp.model.Blood;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -27,6 +28,7 @@ public class BloodBankController {
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
     public BloodBank getByUser(@PathVariable("userId") Long userId) {
         return bloodBankService.getByUser(userId);
     }
@@ -39,6 +41,7 @@ public class BloodBankController {
 
     @CrossOrigin
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
     public BloodBank get(@PathVariable("id") Long id) {
         return bloodBankService.get(id);
     }
@@ -52,6 +55,7 @@ public class BloodBankController {
 
     @CrossOrigin
     @PostMapping("/create")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public BloodBank create(@RequestBody  CreateBloodBankDto dto){
 
         return bloodBankService.createBloodBank(dto);
@@ -59,6 +63,7 @@ public class BloodBankController {
 
     @CrossOrigin
     @PostMapping("/setAdministrator")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
     public BloodBank addAdministratorToBloodBank(@RequestBody  SetAdministratorToBloodBankDto dto){
         return bloodBankService.addAdministratorToBloodBank(dto.getBloodBankId(),dto.getAdministratorId());
     }
