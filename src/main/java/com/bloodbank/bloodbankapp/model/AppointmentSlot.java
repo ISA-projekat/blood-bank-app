@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.model;
 
+import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.utils.DateRangeJSONConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,8 @@ public class AppointmentSlot {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "blood_bank_id", referencedColumnName = "id")
     private BloodBank bloodBank;
+
+    @Column(columnDefinition = "ENUM('FREE', 'TAKEN')")
+    @Enumerated(EnumType.STRING)
+    private AppointmentSlotStatus status;
 }
