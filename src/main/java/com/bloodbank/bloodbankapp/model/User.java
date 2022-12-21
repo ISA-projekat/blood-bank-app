@@ -36,6 +36,8 @@ public class User {
 
     private Integer penalties;
 
+    private boolean isLoggedBefore;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;

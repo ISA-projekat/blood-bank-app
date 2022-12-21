@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.ChangePasswordDto;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.UserService;
@@ -23,7 +24,6 @@ public class UserController {
     public void edit(@RequestBody User user) {
         userService.edit(user);
     }
-
 
     @GetMapping("/{id}")
     public User getByUser(@PathVariable("id") Long id) {
@@ -56,6 +56,12 @@ public class UserController {
     @PostMapping("register")
     public User registerUser(@Valid @RequestBody RegistrationDto dto) {
         return userService.add(dto);
+    }
+
+    @CrossOrigin
+    @PostMapping
+    public boolean changePasswordAfterFirstLogin(ChangePasswordDto dto){
+        return userService.ChangePasswordAfterFirstLogin(dto);
     }
 
 }

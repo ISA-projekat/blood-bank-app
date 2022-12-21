@@ -11,13 +11,20 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SetAdministratorToBloodBankDto {
+
+public class ChangePasswordDto {
+
+    @NotBlank
+    @NotNull
+    private long id;
+
+    @NotBlank
+    @NotNull
+    private String newPassword;
 
     @NotNull
     @NotBlank
-    long bloodBankId;
+    private String confirmNewPassword;
 
-    @NotNull
-    @NotBlank
-    long administratorId;
+
 }

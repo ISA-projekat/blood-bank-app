@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.service;
 
+import com.bloodbank.bloodbankapp.dto.ChangePasswordDto;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
 import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
@@ -33,6 +34,7 @@ public class UserService {
     }
 
     private void updateUser(User oldUser, User user) {
+
         oldUser.setEmail(user.getEmail());
         oldUser.setFirstName(user.getFirstName());
         oldUser.setLastName(user.getLastName());
@@ -43,6 +45,7 @@ public class UserService {
 //        oldUser.setActive(user.getActive()); // should active status change be allowed?
         oldUser.setAddressWithoutId(user.getAddress());
         oldUser.setGender(user.getGender());
+
     }
 
     public User add(RegistrationDto dto) {
@@ -50,6 +53,7 @@ public class UserService {
         if (existingUser != null) throw new UserException("User with that email already exists");
 
         User newUser = UserMapper.DtoToEntity(dto);
+        newUser.setLoggedBefore(false);
 
         addressRepository.save(newUser.getAddress());
         userRepository.save(newUser);
@@ -88,10 +92,36 @@ public class UserService {
 
         User newUser = UserMapper.DtoToEntity(dto);
         newUser.setRole(Role.BLOOD_BANK_ADMIN);
+        newUser.setLoggedBefore(false);
 
         addressRepository.save(newUser.getAddress());
         userRepository.save(newUser);
         return newUser;
     }
+
+
+    public boolean ChangePasswordAfterFirstLogin(ChangePasswordDto dto){
+
+        User user = userRepository.getById(dto.getId());
+        checkForChangePasswordErrors(user,dto);
+
+        user.setPassword(dto.getNewPassword());
+        user.setLoggedBefore(true);
+        userRepository.save(user);
+        return true;
+
+    }
+
+    private void checkForChangePasswordErrors(User user,ChangePasswordDto dto){
+
+        if(!dto.getNewPassword().equals(dto.getConfirmNewPassword())){
+            throw new UserException("Passwords are not matching");
+        }
+        if (user.getPassword().equals(dto.getNewPassword())){
+
+            throw new UserException("Password is same as old password");
+        }
+    }
+
 
 }
