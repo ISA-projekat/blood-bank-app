@@ -56,4 +56,10 @@ public class AppointmentService {
     }
 
     public Appointment schedule(Appointment appointment) { return appointmentRepository.save(appointment); }
+
+    public Appointment cancel(Appointment appointment) {
+        appointmentRepository.delete(appointment);
+        return appointment;
+    }
+
 }
