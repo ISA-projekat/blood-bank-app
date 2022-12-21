@@ -44,7 +44,7 @@ public class AppointmentService {
             case FINISHED -> {
                 appointemnt.updateDetails(appointmentReviewDto.getDescription());
                 appointemnt.setStatus(FINISHED);
-                bloodBankService.updateBloodStockAndEquipment(appointemnt.getBloodBank(), appointmentReviewDto.getBloodStock(), appointmentReviewDto.getEquipmentSetsUsed());
+                bloodBankService.updateBloodStockAndEquipment(appointemnt.getAppointmentSlot().getBloodBank(), appointmentReviewDto.getBloodStock(), appointmentReviewDto.getEquipmentSetsUsed());
             }
             case NOT_ALLOWED -> appointemnt.setStatus(NOT_ALLOWED);
             default -> throw new NotFoundException("Appointment status not found");
@@ -54,4 +54,6 @@ public class AppointmentService {
     public List<Appointment> getAllByUser(Long userId) {
         return appointmentRepository.findAllByUserId(userId);
     }
+
+    public Appointment schedule(Appointment appointment) { return appointmentRepository.save(appointment); }
 }
