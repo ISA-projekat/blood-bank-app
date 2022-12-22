@@ -11,6 +11,7 @@ import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
+import com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +69,7 @@ public class AppointmentService {
         Appointment latest = appointments.get(0);
 
         for(Appointment appointment : appointments)
-            if(latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()))
+            if(latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()) && (appointment.getStatus() == SCHEDULED || appointment.getStatus() == FINISHED))
                 latest = appointment;
 
         return latest;
@@ -80,13 +81,12 @@ public class AppointmentService {
             Survey survey = surveyService.getByUser(user.getId());
             if(getAllByUser(user.getId()).isEmpty()) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
-
                 return appointmentRepository.save(appointment);
             }
 
             Appointment latest = findLatestUserAppointment(user.getId());
 
-            if(appointment.getAppointmentSlot().getDateRange().dateIsBefore(latest.getAppointmentSlot().getDateRange().getStart().plusMonths(6))) {
+            if( appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6)) ) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 return appointmentRepository.save(appointment);
             }
