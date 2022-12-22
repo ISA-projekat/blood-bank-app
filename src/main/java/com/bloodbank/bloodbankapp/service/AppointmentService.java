@@ -45,6 +45,8 @@ public class AppointmentService {
 
     private final AppointmentMapper appointmentMapper;
 
+    private final AppointmentSlotService appointmentSlotService;
+
     public List<Appointment> getAll() {
         return appointmentRepository.findAll();
     }
@@ -78,8 +80,12 @@ public class AppointmentService {
         return appointmentRepository.findAllByUserId(userId).stream().map(appointmentMapper::appointmentToAppointmentPreviewDto).toList();
     }
 
+    public List<Appointment> getAllByUserApp(Long id){
+        return appointmentRepository.findAllByUserId(id);
+    }
+
     private Appointment findLatestUserAppointment(Long userId) {
-        List<Appointment> appointments = getAllByUser(userId);
+        List<Appointment> appointments = getAllByUserApp(userId);
         Appointment latest = appointments.get(0);
 
         for(Appointment appointment : appointments)
@@ -94,7 +100,7 @@ public class AppointmentService {
         try {
             Survey survey = surveyService.getByUser(user.getId());
 
-            if(getAllByUser(user.getId()).isEmpty()) {
+            if(getAllByUserApp(user.getId()).isEmpty()) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
                 return appointmentRepository.save(appointment);
@@ -107,9 +113,11 @@ public class AppointmentService {
                 return appointmentRepository.save(appointment);
             }
 
+            appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
             throw new ScheduleFailedException("Last appointment was less than 6 months ago");
         }
         catch(NotFoundException e) {
+            appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
             throw new ScheduleFailedException("Survey is not found");
         }
     }
@@ -142,6 +150,7 @@ public class AppointmentService {
 
     public List<Appointment> findAllAppointmentsByStatusByBloodBankId(AppointmentStatus status, Long bloodBankId) {
         return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
+    }
 
     public List<AppointmentCalendarItemDTO> findAllByBloodBank(Long id){
         List<Appointment> appointments = appointmentRepository.findAllByAppointmentSlot_BloodBank_Id(id);
