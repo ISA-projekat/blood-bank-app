@@ -5,11 +5,14 @@ import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.model.Appointment;
+import com.bloodbank.bloodbankapp.model.Survey;
+import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
@@ -24,6 +27,8 @@ public class AppointmentService {
     private final BloodBankService bloodBankService;
 
     private final UserService userService;
+
+    private final SurveyService surveyService;
 
     public List<Appointment> getAll() {
         return appointmentRepository.findAll();
@@ -58,9 +63,39 @@ public class AppointmentService {
         return appointmentRepository.findAllByUserId(userId);
     }
 
+    private Appointment findLatestUserAppointment(Long userId) {
+        List<Appointment> appointments = getAllByUser(userId);
+        Appointment latest = appointments.get(0);
+
+        for(Appointment appointment : appointments)
+            if(latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()))
+                latest = appointment;
+
+        return latest;
+    }
+
     public Appointment schedule(Appointment appointment) {
-        appointment.getAppointmentSlot().setStatus(TAKEN);
-        return appointmentRepository.save(appointment); }
+        User user = appointment.getUser();
+        try {
+            Survey survey = surveyService.getByUser(user.getId());
+            if(getAllByUser(user.getId()).isEmpty()) {
+                appointment.getAppointmentSlot().setStatus(TAKEN);
+                return appointmentRepository.save(appointment);
+            }
+
+            Appointment latest = findLatestUserAppointment(user.getId());
+
+            if(appointment.getAppointmentSlot().getDateRange().dateIsBefore(latest.getAppointmentSlot().getDateRange().getStart().plusMonths(6))) {
+                appointment.getAppointmentSlot().setStatus(TAKEN);
+                return appointmentRepository.save(appointment);
+            }
+
+            return null;
+        }
+        catch(NotFoundException e) {
+            return null;
+        }
+    }
 
     public Appointment cancel(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
