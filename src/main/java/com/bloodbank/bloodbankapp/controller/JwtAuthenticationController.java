@@ -3,7 +3,9 @@ package com.bloodbank.bloodbankapp.controller;
 import com.bloodbank.bloodbankapp.config.JwtTokenUtil;
 import com.bloodbank.bloodbankapp.dto.JwtRequest;
 import com.bloodbank.bloodbankapp.dto.JwtResponse;
+import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.JwtUserDetailsService;
+import com.bloodbank.bloodbankapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,6 +27,10 @@ public class JwtAuthenticationController {
 
     @Autowired
     private JwtUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
+
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {

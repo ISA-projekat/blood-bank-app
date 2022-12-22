@@ -79,4 +79,10 @@ public class UserController {
         return userService.activate(email);
     }
 
+    @GetMapping("/check-if-first-login")
+    @CrossOrigin
+    public Boolean CheckIfFirstLoginCompleted(Long id){
+        return userService.IsFirstTimeLoginCompleted(id);
+    }
+
 }

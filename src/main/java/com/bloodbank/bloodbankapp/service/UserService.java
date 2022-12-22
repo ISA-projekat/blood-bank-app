@@ -94,6 +94,7 @@ public class UserService {
         newUser.setRole(Role.BLOOD_BANK_ADMIN);
         newUser.setActive(true);
         newUser.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
+        newUser.setFirstTimeLoginCompleted(false);
 
         addressRepository.save(newUser.getAddress());
         userRepository.save(newUser);
@@ -109,5 +110,13 @@ public class UserService {
         user.setActive(true);
         userRepository.save(user);
         return user;
+    }
+
+    public Boolean IsFirstTimeLoginCompleted(Long userId){
+        User user = userRepository.getById(userId);
+        if(user.getFirstTimeLoginCompleted() == false){
+            return false;
+        }
+        return true;
     }
 }
