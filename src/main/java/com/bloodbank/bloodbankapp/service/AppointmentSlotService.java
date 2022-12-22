@@ -34,9 +34,11 @@ public class AppointmentSlotService {
         return appointmentSlot;
     }
 
-    public AppointmentSlot delete(AppointmentSlot appointmentSlot) {
-        repo.delete(appointmentSlot);
-        return appointmentSlot;
+    public AppointmentSlot delete(Long id) {
+        AppointmentSlot slot = get(id);
+        slot.setBloodBank(null);
+        repo.delete(slot);
+        return slot;
     }
 
     public List<AppointmentSlot> getAllInDateRange(DateRange dateRange) {
@@ -69,6 +71,10 @@ public class AppointmentSlotService {
 
     public Page<AppointmentSlot> getPageByBloodBank(Long id, Pageable page){
         return repo.findAllByBloodBankId(id, page);
+    }
+
+    public Page<AppointmentSlot> getFreePageByBloodBank(Long id, Pageable page){
+        return repo.findAllFree(id, page);
     }
 
 }

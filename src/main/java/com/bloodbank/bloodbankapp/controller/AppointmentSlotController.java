@@ -44,8 +44,8 @@ public class AppointmentSlotController {
     }
 
     @CrossOrigin
-    @DeleteMapping()
-    public AppointmentSlot delete(@RequestBody AppointmentSlot appointmentSlot) { return service.delete(appointmentSlot); }
+    @DeleteMapping("/{id}")
+    public AppointmentSlot delete(@PathVariable("id") Long id) { return service.delete(id); }
 
     @CrossOrigin
     @GetMapping("/available-slots")
@@ -68,5 +68,10 @@ public class AppointmentSlotController {
         return service.getPageByBloodBank(id, page);
     }
 
+    @GetMapping("/blood-bank-page-free")
+    @PreAuthorize("hasRole('REGISTERED') or hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
+    public Page<AppointmentSlot> getFreeSlotsPage(Long id, Pageable page){
+        return service.getFreePageByBloodBank(id, page);
+    }
 
 }

@@ -33,7 +33,7 @@ INSERT INTO blood_bank (name, description, rating, start_time, end_time, address
 CREATE TABLE appointment_slot (
     id bigint not null auto_increment,
     date_range varchar(255) not null,
-    blood_bank_id bigint not null,
+    blood_bank_id bigint,
     status enum('FREE', 'TAKEN') DEFAULT 'FREE',
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
