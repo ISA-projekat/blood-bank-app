@@ -78,5 +78,5 @@ public class UserController {
     public User activateAccount(@RequestBody String email){
         return userService.activate(email);
     }
-
+    
 }
