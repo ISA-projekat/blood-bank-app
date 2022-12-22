@@ -85,13 +85,13 @@ public class AppointmentController {
     }
 
     @GetMapping("/user/{id}/{status}")
-    public List<Appointment> findAllAppointmentsByStatusByUserId(@PathVariable("status") String status, @PathVariable("id") Long userId) {
-        return appointmentRepository.findAllAppointmentsByStatusByUserId(status, userId);
+    public List<Appointment> findAllAppointmentsByStatusByUserId(@PathVariable("status") AppointmentStatus status, @PathVariable("id") Long userId) {
+        return appointmentService.findAllAppointmentsByStatusByUserId(status, userId);
     }
 
     @GetMapping("/blood-bank/{id}/{status}")
-    public List<Appointment> findAllAppointmentsByStatusByBloodBankId(@PathVariable("status") String status, @PathVariable("id") Long bloodBankId) {
-        return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
+    public List<Appointment> findAllAppointmentsByStatusByBloodBankId(@PathVariable("status") AppointmentStatus status, @PathVariable("id") Long bloodBankId) {
+        return appointmentService.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
     }
 
 }

@@ -118,11 +118,11 @@ public class AppointmentService {
         return appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
     }
 
-    public List<Appointment> findAllAppointmentsByStatusByUserId(String status, Long userId) {
+    public List<Appointment> findAllAppointmentsByStatusByUserId(AppointmentStatus status, Long userId) {
         return appointmentRepository.findAllAppointmentsByStatusByUserId(status, userId);
     }
 
-    public List<Appointment> findAllAppointmentsByStatusByBloodBankId(String status, Long bloodBankId) {
+    public List<Appointment> findAllAppointmentsByStatusByBloodBankId(AppointmentStatus status, Long bloodBankId) {
         return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
     }
 

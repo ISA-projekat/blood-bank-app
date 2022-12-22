@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.repository;
 
+import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,10 +13,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findAllByUserId(Long userId);
     List<Appointment> findAllByAppointmentSlotBloodBankId(long bloodBankId);
 
-    @Query("SELECT app FROM Appointment app WHERE app.status = ':status' and app.user.id = :id")
-    List<Appointment> findAllAppointmentsByStatusByUserId(@Param("status") String status, @Param("id") Long id);
+    @Query("SELECT app FROM Appointment app WHERE app.status = :status and app.user.id = :id")
+    List<Appointment> findAllAppointmentsByStatusByUserId(@Param("status") AppointmentStatus status, @Param("id") Long id);
 
-    @Query("SELECT app FROM Appointment app WHERE app.status = ':status' and app.appointmentSlot.bloodBank.id = :id")
-    List<Appointment> findAllAppointmentsByStatusByBloodBankId(@Param("status") String status, @Param("id") Long id);
+    @Query("SELECT app FROM Appointment app WHERE app.status = :status and app.appointmentSlot.bloodBank.id = :id")
+    List<Appointment> findAllAppointmentsByStatusByBloodBankId(@Param("status") AppointmentStatus status, @Param("id") Long id);
 
 }

@@ -108,8 +108,8 @@ CREATE TABLE appointment (
     CONSTRAINT FOREIGN KEY (appointment_slot_id) REFERENCES appointment_slot(id)
 );
 
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'SCHEDULED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'SCHEDULED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'FINISHED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (5, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (6, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (3, 2, 'SCHEDULED');
