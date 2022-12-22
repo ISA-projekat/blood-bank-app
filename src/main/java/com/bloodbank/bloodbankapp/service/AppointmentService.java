@@ -80,6 +80,7 @@ public class AppointmentService {
             Survey survey = surveyService.getByUser(user.getId());
             if(getAllByUser(user.getId()).isEmpty()) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
+
                 return appointmentRepository.save(appointment);
             }
 

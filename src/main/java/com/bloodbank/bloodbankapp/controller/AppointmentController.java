@@ -50,6 +50,7 @@ public class AppointmentController {
     public Appointment schedule(@RequestBody AppointmentDTO appointmentDTO) {
         User user = userService.getByUser(appointmentDTO.getUserId());
         AppointmentSlot appointmentSlot = appointmentSlotService.get(appointmentDTO.getAppointmentSlotId());
+        appointmentSlotService.takeSlot(appointmentSlot.getId());
         Appointment appointment = Appointment.builder()
                 .status(AppointmentStatus.SCHEDULED)
                 .details(null)
