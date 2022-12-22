@@ -88,7 +88,7 @@ public class AppointmentService {
             }
 
             Appointment latest = findLatestUserAppointment(user.getId());
-            if( appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6)) ) {
+            if( !appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6)) ) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
                 return appointmentRepository.save(appointment);

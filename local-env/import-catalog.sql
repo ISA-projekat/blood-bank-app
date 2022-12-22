@@ -42,9 +42,9 @@ CREATE TABLE appointment_slot (
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1, 'TAKEN');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:50:00.000Z", "end": "2022-12-21T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:50:00.000Z", "end": "2022-12-22T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:50:00.000Z", "end": "2022-12-21T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:50:00.000Z", "end": "2022-12-22T17:00:00.000Z"}', 2, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2023-08-25T16:50:00.000Z", "end": "2023-08-25T17:00:00.000Z"}', 2, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-26T16:50:00.000Z", "end": "2022-12-26T17:00:00.000Z"}', 2, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-27T16:50:00.000Z", "end": "2022-12-27T17:00:00.000Z"}', 2, 'FREE');
