@@ -94,7 +94,7 @@ INSERT INTO user (email, first_name, last_name,role) VALUES ('djomla@gmail.com',
 INSERT INTO user (email, first_name, last_name,role) VALUES ('joca@gmail.com',"Jovan","Ivanovic",'BLOOD_BANK_ADMIN');
 INSERT INTO user (email, first_name, last_name,role) VALUES ('dule@gmail.com',"Dusan","Urosevic",'BLOOD_BANK_ADMIN');
 INSERT INTO user (email, first_name, last_name,role) VALUES ('markos@gmail.com',"Marko","Silva",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, password, first_name, last_name, address_id, active, role, jmbg, phone_number, occupation, penalties, gender) VALUES (milos.gravara@gmail.com, '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', Milos, Gravara, 4, true, 'REGISTERED', '2001000800027', '+381637437123', 'Student', 0, 'MALE');
+INSERT INTO user (email, password, first_name, last_name, address_id, active, role, jmbg, phone_number, occupation, penalties, gender) VALUES ("milos.gravara@gmail.com", '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', "Milos", "Gravara", 4, true, 'REGISTERED', '2001000800027', '+381637437123', 'Student', 0, 'MALE');
 
 CREATE TABLE appointment (
     id bigint not null auto_increment,
