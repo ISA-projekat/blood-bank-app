@@ -30,7 +30,6 @@ public class Appointment {
     @JoinColumn(name = "appointment_details_id", referencedColumnName = "id")
     private AppointmentDetails details;
 
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;

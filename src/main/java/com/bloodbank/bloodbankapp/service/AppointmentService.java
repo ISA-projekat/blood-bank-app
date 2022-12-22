@@ -7,6 +7,7 @@ import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,12 +62,20 @@ public class AppointmentService {
         appointment.getAppointmentSlot().setStatus(TAKEN);
         return appointmentRepository.save(appointment); }
 
-    public Appointment cancel(Appointment appointment) {
+    public Appointment cancel(Long id) {
+        Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
         appointment.setStatus(CANCELED);
-        appointment.getAppointmentSlot().setStatus(FREE);
         appointment.setAppointmentSlot(null);
+        userService.penalise(appointment.getUser());
         appointmentRepository.save(appointment);
         return appointment;
     }
 
+    public List<Appointment> getByBloodBank(long id) {
+        return appointmentRepository.findAllByAppointmentSlotBloodBankId(id);
+    }
+
+    public Appointment get(Long id){
+        return appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
+    }
 }

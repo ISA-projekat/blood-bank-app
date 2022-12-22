@@ -1,10 +1,13 @@
 package com.bloodbank.bloodbankapp.service;
 
+import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.DateRange;
 import com.bloodbank.bloodbankapp.repository.AppointmentSlotRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -45,6 +48,27 @@ public class AppointmentSlotService {
         List<AppointmentSlot> appointmentSlots = repo.findAllByBloodBankId(bloodBankId);
         if(appointmentSlots.isEmpty()) throw new AppointmentSlotException("No appointments found");
         return appointmentSlots;
+    }
+
+    public List<AppointmentSlot> getFreeSlotsByBloodBank(Long bloodBankId) {
+        return getAllByBloodBank(bloodBankId).stream().filter(s -> s.getStatus() == AppointmentSlotStatus.FREE).collect(Collectors.toList());
+    }
+
+    public AppointmentSlot takeSlot(Long id){
+        AppointmentSlot slot = get(id);
+        slot.setStatus(AppointmentSlotStatus.TAKEN);
+        repo.save(slot);
+        return slot;
+    }
+    public AppointmentSlot cancelAppointment(Long id){
+        AppointmentSlot slot = get(id);
+        slot.setStatus(AppointmentSlotStatus.FREE);
+        repo.save(slot);
+        return slot;
+    }
+
+    public Page<AppointmentSlot> getPageByBloodBank(Long id, Pageable page){
+        return repo.findAllByBloodBankId(id, page);
     }
 
 }

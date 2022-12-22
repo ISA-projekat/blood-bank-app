@@ -10,8 +10,10 @@ import com.bloodbank.bloodbankapp.service.AppointmentService;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PreUpdate;
 import java.util.List;
 
 @RestController
@@ -31,17 +33,20 @@ public class AppointmentController {
     }
 
     @GetMapping("/user/{id}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
     public List<Appointment> getAllByUser(@PathVariable("id") Long userId) {
         return appointmentService.getAllByUser(userId);
     }
 
     @PostMapping("/review")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
     public void review(@RequestBody AppointmentReviewDto appointmentReviewDto) {
         appointmentService.review(appointmentReviewDto);
     }
 
     @CrossOrigin
     @PostMapping("/schedule")
+    @PreAuthorize("hasRole('REGISTERED')")
     public Appointment schedule(@RequestBody AppointmentDTO appointmentDTO) {
         User user = userService.getByUser(appointmentDTO.getUserId());
         AppointmentSlot appointmentSlot = appointmentSlotService.get(appointmentDTO.getAppointmentSlotId());
@@ -56,9 +61,18 @@ public class AppointmentController {
     }
 
     @CrossOrigin
-    @DeleteMapping("/cancel")
-    public Appointment cancelAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.cancel(appointment);
+    @DeleteMapping("/cancel/{id}")
+    @PreAuthorize("hasRole('REGISTERED')")
+    public Appointment cancelAppointment(@PathVariable("id") Long id) {
+        Appointment app = appointmentService.get(id);
+        appointmentSlotService.cancelAppointment(app.getAppointmentSlot().getId());
+        return appointmentService.cancel(id);
+    }
+
+    @GetMapping("/blood-bank/{id}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
+    public List<Appointment> getByBloodBank(@PathVariable("id") long id){
+        return appointmentService.getByBloodBank(id);
     }
 
 }
