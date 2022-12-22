@@ -8,6 +8,8 @@ import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.model.Survey;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
+import com.bloodbank.bloodbankapp.utils.MailJetMailer;
+import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
@@ -75,19 +77,20 @@ public class AppointmentService {
         return latest;
     }
 
-    public Appointment schedule(Appointment appointment) {
+    public Appointment schedule(Appointment appointment) throws MailjetException {
         User user = appointment.getUser();
         try {
             Survey survey = surveyService.getByUser(user.getId());
             if(getAllByUser(user.getId()).isEmpty()) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
+                MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
                 return appointmentRepository.save(appointment);
             }
 
             Appointment latest = findLatestUserAppointment(user.getId());
-
             if( appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6)) ) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
+                MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
                 return appointmentRepository.save(appointment);
             }
 

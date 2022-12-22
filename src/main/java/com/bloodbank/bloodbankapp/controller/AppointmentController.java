@@ -3,12 +3,14 @@ package com.bloodbank.bloodbankapp.controller;
 import com.bloodbank.bloodbankapp.dto.AppointmentDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
+import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.AppointmentService;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.UserService;
+import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -58,7 +60,13 @@ public class AppointmentController {
                 .user(user)
                 .build();
 
-        return appointmentService.schedule(appointment) == null ? null : appointment;
+        try {
+            return appointmentService.schedule(appointment) == null ? null : appointment;
+        }
+        catch (MailjetException e) {
+            System.out.println("Mailjet exception, couldn't schedule because of it");
+            return null;
+        }
     }
 
     @CrossOrigin
