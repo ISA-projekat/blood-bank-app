@@ -63,14 +63,29 @@ public class AppointmentService {
         return appointmentRepository.findAllByUserId(userId);
     }
 
+    private Appointment findLatestUserAppointment(Long userId) {
+        List<Appointment> appointments = getAllByUser(userId);
+        Appointment latest = appointments.get(0);
+
+        for(Appointment appointment : appointments)
+            if(latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()))
+                latest = appointment;
+
+        return latest;
+    }
+
     public Appointment schedule(Appointment appointment) {
         User user = appointment.getUser();
         try {
             Survey survey = surveyService.getByUser(user.getId());
-            List<Appointment> appointments = getAllByUser(user.getId());
-            Collections.sort(appointments, (app1, app2) ->  app1.getAppointmentSlot().getDateRange().dateIsAfter(app2.getAppointmentSlot().getDateRange().getEnd()) ? 1 : 0 );
+            if(getAllByUser(user.getId()).isEmpty()) {
+                appointment.getAppointmentSlot().setStatus(TAKEN);
+                return appointmentRepository.save(appointment);
+            }
 
-            if(appointment.getAppointmentSlot().getDateRange().dateIsAfter(appointments.get(0).getAppointmentSlot().getDateRange().getEnd().plusMonths(6))) {
+            Appointment latest = findLatestUserAppointment(user.getId());
+
+            if(appointment.getAppointmentSlot().getDateRange().dateIsBefore(latest.getAppointmentSlot().getDateRange().getStart().plusMonths(6))) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 return appointmentRepository.save(appointment);
             }

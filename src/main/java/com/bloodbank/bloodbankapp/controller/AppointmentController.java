@@ -57,7 +57,7 @@ public class AppointmentController {
                 .user(user)
                 .build();
 
-        return appointmentService.schedule(appointment);
+        return appointmentService.schedule(appointment) == null ? null : appointment;
     }
 
     @CrossOrigin
