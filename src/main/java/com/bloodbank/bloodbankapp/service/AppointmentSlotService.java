@@ -7,11 +7,10 @@ import com.bloodbank.bloodbankapp.model.DateRange;
 import com.bloodbank.bloodbankapp.repository.AppointmentSlotRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,9 +44,8 @@ public class AppointmentSlotService {
     }
 
     public Page<AppointmentSlot> getAllInDateRange(DateRange dateRange, Pageable page) {
-        Date start = Date.from(dateRange.getStart().atZone(ZoneId.systemDefault()).toInstant());
-        Date end = Date.from(dateRange.getEnd().atZone(ZoneId.systemDefault()).toInstant());
-        return repo.getAllInDateRange(start, end, page);
+        List<AppointmentSlot> slots = getAll().stream().filter(slot -> dateRange.rangeIsDuring(slot.getDateRange())).collect(Collectors.toList());
+        return new PageImpl<>(slots, page, slots.size());
     }
 
     public List<AppointmentSlot> getAllByBloodBank(Long bloodBankId) {
