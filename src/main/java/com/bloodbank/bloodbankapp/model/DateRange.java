@@ -1,11 +1,16 @@
 package com.bloodbank.bloodbankapp.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Value;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class DateRange {
     private LocalDateTime start;
     private LocalDateTime end;
