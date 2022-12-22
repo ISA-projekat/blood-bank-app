@@ -33,4 +33,8 @@ public class SurveyController {
         return surveyService.add(survey);
     }
 
+    @GetMapping("/allow-user/{appointmentId}")
+    public boolean allowUser(@PathVariable("appointmentId") Long appointmentId) {
+        return surveyService.allowUser(appointmentId);
+    }
 }

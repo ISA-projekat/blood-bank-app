@@ -2,6 +2,7 @@ package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentDTO;
+import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.model.Appointment;
@@ -32,7 +33,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/user/{id}")
-    public List<Appointment> getAllByUser(@PathVariable("id") Long userId) {
+    public List<AppointmentPreviewDto> getAllByUser(@PathVariable("id") Long userId) {
         return appointmentService.getAllByUser(userId);
     }
 

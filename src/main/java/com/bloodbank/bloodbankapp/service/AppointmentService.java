@@ -1,10 +1,11 @@
 package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
+import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
-import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.mapper.AppointmentCalendarItemMapper;
+import com.bloodbank.bloodbankapp.mapper.AppointmentMapper;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
 
@@ -24,6 +26,8 @@ public class AppointmentService {
     private final BloodBankService bloodBankService;
 
     private final UserService userService;
+
+    private final AppointmentMapper appointmentMapper;
 
     public List<Appointment> getAll() {
         return appointmentRepository.findAll();
@@ -54,8 +58,8 @@ public class AppointmentService {
         }
     }
 
-    public List<Appointment> getAllByUser(Long userId) {
-        return appointmentRepository.findAllByUserId(userId);
+    public List<AppointmentPreviewDto> getAllByUser(Long userId) {
+        return appointmentRepository.findAllByUserId(userId).stream().map(appointmentMapper::appointmentToAppointmentPreviewDto).toList();
     }
 
     public Appointment schedule(Appointment appointment) { return appointmentRepository.save(appointment); }

@@ -40,9 +40,9 @@ public class UserController {
     public User registerAdmin(@Valid @RequestBody RegistrationDto dto) { return userService.registerAdmin(dto); }
 
 
-    @CrossOrigin
+//    @CrossOrigin
     @GetMapping
-    @PreAuthorize("hasRole('SYS_ADMIN')")
+//    @PreAuthorize("hasRole('SYS_ADMIN') or hasRole('BLOOD_BANK_ADMIN')")
     public List<User> getAll() { return userService.getAll(); }
 
 
