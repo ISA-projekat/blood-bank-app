@@ -10,6 +10,7 @@ CREATE TABLE address (
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Gunduliceva', '12');
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23');
 INSERT INTO address (country, city, street, number) VALUES ('Indonesia', 'Jakarta', 'Java', '19');
+INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Milana Savica', '12');
 
 CREATE TABLE blood_bank (
     id bigint not null auto_increment,
@@ -32,15 +33,28 @@ INSERT INTO blood_bank (name, description, rating, start_time, end_time, address
 CREATE TABLE appointment_slot (
     id bigint not null auto_increment,
     date_range varchar(255) not null,
-    blood_bank_id bigint not null,
+    blood_bank_id bigint,
+    status enum('FREE', 'TAKEN') DEFAULT 'FREE',
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
 );
 
-INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1);
-INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T16:51:00.000Z"}', 2);
-INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": "2022-12-25T16:48:00.000Z", "end": "2022-12-25T16:49:00.000Z"}', 1);
-INSERT INTO appointment_slot (date_range, blood_bank_id) VALUES ('{"start": "2022-12-25T16:50:00.000Z", "end": "2022-12-25T16:51:00.000Z"}', 2);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:50:00.000Z", "end": "2022-12-21T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:50:00.000Z", "end": "2022-12-22T17:00:00.000Z"}', 2, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2023-08-25T16:50:00.000Z", "end": "2023-08-25T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-26T16:50:00.000Z", "end": "2022-12-26T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-27T16:50:00.000Z", "end": "2022-12-27T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-28T16:50:00.000Z", "end": "2022-12-28T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-29T16:50:00.000Z", "end": "2022-12-29T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:40:00.000Z", "end": "2022-12-21T16:50:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:00:00.000Z", "end": "2022-12-22T16:10:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-23T16:50:00.000Z", "end": "2022-12-23T17:00:00.000Z"}', 3, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-24T16:50:00.000Z", "end": "2022-12-24T17:00:00.000Z"}', 3, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-25T16:50:00.000Z", "end": "2022-12-25T17:00:00.000Z"}', 3, 'FREE');
 
 CREATE TABLE appointment_details (
     id bigint not null auto_increment,
@@ -86,7 +100,7 @@ CREATE TABLE appointment (
     id bigint not null auto_increment,
     appointment_details_id bigint,
     user_id bigint,
-    appointment_slot_id bigint not null,
+    appointment_slot_id bigint,
     status enum('SCHEDULED', 'CANCELED', 'FINISHED', 'NOT_ALLOWED') DEFAULT 'SCHEDULED',
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (appointment_details_id) REFERENCES appointment_details(id),
@@ -94,10 +108,12 @@ CREATE TABLE appointment (
     CONSTRAINT FOREIGN KEY (appointment_slot_id) REFERENCES appointment_slot(id)
 );
 
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'SCHEDULED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'SCHEDULED');
-INSERT INTO appointment (appointment_slot_id, user_id) VALUES (3, 2);
-INSERT INTO appointment (appointment_slot_id, user_id) VALUES (4, 3);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (5, 11, 'SCHEDULED');
+INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (6, 11, 'SCHEDULED');
+INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (3, 2, 'SCHEDULED');
+
 
 CREATE TABLE survey (
     id bigint not null auto_increment,
@@ -117,7 +133,8 @@ CREATE TABLE survey (
 
 INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (1, '2022-10-30 15:11:11', true, false, false, false, false, false, true, false);
 INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (2, '2022-10-31 15:11:11', true, true, true, true, true, false, true, false);
-INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (3, '2022-10-31 15:11:11', true, false, false, false, false, false, false, false);
+INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (11, '2022-10-31 15:11:11', true, true, true, true, true, false, true, false);
+
 
 CREATE TABLE blood_stock (
     id bigint not null auto_increment,
