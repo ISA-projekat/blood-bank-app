@@ -24,7 +24,7 @@ public interface AppointmentSlotRepository extends JpaRepository<AppointmentSlot
     @Query("SELECT app FROM AppointmentSlot app WHERE (app.bloodBank.id = :bankId) and (app.status = 'FREE')")
     public Page<AppointmentSlot> findAllFree(@Param("bankId") Long bankId, Pageable page);
 
-    @Query("SELECT * FROM Device WHERE create_date BETWEEN :start AND :end")
+    @Query("SELECT app FROM AppointmentSlot WHERE app app.dateRange.start >= :start AND app.dateRange.end <= :end")
     public Page<AppointmentSlot> getAllInDateRange(@Param("start") Date start, @Param("end") Date end, Pageable page);
 
 }
