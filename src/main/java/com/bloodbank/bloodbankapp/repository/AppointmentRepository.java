@@ -8,4 +8,5 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     List<Appointment> findAllByUserId(Long userId);
+    List<Appointment> findAllByAppointmentSlot_BloodBank_Id(Long id);
 }
