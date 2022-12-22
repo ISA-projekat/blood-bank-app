@@ -117,4 +117,13 @@ public class AppointmentService {
     public Appointment get(Long id){
         return appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
     }
+
+    public List<Appointment> findAllAppointmentsByStatusByUserId(String status, Long userId) {
+        return appointmentRepository.findAllAppointmentsByStatusByUserId(status, userId);
+    }
+
+    public List<Appointment> findAllAppointmentsByStatusByBloodBankId(String status, Long bloodBankId) {
+        return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
+    }
+
 }

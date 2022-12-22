@@ -84,4 +84,14 @@ public class AppointmentController {
         return appointmentService.getByBloodBank(id);
     }
 
+    @GetMapping("/user/{id}/{status}")
+    public List<Appointment> findAllAppointmentsByStatusByUserId(@PathVariable("status") String status, @PathVariable("id") Long userId) {
+        return appointmentRepository.findAllAppointmentsByStatusByUserId(status, userId);
+    }
+
+    @GetMapping("/blood-bank/{id}/{status}")
+    public List<Appointment> findAllAppointmentsByStatusByBloodBankId(@PathVariable("status") String status, @PathVariable("id") Long bloodBankId) {
+        return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
+    }
+
 }
