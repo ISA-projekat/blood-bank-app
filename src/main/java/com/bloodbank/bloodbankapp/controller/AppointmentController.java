@@ -1,6 +1,8 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentDTO;
+import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
@@ -36,7 +38,7 @@ public class AppointmentController {
 
     @GetMapping("/user/{id}")
     @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
-    public List<Appointment> getAllByUser(@PathVariable("id") Long userId) {
+    public List<AppointmentPreviewDto> getAllByUser(@PathVariable("id") Long userId) {
         return appointmentService.getAllByUser(userId);
     }
 
@@ -93,6 +95,12 @@ public class AppointmentController {
     @GetMapping("/blood-bank/{id}/{status}")
     public List<Appointment> findAllAppointmentsByStatusByBloodBankId(@PathVariable("status") AppointmentStatus status, @PathVariable("id") Long bloodBankId) {
         return appointmentService.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
+    }
+
+    @CrossOrigin
+    @GetMapping("/by-blood-bank/{id}")
+    public List<AppointmentCalendarItemDTO> findAllByBloodBank(@PathVariable("id") Long bloodBankId){
+        return appointmentService.findAllByBloodBank(bloodBankId);
     }
 
 }

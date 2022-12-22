@@ -11,6 +11,7 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
     List<Appointment> findAllByUserId(Long userId);
+
     List<Appointment> findAllByAppointmentSlotBloodBankId(long bloodBankId);
 
     @Query("SELECT app FROM Appointment app WHERE app.status = :status and app.user.id = :id")
@@ -18,5 +19,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT app FROM Appointment app WHERE app.status = :status and app.appointmentSlot.bloodBank.id = :id")
     List<Appointment> findAllAppointmentsByStatusByBloodBankId(@Param("status") AppointmentStatus status, @Param("id") Long id);
+
+    List<Appointment> findAllByAppointmentSlot_BloodBank_Id(Long id);
 
 }

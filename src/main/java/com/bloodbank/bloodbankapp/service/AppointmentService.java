@@ -1,11 +1,16 @@
 package com.bloodbank.bloodbankapp.service;
 
+import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
+import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.CancelationFailedException;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.exception.ScheduleFailedException;
+import com.bloodbank.bloodbankapp.exception.NotFoundException;
+import com.bloodbank.bloodbankapp.mapper.AppointmentCalendarItemMapper;
+import com.bloodbank.bloodbankapp.mapper.AppointmentMapper;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.model.Survey;
 import com.bloodbank.bloodbankapp.model.User;
@@ -19,7 +24,9 @@ import com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
 import static com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus.*;
@@ -35,6 +42,8 @@ public class AppointmentService {
     private final UserService userService;
 
     private final SurveyService surveyService;
+
+    private final AppointmentMapper appointmentMapper;
 
     public List<Appointment> getAll() {
         return appointmentRepository.findAll();
@@ -65,8 +74,8 @@ public class AppointmentService {
         }
     }
 
-    public List<Appointment> getAllByUser(Long userId) {
-        return appointmentRepository.findAllByUserId(userId);
+    public List<AppointmentPreviewDto> getAllByUser(Long userId) {
+        return appointmentRepository.findAllByUserId(userId).stream().map(appointmentMapper::appointmentToAppointmentPreviewDto).toList();
     }
 
     private Appointment findLatestUserAppointment(Long userId) {
@@ -133,6 +142,15 @@ public class AppointmentService {
 
     public List<Appointment> findAllAppointmentsByStatusByBloodBankId(AppointmentStatus status, Long bloodBankId) {
         return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
+
+    public List<AppointmentCalendarItemDTO> findAllByBloodBank(Long id){
+        List<Appointment> appointments = appointmentRepository.findAllByAppointmentSlot_BloodBank_Id(id);
+        List<AppointmentCalendarItemDTO> appointmentDtos = new ArrayList<>();
+        for(Appointment a: appointments){
+            appointmentDtos.add(AppointmentCalendarItemMapper.DtoToEntity(a));
+        }
+        return appointmentDtos;
+
     }
 
 }

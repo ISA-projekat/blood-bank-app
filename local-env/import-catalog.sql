@@ -114,6 +114,7 @@ INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (5, 11, 'S
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (6, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (3, 2, 'SCHEDULED');
 
+
 CREATE TABLE survey (
     id bigint not null auto_increment,
     user_id bigint,
@@ -133,6 +134,7 @@ CREATE TABLE survey (
 INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (1, '2022-10-30 15:11:11', true, false, false, false, false, false, true, false);
 INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (2, '2022-10-31 15:11:11', true, true, true, true, true, false, true, false);
 INSERT INTO survey (user_id, survey_date, weight_over50kg, common_cold, skin_diseases, blood_pressure_problems, antibiotics, menstrual_cycle, dental_intervention, tattoo_piercing) VALUES (11, '2022-10-31 15:11:11', true, true, true, true, true, false, true, false);
+
 
 CREATE TABLE blood_stock (
     id bigint not null auto_increment,

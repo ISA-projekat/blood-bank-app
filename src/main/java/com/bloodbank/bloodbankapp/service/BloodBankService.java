@@ -126,4 +126,10 @@ public class BloodBankService {
         bloodBank.setEquipmentSets(bloodBank.getEquipmentSets() - equipmentSetsUsed);
         bloodBank.updateBloodStock(bloodStock);
     }
+
+    public Long getBloodBankIdByAdminId(Long adminId){
+
+        User admin =  userRepository.getById(adminId);
+        return admin.getBloodBankId();
+    }
 }

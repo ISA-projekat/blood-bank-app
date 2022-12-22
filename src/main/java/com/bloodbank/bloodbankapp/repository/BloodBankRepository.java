@@ -25,5 +25,4 @@ public interface BloodBankRepository extends JpaRepository<BloodBank, Long> {
 
 
 
-
 }

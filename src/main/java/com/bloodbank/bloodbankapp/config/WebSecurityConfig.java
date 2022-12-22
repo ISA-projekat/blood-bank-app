@@ -60,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/bloodbank/search").permitAll()
                     .antMatchers("/bloodbank/page").permitAll()
                     .antMatchers("/user/activate").permitAll()
-                    .antMatchers("/appointment").permitAll()
+
                 // all other requests need to be authenticated
                 .anyRequest().authenticated()
                 .and()
