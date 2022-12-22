@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
@@ -59,6 +60,12 @@ public class AppointmentController {
     @DeleteMapping("/cancel")
     public Appointment cancelAppointment(@RequestBody Appointment appointment) {
         return appointmentService.cancel(appointment);
+    }
+
+    @CrossOrigin
+    @GetMapping("/by-blood-bank/{id}")
+    public List<AppointmentCalendarItemDTO> findAllByBloodBank(@PathVariable("id") Long bloodBankId){
+        return appointmentService.findAllByBloodBank(bloodBankId);
     }
 
 }

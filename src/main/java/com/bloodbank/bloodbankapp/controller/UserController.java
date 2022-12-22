@@ -42,7 +42,7 @@ public class UserController {
 
     @CrossOrigin
     @GetMapping
-    //@PreAuthorize("hasRole('SYS_ADMIN')")
+    @PreAuthorize("hasRole('SYS_ADMIN')")
     public List<User> getAll() { return userService.getAll(); }
 
 
@@ -78,5 +78,5 @@ public class UserController {
     public User activateAccount(@RequestBody String email){
         return userService.activate(email);
     }
-    
+
 }

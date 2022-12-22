@@ -92,6 +92,7 @@ public class UserService {
 
         User newUser = UserMapper.DtoToEntity(dto);
         newUser.setRole(Role.BLOOD_BANK_ADMIN);
+        newUser.setActive(true);
 
         addressRepository.save(newUser.getAddress());
         userRepository.save(newUser);
