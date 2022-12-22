@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,9 +44,10 @@ public class AppointmentSlotService {
         return slot;
     }
 
-    public List<AppointmentSlot> getAllInDateRange(DateRange dateRange) {
-        List<AppointmentSlot> slots = getAll();
-        return slots.stream().filter(slot -> dateRange.rangeIsDuring(slot.getDateRange())).collect(Collectors.toList());
+    public Page<AppointmentSlot> getAllInDateRange(DateRange dateRange, Pageable page) {
+        Date start = Date.from(dateRange.getStart().atZone(ZoneId.systemDefault()).toInstant());
+        Date end = Date.from(dateRange.getEnd().atZone(ZoneId.systemDefault()).toInstant());
+        return repo.getAllInDateRange(start, end, page);
     }
 
     public List<AppointmentSlot> getAllByBloodBank(Long bloodBankId) {
