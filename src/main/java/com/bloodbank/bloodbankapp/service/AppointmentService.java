@@ -3,7 +3,9 @@ package com.bloodbank.bloodbankapp.service;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
+import com.bloodbank.bloodbankapp.exception.CancelationFailedException;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
+import com.bloodbank.bloodbankapp.exception.ScheduleFailedException;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.model.Survey;
 import com.bloodbank.bloodbankapp.model.User;
@@ -15,6 +17,7 @@ import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -81,6 +84,7 @@ public class AppointmentService {
         User user = appointment.getUser();
         try {
             Survey survey = surveyService.getByUser(user.getId());
+
             if(getAllByUser(user.getId()).isEmpty()) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
@@ -94,15 +98,20 @@ public class AppointmentService {
                 return appointmentRepository.save(appointment);
             }
 
-            return null;
+            throw new ScheduleFailedException("Last appointment was less than 6 months ago");
         }
         catch(NotFoundException e) {
-            return null;
+            throw new ScheduleFailedException("Survey is not found");
         }
     }
 
     public Appointment cancel(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
+
+        if(appointment.getAppointmentSlot().getDateRange().dateIsAfter(LocalDateTime.now().plusDays(1))){
+            throw new CancelationFailedException("You cannot cancel an appointment less than 24h before start");
+        }
+
         appointment.setStatus(CANCELED);
         appointment.setAppointmentSlot(null);
         userService.penalise(appointment.getUser());
