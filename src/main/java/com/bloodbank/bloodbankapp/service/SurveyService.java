@@ -2,6 +2,7 @@ package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.model.Survey;
+import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import com.bloodbank.bloodbankapp.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,8 @@ import java.util.List;
 public class SurveyService {
 
     private final SurveyRepository surveyRepository;
+
+    private final AppointmentRepository appointmentRepository;
 
     public Survey getByUser(Long id){
         Survey survey = surveyRepository.findByUserId(id);
@@ -49,5 +52,18 @@ public class SurveyService {
 
     public List<Survey> getAll(){
         return surveyRepository.findAll();
+    }
+
+    public boolean allowUser(Long appointmentId) {
+        var appointment = appointmentRepository.findById(appointmentId).orElseThrow(() -> new NotFoundException("Appointment not found"));
+        var survey = surveyRepository.findByUserId(appointment.getUser().getId());
+        return survey.getWeightOver50kg()
+                && !survey.getCommonCold()
+                && !survey.getSkinDiseases()
+                && !survey.getBloodPressureProblems()
+                && !survey.getAntibiotics()
+                && !survey.getMenstrualCycle()
+                && !survey.getDentalIntervention()
+                && !survey.getTattooPiercing();
     }
 }
