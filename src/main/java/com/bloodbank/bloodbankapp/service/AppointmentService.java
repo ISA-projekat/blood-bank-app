@@ -5,11 +5,14 @@ import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.model.Appointment;
+import com.bloodbank.bloodbankapp.model.Survey;
+import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
@@ -24,6 +27,8 @@ public class AppointmentService {
     private final BloodBankService bloodBankService;
 
     private final UserService userService;
+
+    private final SurveyService surveyService;
 
     public List<Appointment> getAll() {
         return appointmentRepository.findAll();
@@ -59,8 +64,23 @@ public class AppointmentService {
     }
 
     public Appointment schedule(Appointment appointment) {
-        appointment.getAppointmentSlot().setStatus(TAKEN);
-        return appointmentRepository.save(appointment); }
+        User user = appointment.getUser();
+        try {
+            Survey survey = surveyService.getByUser(user.getId());
+            List<Appointment> appointments = getAllByUser(user.getId());
+            Collections.sort(appointments, (app1, app2) ->  app1.getAppointmentSlot().getDateRange().dateIsAfter(app2.getAppointmentSlot().getDateRange().getEnd()) ? 1 : 0 );
+
+            if(appointment.getAppointmentSlot().getDateRange().dateIsAfter(appointments.get(0).getAppointmentSlot().getDateRange().getEnd().plusMonths(6))) {
+                appointment.getAppointmentSlot().setStatus(TAKEN);
+                return appointmentRepository.save(appointment);
+            }
+
+            return null;
+        }
+        catch(NotFoundException e) {
+            return null;
+        }
+    }
 
     public Appointment cancel(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
