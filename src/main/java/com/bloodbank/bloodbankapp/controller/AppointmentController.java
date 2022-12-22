@@ -63,7 +63,6 @@ public class AppointmentController {
                 .build();
 
         try {
-            appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
             return appointmentService.schedule(appointment) == null ? null : appointment;
         }
         catch (MailjetException e) {
