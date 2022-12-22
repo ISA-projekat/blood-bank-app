@@ -30,6 +30,7 @@ public class AppointmentSlotService {
 
     public AppointmentSlot createAppointmentSlot(AppointmentSlot appointmentSlot) {
         if(!DateRange.isValid(appointmentSlot.getDateRange())) throw new AppointmentSlotException("Date range is invalid");
+        appointmentSlot.setStatus(AppointmentSlotStatus.FREE);
         repo.save(appointmentSlot);
         return appointmentSlot;
     }
