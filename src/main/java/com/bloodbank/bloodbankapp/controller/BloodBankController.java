@@ -72,4 +72,11 @@ public class BloodBankController {
     public Page<BloodBank> getPage(Pageable page){
         return bloodBankService.getPage(page);
     }
+
+    @CrossOrigin
+    @GetMapping("/by-admin/{id}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
+    public Long getBloodBankIdByAdminId(@PathVariable("id") Long adminId){
+        return bloodBankService.getBloodBankIdByAdminId(adminId);
+    }
 }

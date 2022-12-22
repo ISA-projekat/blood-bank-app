@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/user/activate").permitAll()
                     .antMatchers("/admin/calendar").permitAll()
                     .antMatchers("/admin/register").permitAll()
+                    .antMatchers("/bloodbank/by-admin/{id}").permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated()
                 .and()
