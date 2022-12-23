@@ -75,6 +75,7 @@ CREATE TABLE user (
     phone_number varchar(255),
     occupation varchar(255),
     active Boolean,
+    first_time Boolean,
     penalties int DEFAULT 0,
     gender enum('MALE', 'FEMALE'),
     role enum('SYS_ADMIN', 'BLOOD_BANK_ADMIN', 'REGISTERED', 'UNREGISTERED'),
@@ -84,17 +85,17 @@ CREATE TABLE user (
     CONSTRAINT FOREIGN KEY (address_id) REFERENCES address(id)
 );
 
-INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id, active, role) VALUES ('user1@gmail.com', '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', 'Name1', 'LastName1', 2, 3, true, 'SYS_ADMIN');
-INSERT INTO user (email, first_name, last_name, address_id) VALUES ('user2@gmail.com', 'Name2', 'LastName2', 2);
-INSERT INTO user (email, first_name, last_name, blood_bank_id) VALUES ('user3@gmail.com', 'Name2', 'LastName3', 1);
-INSERT INTO user (email, password, first_name, last_name, active, role, blood_bank_id) VALUES ('administrator@gmail.com','$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', "Marko","Markovic",true, 'BLOOD_BANK_ADMIN', 2);
-INSERT INTO user (email, first_name, last_name,role) VALUES ('jovan@gmail.com',"Jovan","Jovanovic",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, first_name, last_name,role) VALUES ('uros@gmail.com',"Uros","Urosevic",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, first_name, last_name,role) VALUES ('djomla@gmail.com',"Djomla","Djomlic",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, first_name, last_name,role) VALUES ('joca@gmail.com',"Jovan","Ivanovic",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, first_name, last_name,role) VALUES ('dule@gmail.com',"Dusan","Urosevic",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, first_name, last_name,role) VALUES ('markos@gmail.com',"Marko","Silva",'BLOOD_BANK_ADMIN');
-INSERT INTO user (email, password, first_name, last_name, address_id, active, role, jmbg, phone_number, occupation, penalties, gender) VALUES ("milos.gravara@gmail.com", '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', "Milos", "Gravara", 4, true, 'REGISTERED', '2001000800027', '+381637437123', 'Student', 0, 'MALE');
+INSERT INTO user (email, password, first_name, last_name, blood_bank_id, address_id, active, role,first_time) VALUES ('user1@gmail.com', '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', 'Name1', 'LastName1', 2, 3, true, 'SYS_ADMIN',false);
+INSERT INTO user (email, first_name, last_name, address_id,first_time) VALUES ('user2@gmail.com', 'Name2', 'LastName2', 2,false);
+INSERT INTO user (email, first_name, last_name, blood_bank_id,first_time) VALUES ('user3@gmail.com', 'Name2', 'LastName3', 1,false);
+INSERT INTO user (email, password, first_name, last_name, active, role, blood_bank_id,first_time) VALUES ('administrator@gmail.com','$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', "Marko","Markovic",true, 'BLOOD_BANK_ADMIN', 2,false);
+INSERT INTO user (email, first_name, last_name,role,first_time) VALUES ('jovan@gmail.com',"Jovan","Jovanovic",'BLOOD_BANK_ADMIN',false);
+INSERT INTO user (email, first_name, last_name,role,first_time) VALUES ('uros@gmail.com',"Uros","Urosevic",'BLOOD_BANK_ADMIN',false);
+INSERT INTO user (email, first_name, last_name,role,first_time) VALUES ('djomla@gmail.com',"Djomla","Djomlic",'BLOOD_BANK_ADMIN',false);
+INSERT INTO user (email, first_name, last_name,role,first_time) VALUES ('joca@gmail.com',"Jovan","Ivanovic",'BLOOD_BANK_ADMIN',false);
+INSERT INTO user (email, first_name, last_name,role,first_time) VALUES ('dule@gmail.com',"Dusan","Urosevic",'BLOOD_BANK_ADMIN',false);
+INSERT INTO user (email, first_name, last_name,role,first_time) VALUES ('markos@gmail.com',"Marko","Silva",'BLOOD_BANK_ADMIN',false);
+INSERT INTO user (email, password, first_name, last_name, address_id, active, role, jmbg, phone_number, occupation, penalties, gender,first_time) VALUES ("milos.gravara@gmail.com", '$2a$10$y8lwQhcmGz5WQOGpNcFS9OhpZrjEWQA6CUY5BIZtDjM1WbXJiBPra', "Milos", "Gravara", 4, true, 'REGISTERED', '2001000800027', '+381637437123', 'Student', 0, 'MALE',false);
 
 CREATE TABLE appointment (
     id bigint not null auto_increment,

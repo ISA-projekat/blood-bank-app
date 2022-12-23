@@ -42,7 +42,9 @@ public class JwtAuthenticationController {
 
         final long id = userDetailsService.getUserId(userDetails.getUsername());
 
-        final String token = jwtTokenUtil.generateToken(userDetails, id);
+        final boolean firstTime = userDetailsService.getUserFirstTime(userDetails.getUsername());
+
+        final String token = jwtTokenUtil.generateToken(userDetails, id, firstTime);
 
         return ResponseEntity.ok(new JwtResponse(token, jwtTokenUtil.getExpiresIn()));
     }

@@ -1,17 +1,17 @@
 package com.bloodbank.bloodbankapp.controller;
 
+import com.bloodbank.bloodbankapp.dto.ChangePasswordDTO;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.UserService;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @CrossOrigin
@@ -79,10 +79,19 @@ public class UserController {
         return userService.activate(email);
     }
 
-    @GetMapping("/check-if-first-login")
+    @GetMapping("/check-if-first-login-completed/{email}")
     @CrossOrigin
-    public Boolean CheckIfFirstLoginCompleted(Long id){
-        return userService.IsFirstTimeLoginCompleted(id);
+    public Boolean CheckIfFirstLoginCompleted(@PathVariable("email") String email){
+        return userService.IsFirstTimeLoginCompleted(email);
     }
 
+    @CrossOrigin
+    @PostMapping("/admin/change-password")
+    public Boolean ChangeAdminPassword(@RequestBody ChangePasswordDTO dto){
+        if(!dto.getNewPassword().equals(dto.getConfirmPassword())){
+            throw new UserException("Passwords are not matching");
+        }
+        return userService.ChangeAdminPassword(dto);
+
+    }
 }

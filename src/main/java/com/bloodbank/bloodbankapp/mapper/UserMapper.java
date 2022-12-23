@@ -28,7 +28,7 @@ public class UserMapper {
                 .active(false)
                 .penalties(0)
                 .bloodBankId(null)
-                .firstTimeLoginCompleted(false)
+                .firstTime(false)
                 .build();
     }
 }

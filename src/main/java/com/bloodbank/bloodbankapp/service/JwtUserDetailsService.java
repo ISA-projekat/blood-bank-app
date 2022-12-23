@@ -36,4 +36,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         var user = userRepository.findByEmail(email);
         return user.getId();
     }
+
+    public boolean getUserFirstTime(String email) {
+        var user = userRepository.findByEmail(email);
+        return user.getFirstTime();
+    }
 }

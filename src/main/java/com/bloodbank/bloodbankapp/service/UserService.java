@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.service;
 
+import com.bloodbank.bloodbankapp.dto.ChangePasswordDTO;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
 import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
@@ -94,7 +95,7 @@ public class UserService {
         newUser.setRole(Role.BLOOD_BANK_ADMIN);
         newUser.setActive(true);
         newUser.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
-        newUser.setFirstTimeLoginCompleted(false);
+        newUser.setFirstTime(false);
 
         addressRepository.save(newUser.getAddress());
         userRepository.save(newUser);
@@ -112,11 +113,24 @@ public class UserService {
         return user;
     }
 
-    public Boolean IsFirstTimeLoginCompleted(Long userId){
-        User user = userRepository.getById(userId);
-        if(user.getFirstTimeLoginCompleted() == false){
+    public Boolean IsFirstTimeLoginCompleted(String email){
+        User user = userRepository.findByEmail(email);
+        if(user.getFirstTime() == false && user.getRole() == Role.BLOOD_BANK_ADMIN){
             return false;
         }
         return true;
+    }
+    public Boolean ChangeAdminPassword(ChangePasswordDTO dto){
+
+        User admin = userRepository.getById(dto.getAdminId());
+        if(admin == null){
+            throw new UserException("User does not exist");
+        }
+
+        admin.setFirstTime(true);
+        admin.setPassword(new BCryptPasswordEncoder().encode(dto.getNewPassword()));
+        userRepository.save(admin);
+        return true;
+
     }
 }
