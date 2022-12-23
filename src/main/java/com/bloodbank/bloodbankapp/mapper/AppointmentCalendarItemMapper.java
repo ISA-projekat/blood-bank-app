@@ -12,6 +12,7 @@ public class AppointmentCalendarItemMapper {
                 .lastName(appointment.getUser().getLastName())
                 .startDate(appointment.getAppointmentSlot().getDateRange().getStart())
                 .endDate(appointment.getAppointmentSlot().getDateRange().getEnd())
+                .id(appointment.getId())
                 .build();
 
     }

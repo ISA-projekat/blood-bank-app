@@ -29,6 +29,6 @@ public class AppointmentCalendarItemDTO {
     @NotBlank
     LocalDateTime endDate;
 
-
+    Long id;
 
 }
