@@ -83,4 +83,8 @@ public class AppointmentSlotController {
         return service.getFreePageByBloodBank(id, page);
     }
 
+    @CrossOrigin
+    @GetMapping("/page")
+    public Page<AppointmentSlot> getPage(Pageable page) { return service.getPage(page); }
+
 }
