@@ -1,17 +1,21 @@
 package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.dto.AppointmentSlotDTO;
+import com.bloodbank.bloodbankapp.dto.SearchDTO;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.DateRange;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin
@@ -49,7 +53,12 @@ public class AppointmentSlotController {
 
     @CrossOrigin
     @GetMapping("/available-slots")
-    public Page<AppointmentSlot> availableSlots(@RequestBody DateRange dateRange, Pageable page) { return service.getAllInDateRange(dateRange, page); }
+    public Page<AppointmentSlot> availableSlots(String start, String end, Pageable page) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        LocalDateTime startDate = LocalDateTime.parse(start, formatter);
+        LocalDateTime endDate = LocalDateTime.parse(end, formatter);
+        return service.getAllInDateRange(new DateRange(startDate,endDate), page);
+    }
 
     @CrossOrigin
     @GetMapping("/blood-bank/{id}")

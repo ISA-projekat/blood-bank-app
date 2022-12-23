@@ -88,9 +88,12 @@ public class AppointmentService {
         List<Appointment> appointments = getAllByUserApp(userId);
         Appointment latest = appointments.get(0);
 
-        for(Appointment appointment : appointments)
-            if(latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()) && (appointment.getStatus() == SCHEDULED || appointment.getStatus() == FINISHED))
+        for(Appointment appointment : appointments) {
+            if (appointment.getStatus() == CANCELED) continue;
+
+            if (latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()) && (appointment.getStatus() == SCHEDULED || appointment.getStatus() == FINISHED))
                 latest = appointment;
+            }
 
         return latest;
     }
