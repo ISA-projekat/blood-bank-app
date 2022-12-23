@@ -49,7 +49,7 @@ public class AppointmentSlotController {
 
     @CrossOrigin
     @GetMapping("/available-slots")
-    public List<AppointmentSlot> availableSlots(@RequestBody DateRange dateRange) { return service.getAllInDateRange(dateRange); }
+    public Page<AppointmentSlot> availableSlots(@RequestBody DateRange dateRange, Pageable page) { return service.getAllInDateRange(dateRange, page); }
 
     @CrossOrigin
     @GetMapping("/blood-bank/{id}")
