@@ -81,4 +81,7 @@ public class AppointmentSlotService {
         return repo.findAllFree(id, page);
     }
 
+    public Page<AppointmentSlot> getPage(Pageable page) {
+        return repo.findAll(page);
+    }
 }
