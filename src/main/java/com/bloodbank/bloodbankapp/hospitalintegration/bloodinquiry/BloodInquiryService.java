@@ -12,32 +12,16 @@ public class BloodInquiryService {
 
     private final BloodStockService bloodStockService;
 
-    private RhFactor parseRhFactor(String bloodType) {
-        String rhFactor = "Minus";
-        if(!bloodType.contains(rhFactor)) { rhFactor = "Plus"; }
-
-        return RhFactor.valueOf(rhFactor);
-    }
-
-    private BloodType parseType(String bloodType) {
-        String rhFactor = "Minus";
-        if(!bloodType.contains(rhFactor)) { rhFactor = "Plus"; }
-
-        String type = bloodType.replace(rhFactor, "");
-
-        return BloodType.valueOf(type);
-    }
-
     public boolean hasBloodType(String bloodType) {
-        RhFactor rhFactor = parseRhFactor(bloodType);
-        BloodType type = parseType(bloodType);
+        RhFactor rhFactor = bloodStockService.parseRhFactor(bloodType);
+        BloodType type = bloodStockService.parseType(bloodType);
 
         return !bloodStockService.findAllByTypeAndRhFactor(type, rhFactor).isEmpty();
     }
 
     public boolean hasBloodTypeAmount(String bloodType, int amount) {
-        RhFactor rhFactor = parseRhFactor(bloodType);
-        BloodType type = parseType(bloodType);
+        RhFactor rhFactor = bloodStockService.parseRhFactor(bloodType);
+        BloodType type = bloodStockService.parseType(bloodType);
 
         return !bloodStockService.findAllByTypeAndRhFactorAndAmount(type, rhFactor, amount).isEmpty();
     }
