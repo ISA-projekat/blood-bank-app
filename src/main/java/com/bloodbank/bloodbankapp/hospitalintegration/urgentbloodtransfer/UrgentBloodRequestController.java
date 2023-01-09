@@ -14,8 +14,6 @@ public class UrgentBloodRequestController {
     @CrossOrigin
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public UrgentBloodResponse UrgentBloodRequest(@RequestBody UrgentBloodRequest request){
-        // Takes an urgent blood request sent from the hospital side and sends the response for whether the blood bank has or doesn't have blood
-
-        return new UrgentBloodResponse(service.hasBlood());
+        return new UrgentBloodResponse(service.hasBlood(request.BloodType, request.Amount));
     }
 }

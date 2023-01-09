@@ -6,8 +6,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class BloodInquiryService {
-    // fill with what you need
-
     public boolean hasBloodType(String bloodType) {
         return true;
     }
