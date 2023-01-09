@@ -14,15 +14,11 @@ public class BloodInquiryController {
 
     @GetMapping("/has-blood-type/{bloodType}")
     public ResponseEntity checkIfBloodTypeExists(@RequestHeader HttpHeaders http, @PathVariable String bloodType) {
-        // Used to check whether the blood bank has a specific blood type
-
         return ResponseEntity.ok(service.hasBloodType(bloodType));
     }
 
     @GetMapping("/has-amount-of/{bloodType}/{amount}")
-    public ResponseEntity<Boolean> checkBloodTypeAmount(@PathVariable String bloodType, @PathVariable double amount) {
-        // Used to check whether the blood bank has a specific amount of a specific blood type
-
+    public ResponseEntity<Boolean> checkBloodTypeAmount(@PathVariable String bloodType, @PathVariable int amount) {
         return ResponseEntity.ok(service.hasBloodTypeAmount(bloodType, amount));
     }
 }
