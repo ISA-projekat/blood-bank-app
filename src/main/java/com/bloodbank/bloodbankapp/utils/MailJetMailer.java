@@ -1,16 +1,32 @@
 package com.bloodbank.bloodbankapp.utils;
 
+import com.google.zxing.WriterException;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
 import com.mailjet.client.MailjetResponse;
 import com.mailjet.client.resource.Email;
 
+import java.io.File;
+import java.io.IOException;
+
 public class MailJetMailer {
 
     private final static String PublicMailjetKey = "6cdf2011e792898a6181e4e0d8c93b0d";
     private final static String PrivateMailjetKey = "188cd0c4f83511584789aaa4804d6d35";
     public static void SendScheduleAppointmentMail(String recipient) throws MailjetException {
+        String imagePath = "static/confirmationQR.png";
+
+        try {
+            if(!(new File(imagePath).exists())) QRCodeGenerator.generateQRImage();
+        }
+        catch (WriterException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         String template = "<mjml>" +
                 "<mj-body>" +
@@ -19,6 +35,7 @@ public class MailJetMailer {
                 "<mj-text font-size=\"16px\" align=\"left\">" +
                 "<p>You have successfully scheduled your appointment! </p>" +
                 "</mj-text>" +
+                "<img src='" + imagePath + "' width='200' height='200'>/" +
                 "</mj-column>" +
                 "</mj-section>" +
                 "</mj-body>" +
