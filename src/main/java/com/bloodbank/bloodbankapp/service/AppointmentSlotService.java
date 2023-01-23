@@ -33,7 +33,13 @@ public class AppointmentSlotService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public AppointmentSlot createAppointmentSlot(AppointmentSlot appointmentSlot) {
+        List<AppointmentSlot> appointmentSlots = getAll();
         if(!DateRange.isValid(appointmentSlot.getDateRange())) throw new AppointmentSlotException("Date range is invalid");
+
+        for(AppointmentSlot slot : appointmentSlots) {
+            if(slot.getDateRange().rangeIsDuring(appointmentSlot.getDateRange())) throw new AppointmentSlotException("Appointment slot during an already existing one");
+        }
+
         appointmentSlot.setStatus(AppointmentSlotStatus.FREE);
         repo.save(appointmentSlot);
         return appointmentSlot;
