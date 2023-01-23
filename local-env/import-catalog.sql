@@ -158,7 +158,9 @@ CREATE TABLE monthly_blood_transfer (
     type enum('A', 'B', 'AB', 'O'),
     rh_factor enum('PLUS', 'MINUS'),
     quantity float,
-    day int,
-    month int,
+    _day int,
+    _month int,
     PRIMARY KEY(id),
 );
+
+INSERT INTO monthly_blood_transfer (blood_bank_mq_name, type, rh_factor, quantity, _day, _month) VALUES ("care connect", "A", "PLUS", 10, 29, 1)
