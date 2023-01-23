@@ -5,9 +5,7 @@ import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
-import com.bloodbank.bloodbankapp.exception.CancelationFailedException;
-import com.bloodbank.bloodbankapp.exception.NotFoundException;
-import com.bloodbank.bloodbankapp.exception.ScheduleFailedException;
+import com.bloodbank.bloodbankapp.exception.*;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.mapper.AppointmentCalendarItemMapper;
 import com.bloodbank.bloodbankapp.mapper.AppointmentMapper;
@@ -55,6 +53,9 @@ public class AppointmentService {
 
     public void review(AppointmentReviewDto appointmentReviewDto) {
         var appointment = appointmentRepository.findById(appointmentReviewDto.getId()).orElseThrow(() -> new NotFoundException("Appointment not found"));
+
+        if(!appointment.getAppointmentSlot().getDateRange().dateIsDuring(LocalDateTime.now())) throw new AppointmentSlotException("Appointment is either before or after current time");
+
         if (!appointment.getStatus().equals(SCHEDULED)) {
             throw new NotFoundException("Appointment has already been processed");
         }
