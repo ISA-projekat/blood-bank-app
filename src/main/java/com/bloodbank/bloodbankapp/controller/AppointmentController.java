@@ -43,7 +43,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/review")
-    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
+//    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
     public void review(@RequestBody AppointmentReviewDto appointmentReviewDto) {
         appointmentService.review(appointmentReviewDto);
     }
