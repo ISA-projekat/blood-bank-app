@@ -1,5 +1,7 @@
 package com.bloodbank.bloodbankapp.config;
 
+import net.devh.boot.grpc.server.security.authentication.BasicGrpcAuthenticationReader;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,6 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //    public PasswordEncoder passwordEncoder() {
 //        return new BCryptPasswordEncoder();
 //    }
+
+    @Bean
+    GrpcAuthenticationReader authenticationReader() {
+        return new BasicGrpcAuthenticationReader();
+    }
 
     @Bean
     @Override

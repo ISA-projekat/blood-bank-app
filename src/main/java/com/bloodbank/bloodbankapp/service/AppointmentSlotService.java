@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +32,15 @@ public class AppointmentSlotService {
         return appointmentSlots;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public AppointmentSlot createAppointmentSlot(AppointmentSlot appointmentSlot) {
         if(!DateRange.isValid(appointmentSlot.getDateRange())) throw new AppointmentSlotException("Date range is invalid");
+
+        List<AppointmentSlot> appointmentSlots = getAll();
+        for(AppointmentSlot slot : appointmentSlots) {
+            if(slot.getDateRange().rangeIsDuring(appointmentSlot.getDateRange())) throw new AppointmentSlotException("Appointment slot during an already existing one");
+        }
+
         appointmentSlot.setStatus(AppointmentSlotStatus.FREE);
         repo.save(appointmentSlot);
         return appointmentSlot;

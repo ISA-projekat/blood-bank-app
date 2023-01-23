@@ -5,9 +5,7 @@ import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
-import com.bloodbank.bloodbankapp.exception.CancelationFailedException;
-import com.bloodbank.bloodbankapp.exception.NotFoundException;
-import com.bloodbank.bloodbankapp.exception.ScheduleFailedException;
+import com.bloodbank.bloodbankapp.exception.*;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.mapper.AppointmentCalendarItemMapper;
 import com.bloodbank.bloodbankapp.mapper.AppointmentMapper;
@@ -21,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -53,6 +53,9 @@ public class AppointmentService {
 
     public void review(AppointmentReviewDto appointmentReviewDto) {
         var appointment = appointmentRepository.findById(appointmentReviewDto.getId()).orElseThrow(() -> new NotFoundException("Appointment not found"));
+
+        if(!appointment.getAppointmentSlot().getDateRange().dateIsDuring(LocalDateTime.now())) throw new AppointmentSlotException("Appointment is either before or after current time");
+
         if (!appointment.getStatus().equals(SCHEDULED)) {
             throw new NotFoundException("Appointment has already been processed");
         }
@@ -98,6 +101,7 @@ public class AppointmentService {
         return latest;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Appointment schedule(Appointment appointment) throws MailjetException {
         User user = appointment.getUser();
         try {
