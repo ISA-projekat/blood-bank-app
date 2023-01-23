@@ -160,7 +160,8 @@ CREATE TABLE monthly_blood_transfer (
     quantity float,
     _day int,
     _month int,
+    warned Boolean,
     PRIMARY KEY(id),
 );
 
-INSERT INTO monthly_blood_transfer (blood_bank_mq_name, type, rh_factor, quantity, _day, _month) VALUES ("care connect", "A", "PLUS", 10, 29, 1)
+INSERT INTO monthly_blood_transfer (blood_bank_mq_name, type, rh_factor, quantity, _day, _month) VALUES ("care connect", "A", "PLUS", 10, 29, 1, false);

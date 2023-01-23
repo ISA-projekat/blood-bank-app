@@ -43,4 +43,6 @@ public class MonthlyBloodTransfer {
     @Max(12)
     private Integer month;
 
+    private boolean warned;
+
 }
