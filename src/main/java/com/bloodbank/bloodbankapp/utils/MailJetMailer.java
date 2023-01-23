@@ -35,7 +35,7 @@ public class MailJetMailer {
                 "<mj-text font-size=\"16px\" align=\"left\">" +
                 "<p>You have successfully scheduled your appointment! </p>" +
                 "</mj-text>" +
-                "<img src='" + imagePath + "' width='200' height='200'>/" +
+                "<img src='" + imagePath + "' width='200' height='200'/>" +
                 "</mj-column>" +
                 "</mj-section>" +
                 "</mj-body>" +
