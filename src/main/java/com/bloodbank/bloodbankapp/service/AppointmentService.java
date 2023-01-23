@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -98,6 +100,7 @@ public class AppointmentService {
         return latest;
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public Appointment schedule(Appointment appointment) throws MailjetException {
         User user = appointment.getUser();
         try {
