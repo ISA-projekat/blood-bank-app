@@ -22,4 +22,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findAllByAppointmentSlot_BloodBank_Id(Long id);
 
+    @Query("SELECT app FROM Appointment app WHERE app.status = :status and app.appointmentSlot.id = :id")
+    Appointment findByAppointmentSlotId(@Param("status") AppointmentStatus status, @Param("id") Long appointmentSlotId);
 }
