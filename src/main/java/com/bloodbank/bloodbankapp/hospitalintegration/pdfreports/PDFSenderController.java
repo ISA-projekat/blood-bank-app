@@ -16,10 +16,10 @@ public class PDFSenderController {
 
     @CrossOrigin
     @PostMapping("/send")
-    public ResponseEntity sendPdf(@RequestBody MultipartFile pdf) throws Exception{
+    public ResponseEntity sendPdf(@RequestBody MultipartFile pdf) throws Exception {
         // Used for sending PDFs of monthly reports
 
-        String filePath = "..\\PDF\\"+pdf.getOriginalFilename();
+        String filePath = "..\\PDF\\" + pdf.getOriginalFilename();
         Files.copy(pdf.getInputStream(), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
         return ResponseEntity.ok("Sent");
     }

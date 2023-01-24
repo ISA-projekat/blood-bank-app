@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -39,7 +37,7 @@ public class Appointment {
     private AppointmentSlot appointmentSlot;
 
     public void updateDetails(String description) {
-        if (details == null) {
+        if (details==null) {
             details = new AppointmentDetails();
         }
         this.details.setDescription(description);

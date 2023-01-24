@@ -27,7 +27,7 @@ public class BloodBankService {
     private final UserRepository userRepository;
 
     public void edit(BloodBank bloodBank) {
-        if (bloodBank == null) throw new BloodBankException("Invalid blood bank passed for edit");
+        if (bloodBank==null) throw new BloodBankException("Invalid blood bank passed for edit");
         var oldBloodBank = bloodBankRepository.findById(bloodBank.getId()).orElseThrow(() -> new BloodBankException("Blood bank you want to edit doesn't exist"));
         updateBloodBank(oldBloodBank, bloodBank);
         bloodBankRepository.save(oldBloodBank);
@@ -58,9 +58,9 @@ public class BloodBankService {
         return bloodBankRepository.findById(id).orElseThrow(() -> new BloodBankException("No banks found with that id"));
     }
 
-    public BloodBank createBloodBank(CreateBloodBankDto dto){
+    public BloodBank createBloodBank(CreateBloodBankDto dto) {
 
-        if(dataIsValid(dto) == false) throw new BloodBankException("Data is incorrect1");
+        if (dataIsValid(dto)==false) throw new BloodBankException("Data is incorrect1");
 
         BloodBank bloodBank = BloodBankMapper.DtoToEntity(dto);
 
@@ -70,31 +70,31 @@ public class BloodBankService {
 
     }
 
-    private boolean dataIsValid(CreateBloodBankDto dto){
+    private boolean dataIsValid(CreateBloodBankDto dto) {
 
         int result = dto.getEndTime().compareTo(dto.getStartTime());
-        return result > 0 ;
+        return result > 0;
 
 
     }
 
-    public BloodBank addAdministratorToBloodBank(long bloodBankId, long adminId){
+    public BloodBank addAdministratorToBloodBank(long bloodBankId, long adminId) {
 
         User administrator = userRepository.getById(adminId);
         BloodBank bloodBank = bloodBankRepository.getById(bloodBankId);
-        if(bloodBank == null && !administratorIsValid(administrator)){
+        if (bloodBank==null && !administratorIsValid(administrator)) {
             throw new BloodBankException("Admin or hospital does not exist");
         }
 
         administrator.setBloodBankId(bloodBankId);
         userRepository.save(administrator);
-        addAdministratorToList(bloodBank,administrator);
+        addAdministratorToList(bloodBank, administrator);
         return bloodBank;
     }
 
-    private boolean administratorIsValid(User admin){
+    private boolean administratorIsValid(User admin) {
 
-        if(admin != null && admin.getBloodBankId() == null && admin.getRole().equals(Role.BLOOD_BANK_ADMIN)) {
+        if (admin!=null && admin.getBloodBankId()==null && admin.getRole().equals(Role.BLOOD_BANK_ADMIN)) {
             return true;
         }
         return false;
@@ -102,11 +102,11 @@ public class BloodBankService {
 
     private void addAdministratorToList(BloodBank bloodBank, User administrator) {
 
-       List<User> administrators = bloodBank.getAdministrators();
+        List<User> administrators = bloodBank.getAdministrators();
 
-       if(administrators == null){
-           administrators = new ArrayList<User>();
-       }
+        if (administrators==null) {
+            administrators = new ArrayList<User>();
+        }
 
         administrators.add(administrator);
 
@@ -127,9 +127,9 @@ public class BloodBankService {
         bloodBank.updateBloodStock(bloodStock);
     }
 
-    public Long getBloodBankIdByAdminId(Long adminId){
+    public Long getBloodBankIdByAdminId(Long adminId) {
 
-        User admin =  userRepository.getById(adminId);
+        User admin = userRepository.getById(adminId);
         return admin.getBloodBankId();
     }
 }

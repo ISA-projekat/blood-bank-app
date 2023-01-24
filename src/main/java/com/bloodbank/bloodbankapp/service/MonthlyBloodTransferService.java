@@ -27,32 +27,36 @@ public class MonthlyBloodTransferService {
         var factory = new ConnectionFactory();
         factory.setHost("localhost");
 
-        try{
+        try {
             var connection = factory.newConnection();
             var channel = connection.createChannel();
 
             return channel;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
         }
-        catch (IOException e) { e.printStackTrace(); }
-        catch (TimeoutException e) { e.printStackTrace(); }
 
         throw new Exception("Couldn't create channel");
     }
 
     private void publishMessage(String queueName, String message) {
-        try{
+        try {
             var channel = channelFactory();
             channel.queueDeclare(queueName, false, false, false, null);
             byte[] body = message.getBytes(StandardCharsets.UTF_8);
             channel.basicPublish("", queueName, null, body);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (IOException e) { e.printStackTrace(); }
-        catch (Exception e) { e.printStackTrace(); }
     }
 
     private void sendBlood(List<MonthlyBloodTransfer> monthlyBloodTransfers) {
-        for(MonthlyBloodTransfer monthlyBloodTransfer : monthlyBloodTransfers) {
-            if((LocalDateTime.now().getMonth().getValue() == monthlyBloodTransfer.getMonth()) && (LocalDateTime.now().getDayOfMonth() == monthlyBloodTransfer.getDay()) && (monthlyBloodTransfer.isWarned() == false)) {
+        for (MonthlyBloodTransfer monthlyBloodTransfer : monthlyBloodTransfers) {
+            if ((LocalDateTime.now().getMonth().getValue()==monthlyBloodTransfer.getMonth()) && (LocalDateTime.now().getDayOfMonth()==monthlyBloodTransfer.getDay()) && (monthlyBloodTransfer.isWarned()==false)) {
                 BloodStock bloodStock = bloodStockService.findAllByTypeAndRhFactor(monthlyBloodTransfer.getBloodType(), monthlyBloodTransfer.getRhFactor()).get(0);
                 bloodStockService.takeBloodStockAmount(bloodStock, monthlyBloodTransfer.getAmount());
                 publishMessage(monthlyBloodTransfer.getBloodBankMQName(), "Blood transferred.");
@@ -61,12 +65,12 @@ public class MonthlyBloodTransferService {
     }
 
     private void sendWarning(List<MonthlyBloodTransfer> monthlyBloodTransfers) {
-        for(MonthlyBloodTransfer monthlyBloodTransfer : monthlyBloodTransfers) {
+        for (MonthlyBloodTransfer monthlyBloodTransfer : monthlyBloodTransfers) {
             BloodStock bloodStock = bloodStockService.findAllByTypeAndRhFactor(monthlyBloodTransfer.getBloodType(), monthlyBloodTransfer.getRhFactor()).get(0);
             LocalDateTime warnTime = LocalDateTime.of(LocalDateTime.now().getYear(), monthlyBloodTransfer.getMonth(), monthlyBloodTransfer.getDay(), 0, 0);
             warnTime = warnTime.minusDays(3);
 
-            if((LocalDateTime.now().getMonth().getValue() == warnTime.getMonth().getValue()) && (LocalDateTime.now().getDayOfMonth() == warnTime.getDayOfMonth()) && (bloodStock.getQuantity() < monthlyBloodTransfer.getAmount())) {
+            if ((LocalDateTime.now().getMonth().getValue()==warnTime.getMonth().getValue()) && (LocalDateTime.now().getDayOfMonth()==warnTime.getDayOfMonth()) && (bloodStock.getQuantity() < monthlyBloodTransfer.getAmount())) {
                 monthlyBloodTransfer.setWarned(true);
                 publishMessage(monthlyBloodTransfer.getBloodBankMQName(), "We do not have the required blood this month");
             }
@@ -83,7 +87,7 @@ public class MonthlyBloodTransferService {
     @Scheduled(cron = "0 0 12 1 * ?")
     public void ResetWarning() {
         List<MonthlyBloodTransfer> monthlyBloodTransfers = repository.findAll();
-        for(MonthlyBloodTransfer monthlyBloodTransfer : monthlyBloodTransfers)
+        for (MonthlyBloodTransfer monthlyBloodTransfer : monthlyBloodTransfers)
             monthlyBloodTransfer.setWarned(false);
     }
 }

@@ -5,7 +5,7 @@ import com.bloodbank.bloodbankapp.model.Appointment;
 
 public class AppointmentCalendarItemMapper {
 
-    public static AppointmentCalendarItemDTO DtoToEntity(Appointment appointment){
+    public static AppointmentCalendarItemDTO DtoToEntity(Appointment appointment) {
 
         return AppointmentCalendarItemDTO.builder()
                 .firstName(appointment.getUser().getFirstName())

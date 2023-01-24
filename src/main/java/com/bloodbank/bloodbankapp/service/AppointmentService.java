@@ -3,10 +3,11 @@ package com.bloodbank.bloodbankapp.service;
 import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
-import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
-import com.bloodbank.bloodbankapp.exception.*;
+import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
+import com.bloodbank.bloodbankapp.exception.CancelationFailedException;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
+import com.bloodbank.bloodbankapp.exception.ScheduleFailedException;
 import com.bloodbank.bloodbankapp.mapper.AppointmentCalendarItemMapper;
 import com.bloodbank.bloodbankapp.mapper.AppointmentMapper;
 import com.bloodbank.bloodbankapp.model.Appointment;
@@ -16,20 +17,16 @@ import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
-import com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus.TAKEN;
 import static com.bloodbank.bloodbankapp.enums.AppointmentStatus.*;
-import static com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +51,8 @@ public class AppointmentService {
     public void review(AppointmentReviewDto appointmentReviewDto) {
         var appointment = appointmentRepository.findById(appointmentReviewDto.getId()).orElseThrow(() -> new NotFoundException("Appointment not found"));
 
-        if(!appointment.getAppointmentSlot().getDateRange().dateIsDuring(LocalDateTime.now())) throw new AppointmentSlotException("Appointment is either before or after current time");
+        if (!appointment.getAppointmentSlot().getDateRange().dateIsDuring(LocalDateTime.now()))
+            throw new AppointmentSlotException("Appointment is either before or after current time");
 
         if (!appointment.getStatus().equals(SCHEDULED)) {
             throw new NotFoundException("Appointment has already been processed");
@@ -83,7 +81,7 @@ public class AppointmentService {
         return appointmentRepository.findAllByUserId(userId).stream().map(appointmentMapper::appointmentToAppointmentPreviewDto).toList();
     }
 
-    public List<Appointment> getAllByUserApp(Long id){
+    public List<Appointment> getAllByUserApp(Long id) {
         return appointmentRepository.findAllByUserId(id);
     }
 
@@ -91,12 +89,12 @@ public class AppointmentService {
         List<Appointment> appointments = getAllByUserApp(userId);
         Appointment latest = appointments.get(0);
 
-        for(Appointment appointment : appointments) {
-            if (appointment.getStatus() == CANCELED) continue;
+        for (Appointment appointment : appointments) {
+            if (appointment.getStatus()==CANCELED) continue;
 
-            if (latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()) && (appointment.getStatus() == SCHEDULED || appointment.getStatus() == FINISHED))
+            if (latest.getAppointmentSlot().getDateRange().dateIsAfter(appointment.getAppointmentSlot().getDateRange().getStart()) && (appointment.getStatus()==SCHEDULED || appointment.getStatus()==FINISHED))
                 latest = appointment;
-            }
+        }
 
         return latest;
     }
@@ -107,14 +105,14 @@ public class AppointmentService {
         try {
             Survey survey = surveyService.getByUser(user.getId());
 
-            if(getAllByUserApp(user.getId()).isEmpty()) {
+            if (getAllByUserApp(user.getId()).isEmpty()) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
                 return appointmentRepository.save(appointment);
             }
 
             Appointment latest = findLatestUserAppointment(user.getId());
-            if( !appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6)) ) {
+            if (!appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6))) {
                 appointment.getAppointmentSlot().setStatus(TAKEN);
                 MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
                 return appointmentRepository.save(appointment);
@@ -122,8 +120,7 @@ public class AppointmentService {
 
             appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
             throw new ScheduleFailedException("Last appointment was less than 6 months ago");
-        }
-        catch(NotFoundException e) {
+        } catch (NotFoundException e) {
             appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
             throw new ScheduleFailedException("Survey is not found");
         }
@@ -132,7 +129,7 @@ public class AppointmentService {
     public Appointment cancel(Long id) {
         Appointment appointment = appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
 
-        if(appointment.getAppointmentSlot().getDateRange().dateIsAfter(LocalDateTime.now().plusDays(1))){
+        if (appointment.getAppointmentSlot().getDateRange().dateIsAfter(LocalDateTime.now().plusDays(1))) {
             throw new CancelationFailedException("You cannot cancel an appointment less than 24h before start");
         }
 
@@ -147,7 +144,7 @@ public class AppointmentService {
         return appointmentRepository.findAllByAppointmentSlotBloodBankId(id);
     }
 
-    public Appointment get(Long id){
+    public Appointment get(Long id) {
         return appointmentRepository.findById(id).orElseThrow(() -> new NotFoundException("No appointment found"));
     }
 
@@ -159,10 +156,10 @@ public class AppointmentService {
         return appointmentRepository.findAllAppointmentsByStatusByBloodBankId(status, bloodBankId);
     }
 
-    public List<AppointmentCalendarItemDTO> findAllByBloodBank(Long id){
+    public List<AppointmentCalendarItemDTO> findAllByBloodBank(Long id) {
         List<Appointment> appointments = appointmentRepository.findAllByAppointmentSlot_BloodBank_Id(id);
         List<AppointmentCalendarItemDTO> appointmentDtos = new ArrayList<>();
-        for(Appointment a: appointments){
+        for (Appointment a : appointments) {
             appointmentDtos.add(AppointmentCalendarItemMapper.DtoToEntity(a));
         }
         return appointmentDtos;

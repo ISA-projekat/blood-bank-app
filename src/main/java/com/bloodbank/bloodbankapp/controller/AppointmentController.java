@@ -5,7 +5,6 @@ import com.bloodbank.bloodbankapp.dto.AppointmentDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
-import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
 import com.bloodbank.bloodbankapp.model.Appointment;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.User;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PreUpdate;
 import java.util.List;
 
 @RestController
@@ -63,9 +61,8 @@ public class AppointmentController {
                 .build();
 
         try {
-            return appointmentService.schedule(appointment) == null ? null : appointment;
-        }
-        catch (MailjetException e) {
+            return appointmentService.schedule(appointment)==null ? null:appointment;
+        } catch (MailjetException e) {
             System.out.println("Mailjet exception, couldn't schedule because of it");
             return null;
         }
@@ -82,7 +79,7 @@ public class AppointmentController {
 
     @GetMapping("/blood-bank/{id}")
     @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
-    public List<Appointment> getByBloodBank(@PathVariable("id") long id){
+    public List<Appointment> getByBloodBank(@PathVariable("id") long id) {
         return appointmentService.getByBloodBank(id);
     }
 
@@ -98,7 +95,7 @@ public class AppointmentController {
 
     @CrossOrigin
     @GetMapping("/by-blood-bank/{id}")
-    public List<AppointmentCalendarItemDTO> findAllByBloodBank(@PathVariable("id") Long bloodBankId){
+    public List<AppointmentCalendarItemDTO> findAllByBloodBank(@PathVariable("id") Long bloodBankId) {
         return appointmentService.findAllByBloodBank(bloodBankId);
     }
 
