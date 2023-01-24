@@ -14,8 +14,6 @@ import com.bloodbank.bloodbankapp.repository.AddressRepository;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import com.bloodbank.bloodbankapp.repository.AppointmentSlotRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
-import com.bloodbank.bloodbankapp.utils.MailJetMailer;
-import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -58,7 +56,7 @@ public class UserService {
 
     public User add(RegistrationDto dto) {
         var existingUser = userRepository.findByEmail(dto.getEmail());
-        if (existingUser != null) throw new UserException("User with that email already exists");
+        if (existingUser!=null) throw new UserException("User with that email already exists");
 
         User newUser = UserMapper.DtoToEntity(dto);
         newUser.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
@@ -72,31 +70,31 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> search(String firstName, String lastName){
+    public List<User> search(String firstName, String lastName) {
 
-        List<User> users = userRepository.search(firstName,lastName);
-        if(users.isEmpty())
+        List<User> users = userRepository.search(firstName, lastName);
+        if (users.isEmpty())
             users = new ArrayList<User>();
         return users;
     }
 
-    public List<User> getAdministrators(){
+    public List<User> getAdministrators() {
         return userRepository.findByRole(Role.BLOOD_BANK_ADMIN);
     }
 
-    public List<User> getAvailableAdministrators(){
+    public List<User> getAvailableAdministrators() {
         List<User> allAdministrators = getAdministrators();
         List<User> availableAdministrators = new ArrayList<User>();
-        for(User u: allAdministrators){
-            if(u.getBloodBankId() == null)
+        for (User u : allAdministrators) {
+            if (u.getBloodBankId()==null)
                 availableAdministrators.add(u);
         }
         return availableAdministrators;
     }
 
-    public User registerAdmin(RegistrationDto dto){
+    public User registerAdmin(RegistrationDto dto) {
         var existingUser = userRepository.findByEmail(dto.getEmail());
-        if (existingUser != null) throw new UserException("User with that email already exists");
+        if (existingUser!=null) throw new UserException("User with that email already exists");
 
         User newUser = UserMapper.DtoToEntity(dto);
         newUser.setRole(Role.BLOOD_BANK_ADMIN);
@@ -120,17 +118,18 @@ public class UserService {
         return user;
     }
 
-    public Boolean IsFirstTimeLoginCompleted(String email){
+    public Boolean IsFirstTimeLoginCompleted(String email) {
         User user = userRepository.findByEmail(email);
-        if(user.getFirstTime() == false && user.getRole() == Role.BLOOD_BANK_ADMIN){
+        if (user.getFirstTime()==false && user.getRole()==Role.BLOOD_BANK_ADMIN) {
             return false;
         }
         return true;
     }
-    public Boolean ChangeAdminPassword(ChangePasswordDTO dto){
+
+    public Boolean ChangeAdminPassword(ChangePasswordDTO dto) {
 
         User admin = userRepository.getById(dto.getAdminId());
-        if(admin == null){
+        if (admin==null) {
             throw new UserException("User does not exist");
         }
 
@@ -142,22 +141,11 @@ public class UserService {
     }
 
     public List<UserDto> getAllDonators(Long bloodBankId) {
-//        var donators = userRepository.findByBloodBankId(bloodBankId);
-//        System.out.println(donators);
-//        var userDtos = new ArrayList<UserDto>();
-//        for (User u : donators) {
-//            var appointments = appointmentRepository.findAllAppointmentsByStatusByUserId(AppointmentStatus.FINISHED, u.getId());
-//            if (appointments.isEmpty()) continue;
-//            var appointmentSlot = appointments.get(appointments.size() - 1).getAppointmentSlot();
-//            userDtos.add(new UserDto(u.getFirstName(), u.getLastName(), appointmentSlot.getDateRange().getStart()));
-//        }
-//        System.out.println(userDtos);
-//        return userDtos;
         var appointmentSlots = appointmentSlotRepository.findAllByBloodBankId(bloodBankId);
         var userDtos = new ArrayList<UserDto>();
         for (AppointmentSlot a : appointmentSlots) {
             var appointment = appointmentRepository.findByAppointmentSlotId(AppointmentStatus.FINISHED, a.getId());
-            if (appointment == null) continue;
+            if (appointment==null) continue;
             var user = appointment.getUser();
             var exists = false;
             for (UserDto u : userDtos) {

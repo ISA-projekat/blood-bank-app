@@ -3,6 +3,7 @@ package com.bloodbank.bloodbankapp.hospitalintegration.news;
 import java.nio.charset.StandardCharsets;
 
 public class NewsService {
+
     private static String[] GetImageParts(News news) {
         String[] imageParts = news.reqImage.split(",");
         return imageParts;
@@ -17,15 +18,15 @@ public class NewsService {
         return extension;
     }
 
-    private static byte[] CreateMessage(News news, String extension, String reqImage){
-      String delimiter = '\n' + "-".repeat(20);
-      String upperDelimiter = extension + delimiter;
+    private static byte[] CreateMessage(News news, String extension, String reqImage) {
+        String delimiter = '\n' + "-".repeat(20);
+        String upperDelimiter = extension + delimiter;
 
-      String message = upperDelimiter + reqImage + delimiter + news.reqTitle + delimiter + news.reqBody;
+        String message = upperDelimiter + reqImage + delimiter + news.reqTitle + delimiter + news.reqBody;
 
-      byte[] body = message.getBytes(StandardCharsets.UTF_8);
+        byte[] body = message.getBytes(StandardCharsets.UTF_8);
 
-      return body;
+        return body;
     }
 
     public static byte[] CreateNewsMessage(News news) {

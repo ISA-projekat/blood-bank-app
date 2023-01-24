@@ -3,7 +3,6 @@ package com.bloodbank.bloodbankapp.controller;
 import com.bloodbank.bloodbankapp.config.JwtTokenUtil;
 import com.bloodbank.bloodbankapp.dto.JwtRequest;
 import com.bloodbank.bloodbankapp.dto.JwtResponse;
-import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.JwtUserDetailsService;
 import com.bloodbank.bloodbankapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

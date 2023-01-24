@@ -1,6 +1,5 @@
 package com.bloodbank.bloodbankapp.dto;
 
-import com.bloodbank.bloodbankapp.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

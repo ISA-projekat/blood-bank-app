@@ -18,16 +18,16 @@ public class SurveyService {
 
     private final AppointmentRepository appointmentRepository;
 
-    public Survey getByUser(Long id){
+    public Survey getByUser(Long id) {
         Survey survey = surveyRepository.findByUserId(id);
-        if (survey == null) throw new NotFoundException("Survey doesnt exist for specified user");
+        if (survey==null) throw new NotFoundException("Survey doesnt exist for specified user");
 
         return survey;
     }
 
-    public Survey add(Survey survey){
+    public Survey add(Survey survey) {
         Survey existingSurvey = surveyRepository.findByUserId(survey.getUserId());
-        if (existingSurvey == null) {
+        if (existingSurvey==null) {
             survey.setSurveyDate(LocalDateTime.now());
             surveyRepository.save(survey);
             return survey;
@@ -50,7 +50,7 @@ public class SurveyService {
         existingSurvey.setSurveyDate(LocalDateTime.now());
     }
 
-    public List<Survey> getAll(){
+    public List<Survey> getAll() {
         return surveyRepository.findAll();
     }
 

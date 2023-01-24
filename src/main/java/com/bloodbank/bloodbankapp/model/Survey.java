@@ -17,7 +17,7 @@ public class Survey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false,updatable = false,unique = true)
+    @Column(nullable = false, updatable = false, unique = true)
     Long id;
 
     @Column(name = "userId")

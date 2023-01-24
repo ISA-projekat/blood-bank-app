@@ -2,7 +2,10 @@ package com.bloodbank.bloodbankapp.model;
 
 import com.bloodbank.bloodbankapp.enums.Gender;
 import com.bloodbank.bloodbankapp.enums.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 

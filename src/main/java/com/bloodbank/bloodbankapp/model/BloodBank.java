@@ -54,7 +54,7 @@ public class BloodBank {
     }
 
     public void updateBloodStock(BloodStock bloodStock) {
-        if (bloodStocks == null) {
+        if (bloodStocks==null) {
             bloodStocks = new ArrayList<>();
         }
         if (bloodStocks.stream().noneMatch(bs -> bs.getType().equals(bloodStock.getType()) && bs.getRhFactor().equals(bloodStock.getRhFactor()))) {

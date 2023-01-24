@@ -1,14 +1,12 @@
 package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.dto.AppointmentSlotDTO;
-import com.bloodbank.bloodbankapp.dto.SearchDTO;
 import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.DateRange;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,11 +27,15 @@ public class AppointmentSlotController {
 
     @CrossOrigin
     @GetMapping("/{id}")
-    public AppointmentSlot get(@PathVariable("id") long id) { return service.get(id); }
+    public AppointmentSlot get(@PathVariable("id") long id) {
+        return service.get(id);
+    }
 
     @CrossOrigin
     @GetMapping()
-    public List<AppointmentSlot> getAll() { return service.getAll(); }
+    public List<AppointmentSlot> getAll() {
+        return service.getAll();
+    }
 
     @CrossOrigin
     @PostMapping()
@@ -49,7 +51,9 @@ public class AppointmentSlotController {
 
     @CrossOrigin
     @DeleteMapping("/{id}")
-    public AppointmentSlot delete(@PathVariable("id") Long id) { return service.delete(id); }
+    public AppointmentSlot delete(@PathVariable("id") Long id) {
+        return service.delete(id);
+    }
 
     @CrossOrigin
     @GetMapping("/available-slots")
@@ -57,34 +61,38 @@ public class AppointmentSlotController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         LocalDateTime startDate = LocalDateTime.parse(start, formatter);
         LocalDateTime endDate = LocalDateTime.parse(end, formatter);
-        return service.getAllInDateRange(new DateRange(startDate,endDate), page);
+        return service.getAllInDateRange(new DateRange(startDate, endDate), page);
     }
 
     @CrossOrigin
     @GetMapping("/blood-bank/{id}")
     @PreAuthorize("hasRole('REGISTERED') or hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
-    public List<AppointmentSlot> getAllByBloodBank(@PathVariable("id") Long id) { return service.getAllByBloodBank(id); }
+    public List<AppointmentSlot> getAllByBloodBank(@PathVariable("id") Long id) {
+        return service.getAllByBloodBank(id);
+    }
 
     @GetMapping("/blood-bank/free/{id}")
     @PreAuthorize("hasRole('REGISTERED') or hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
-    public List<AppointmentSlot> getFreeSlotsForBloodBank(@PathVariable("id") Long id){
+    public List<AppointmentSlot> getFreeSlotsForBloodBank(@PathVariable("id") Long id) {
         return service.getFreeSlotsByBloodBank(id);
     }
 
     @GetMapping("/blood-bank-page")
     @PreAuthorize("hasRole('REGISTERED') or hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
-    public Page<AppointmentSlot> getAllSlotsPage(Long id, Pageable page){
+    public Page<AppointmentSlot> getAllSlotsPage(Long id, Pageable page) {
         return service.getPageByBloodBank(id, page);
     }
 
     @GetMapping("/blood-bank-page-free")
     @PreAuthorize("hasRole('REGISTERED') or hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
-    public Page<AppointmentSlot> getFreeSlotsPage(Long id, Pageable page){
+    public Page<AppointmentSlot> getFreeSlotsPage(Long id, Pageable page) {
         return service.getFreePageByBloodBank(id, page);
     }
 
     @CrossOrigin
     @GetMapping("/page")
-    public Page<AppointmentSlot> getPage(Pageable page) { return service.getPage(page); }
+    public Page<AppointmentSlot> getPage(Pageable page) {
+        return service.getPage(page);
+    }
 
 }
