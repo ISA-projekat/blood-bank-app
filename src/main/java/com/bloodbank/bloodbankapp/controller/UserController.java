@@ -2,6 +2,7 @@ package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.dto.ChangePasswordDTO;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.dto.UserDto;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.UserService;
@@ -94,4 +95,9 @@ public class UserController {
         return userService.ChangeAdminPassword(dto);
 
     }
+
+    @CrossOrigin
+    @GetMapping("/donators/{bloodBankId}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
+    public List<UserDto> getAlDonators(@PathVariable("bloodBankId") Long bloodBankId) { return userService.getAllDonators(bloodBankId); }
 }

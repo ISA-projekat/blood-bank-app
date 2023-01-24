@@ -2,12 +2,17 @@ package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.dto.ChangePasswordDTO;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.dto.UserDto;
+import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.mapper.UserMapper;
+import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AddressRepository;
+import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
+import com.bloodbank.bloodbankapp.repository.AppointmentSlotRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
@@ -24,6 +29,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final AppointmentSlotRepository appointmentSlotRepository;
 
     public User getByUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User doesn't exist"));
@@ -132,5 +139,36 @@ public class UserService {
         userRepository.save(admin);
         return true;
 
+    }
+
+    public List<UserDto> getAllDonators(Long bloodBankId) {
+//        var donators = userRepository.findByBloodBankId(bloodBankId);
+//        System.out.println(donators);
+//        var userDtos = new ArrayList<UserDto>();
+//        for (User u : donators) {
+//            var appointments = appointmentRepository.findAllAppointmentsByStatusByUserId(AppointmentStatus.FINISHED, u.getId());
+//            if (appointments.isEmpty()) continue;
+//            var appointmentSlot = appointments.get(appointments.size() - 1).getAppointmentSlot();
+//            userDtos.add(new UserDto(u.getFirstName(), u.getLastName(), appointmentSlot.getDateRange().getStart()));
+//        }
+//        System.out.println(userDtos);
+//        return userDtos;
+        var appointmentSlots = appointmentSlotRepository.findAllByBloodBankId(bloodBankId);
+        var userDtos = new ArrayList<UserDto>();
+        for (AppointmentSlot a : appointmentSlots) {
+            var appointment = appointmentRepository.findByAppointmentSlotId(AppointmentStatus.FINISHED, a.getId());
+            if (appointment == null) continue;
+            var user = appointment.getUser();
+            var exists = false;
+            for (UserDto u : userDtos) {
+                if (u.getId().equals(user.getId())) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) continue;
+            userDtos.add(new UserDto(user.getId(), user.getFirstName(), user.getLastName(), a.getDateRange().getStart()));
+        }
+        return userDtos;
     }
 }
