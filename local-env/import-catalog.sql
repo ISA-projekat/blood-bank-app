@@ -4,11 +4,13 @@ CREATE TABLE address (
     city varchar(255) not null,
     street varchar(255) not null,
     number varchar(255) not null,
+    longitude float,
+    latitude float,
     PRIMARY KEY(id)
 );
 
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Gunduliceva', '12');
-INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23');
+INSERT INTO address (country, city, street, number, longitude, latitude) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23', 20.457, 44.787);
 INSERT INTO address (country, city, street, number) VALUES ('Indonesia', 'Jakarta', 'Java', '19');
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Milana Savica', '12');
 
@@ -155,17 +157,16 @@ CREATE TABLE blood_stock (
 
 INSERT INTO blood_stock (blood_bank_id, type, rh_factor, quantity) VALUES (2, 'B', 'PLUS', 0.0);
 
-
 CREATE TABLE monthly_blood_transfer (
     id bigint not null auto_increment,
     blood_bank_mq_name varchar(255),
-    type enum('A', 'B', 'AB', 'O'),
+    amount float,
+    blood_type enum('A', 'B', 'AB', 'O'),
     rh_factor enum('PLUS', 'MINUS'),
-    quantity float,
     _day int,
     _month int,
     warned Boolean,
-    PRIMARY KEY(id),
+    PRIMARY KEY(id)
 );
 
-INSERT INTO monthly_blood_transfer (blood_bank_mq_name, type, rh_factor, quantity, _day, _month) VALUES ("care connect", "A", "PLUS", 10, 29, 1, false);
+INSERT INTO monthly_blood_transfer (blood_bank_mq_name, blood_type, rh_factor, amount, _day, _month, warned) VALUES ("care connect", "A", "PLUS", 10, 29, 1, false);
