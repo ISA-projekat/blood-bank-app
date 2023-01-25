@@ -23,26 +23,31 @@ public class MonthlyBloodTransfer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "blood_bank_mq_name")
     private String bloodBankMQName;
 
+    @Column(name = "amount")
     private Double amount;
 
-    @Column(columnDefinition = "ENUM('A', 'B', 'AB', 'O')")
+    @Column(columnDefinition = "ENUM('A', 'B', 'AB', 'O')", name = "blood_type")
     @Enumerated(EnumType.STRING)
     private BloodType bloodType;
 
-    @Column(columnDefinition = "ENUM('PLUS', 'MINUS')")
+    @Column(columnDefinition = "ENUM('PLUS', 'MINUS')", name = "rh_factor")
     @Enumerated(EnumType.STRING)
     private RhFactor rhFactor;
 
     @Min(1)
     @Max(31)
+    @Column(name = "_day")
     private Integer day;
 
     @Min(1)
     @Max(12)
+    @Column(name = "_month")
     private Integer month;
 
+    @Column(name = "warned")
     private boolean warned;
 
 }
