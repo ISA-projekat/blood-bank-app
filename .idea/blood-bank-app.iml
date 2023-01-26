@@ -33,9 +33,6 @@
     <orderEntry type="library" name="Maven: org.jboss:jandex:2.4.2.Final" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml:classmate:1.5.1" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:5.1.2.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.jaxb:jaxb-runtime:2.3.7" level="project" />
-    <orderEntry type="library" name="Maven: org.glassfish.jaxb:txw2:2.3.7" level="project" />
-    <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.12" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-jpa:2.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.data:spring-data-commons:2.7.5" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-orm:5.3.23" level="project" />
@@ -185,9 +182,7 @@
     <orderEntry type="library" name="Maven: org.glassfish.jaxb:jaxb-runtime:2.3.7" level="project" />
     <orderEntry type="library" name="Maven: org.glassfish.jaxb:txw2:2.3.7" level="project" />
     <orderEntry type="library" name="Maven: com.sun.istack:istack-commons-runtime:3.0.12" level="project" />
-    <orderEntry type="library" scope="RUNTIME" name="Maven: com.sun.activation:jakarta.activation:1.2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.cache:cache-api:1.1.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-cache:2.7.5" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:5.3.23" level="project" />
   </component>
 </module>

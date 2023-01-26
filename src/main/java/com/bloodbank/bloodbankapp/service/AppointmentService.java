@@ -133,7 +133,6 @@ public class AppointmentService {
                                         .user(user)
                                         .status(SCHEDULED)
                                         .build();
-            MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
             appointmentRepository.save(app);
             return app;
         } catch (NotFoundException e) {

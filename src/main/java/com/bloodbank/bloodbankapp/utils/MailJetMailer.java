@@ -106,7 +106,7 @@ public class MailJetMailer {
     }
 
 
-    public  void sendQRReservation(String toEmail, String body, String subject, String attachment) throws MessagingException {
+    public void sendQRReservation(String toEmail, String body, String subject, String attachment) throws MessagingException {
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
