@@ -57,6 +57,12 @@ INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"star
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-23T16:50:00.000Z", "end": "2022-12-23T17:00:00.000Z"}', 3, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-24T16:50:00.000Z", "end": "2022-12-24T17:00:00.000Z"}', 3, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-25T16:50:00.000Z", "end": "2022-12-25T17:00:00.000Z"}', 3, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-31T16:50:00.000Z", "end": "2022-12-31T17:00:00.000Z"}', 3, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-06-30T16:50:00.000Z", "end": "2022-06-30T17:00:00.000Z"}', 3, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2021-12-31T16:50:00.000Z", "end": "2021-12-31T17:00:00.000Z"}', 1, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2021-06-30T16:50:00.000Z", "end": "2021-06-30T17:00:00.000Z"}', 3, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2020-12-31T16:50:00.000Z", "end": "2020-12-31T17:00:00.000Z"}', 2, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2020-06-30T16:50:00.000Z", "end": "2020-06-30T17:00:00.000Z"}', 4, 'TAKEN');
 
 CREATE TABLE appointment_details (
     id bigint not null auto_increment,
@@ -65,6 +71,13 @@ CREATE TABLE appointment_details (
 );
 
 INSERT INTO appointment_details (description) VALUES ("Description for the first appointment");
+INSERT INTO appointment_details (description) VALUES ("Good blood, very tasty");
+INSERT INTO appointment_details (description) VALUES ("Patient gave 3 litres of A positive");
+INSERT INTO appointment_details (description) VALUES ("Patient gave 3 litres of A positive");
+INSERT INTO appointment_details (description) VALUES ("Cool guy, has good veins");
+INSERT INTO appointment_details (description) VALUES ("Patient gave a lot of blood");
+INSERT INTO appointment_details (description) VALUES ("Good stuff");
+
 
 CREATE TABLE user (
     id bigint not null auto_increment,
@@ -114,6 +127,12 @@ CREATE TABLE appointment (
 
 INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'FINISHED');
 INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (17, 2, 11, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (18, 3, 11, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (19, 4, 11, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (20, 5, 11, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (21, 6, 11, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (22, 7, 11, 'FINISHED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (5, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (6, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (3, 2, 'SCHEDULED');

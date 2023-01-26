@@ -17,6 +17,9 @@ import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -163,7 +166,10 @@ public class AppointmentService {
             appointmentDtos.add(AppointmentCalendarItemMapper.DtoToEntity(a));
         }
         return appointmentDtos;
+    }
 
+    public Page<Appointment> findFinishedByUser(Long id, Pageable page) {
+        return appointmentRepository.findAllFinishedByUser(id, page);
     }
 
 }
