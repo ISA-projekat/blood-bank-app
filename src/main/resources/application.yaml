@@ -4,10 +4,23 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ikiakus@gmail.com
+    password: cpxdcrzilhkewvbj
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
 
   jpa:
     hibernate:

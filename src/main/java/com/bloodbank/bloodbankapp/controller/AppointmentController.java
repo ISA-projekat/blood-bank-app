@@ -11,11 +11,14 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.AppointmentService;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.UserService;
+import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -28,6 +31,9 @@ public class AppointmentController {
     private final AppointmentSlotService appointmentSlotService;
 
     private final UserService userService;
+
+    @Autowired
+    private MailJetMailer mailJetMailer;
 
     @GetMapping
     public List<Appointment> getAll() {
@@ -97,6 +103,19 @@ public class AppointmentController {
     @GetMapping("/by-blood-bank/{id}")
     public List<AppointmentCalendarItemDTO> findAllByBloodBank(@PathVariable("id") Long bloodBankId) {
         return appointmentService.findAllByBloodBank(bloodBankId);
+    }
+
+    @CrossOrigin
+    @PostMapping("/generate-qr")
+    public void generateQrForAppointment() throws MessagingException {
+        appointmentService.generateQRCodeForAppointment();
+        Appointment appointment = appointmentService.getLastScheduledAppointment();
+        String toEmail = appointment.getUser().getEmail();
+        String id = appointment.getId().toString();
+        mailJetMailer.sendQRReservation(toEmail,
+                "Thank you for being loyal to our blood bank!",
+                "Appointment Reservation",
+                "C://Users//Ilija//Desktop//Faks//Isa//blood-bank-app//static/confirmation_"+id+"_QR.png");
     }
 
 }

@@ -9,9 +9,11 @@ import com.bloodbank.bloodbankapp.service.UserService;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
 
     @PutMapping
     public void edit(@RequestBody User user) {
@@ -106,4 +109,5 @@ public class UserController {
     public List<UserDto> getAlDonators(@PathVariable("bloodBankId") Long bloodBankId) {
         return userService.getAllDonators(bloodBankId);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.utils;
 
+import com.bloodbank.bloodbankapp.model.Appointment;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -39,4 +40,19 @@ public class QRCodeGenerator {
         byte[] pngData = pngOutputStream.toByteArray();
         return pngData;
     }
+
+    public static void generateQRForAppointment(Long id) throws WriterException, IOException {
+        String url = "http://localhost:3000/appointment-processing/"+id.toString();
+        int width = 200, height = 200;
+        String fp = "static/confirmation_"+id.toString()+"_QR.png";
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
+
+        Path path = FileSystems.getDefault().getPath(fp);
+        MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
+
+    }
+
+
 }
