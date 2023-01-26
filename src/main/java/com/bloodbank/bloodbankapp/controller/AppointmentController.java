@@ -11,8 +11,10 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.AppointmentService;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.UserService;
+import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,16 +56,8 @@ public class AppointmentController {
     public Appointment schedule(@RequestBody AppointmentDTO appointmentDTO) {
         User user = userService.getByUser(appointmentDTO.getUserId());
         AppointmentSlot appointmentSlot = appointmentSlotService.get(appointmentDTO.getAppointmentSlotId());
-        appointmentSlotService.takeSlot(appointmentSlot.getId());
-        Appointment appointment = Appointment.builder()
-                .status(AppointmentStatus.SCHEDULED)
-                .details(null)
-                .appointmentSlot(appointmentSlot)
-                .user(user)
-                .build();
-
         try {
-            return appointmentService.schedule(appointment)==null ? null:appointment;
+            return appointmentService.schedule(appointmentSlot, user);
         } catch (MailjetException e) {
             System.out.println("Mailjet exception, couldn't schedule because of it");
             return null;
@@ -108,5 +102,14 @@ public class AppointmentController {
         return appointmentService.findFinishedByUser(id, page);
     }
 
+    @GetMapping("/attachment")
+    public void generateAttachment() {
+        try {
+            MailJetMailer.SendScheduleAppointmentMail("hepih44976@breazeim.com");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

@@ -36,6 +36,9 @@ public class Appointment {
     @JoinColumn(name = "appointment_slot_id", referencedColumnName = "id")
     private AppointmentSlot appointmentSlot;
 
+    @Version
+    private Integer version;
+
     public void updateDetails(String description) {
         if (details==null) {
             details = new AppointmentDetails();
