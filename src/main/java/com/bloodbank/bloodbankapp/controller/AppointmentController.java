@@ -14,6 +14,8 @@ import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.UserService;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -87,6 +89,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/user/{id}/{status}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
     public List<Appointment> findAllAppointmentsByStatusByUserId(@PathVariable("status") AppointmentStatus status, @PathVariable("id") Long userId) {
         return appointmentService.findAllAppointmentsByStatusByUserId(status, userId);
     }
@@ -101,5 +104,12 @@ public class AppointmentController {
     public List<AppointmentCalendarItemDTO> findAllByBloodBank(@PathVariable("id") Long bloodBankId){
         return appointmentService.findAllByBloodBank(bloodBankId);
     }
+
+    @GetMapping("/user/finished")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
+    public Page<Appointment> findFinishedAppointmentsForUser(Long id, Pageable page) {
+        return appointmentService.findFinishedByUser(id, page);
+    }
+
 
 }

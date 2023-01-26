@@ -61,15 +61,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests()
-                .antMatchers("/appointment/review").permitAll()
                 .antMatchers("/authenticate").permitAll()
-                    .antMatchers("/user/register").permitAll()
-                    .antMatchers("/bloodbank").permitAll()
-                    .antMatchers("/bloodbank/search").permitAll()
-                    .antMatchers("/bloodbank/page").permitAll()
-                    .antMatchers("/user/activate").permitAll()
-
-
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/bloodbank").permitAll()
+                .antMatchers("/bloodbank/search").permitAll()
+                .antMatchers("/bloodbank/page").permitAll()
+                .antMatchers("/user/activate").permitAll()
+                .antMatchers("/delivery/**").permitAll()
+                .antMatchers("/socket/**").permitAll()
+                .antMatchers("/actuator/prometheus").permitAll()
 
                 // all other requests need to be authenticated
                 .anyRequest().authenticated()
