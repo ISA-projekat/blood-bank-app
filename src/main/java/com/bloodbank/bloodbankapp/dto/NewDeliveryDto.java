@@ -1,32 +1,26 @@
 package com.bloodbank.bloodbankapp.dto;
 
-
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AppointmentCalendarItemDTO {
+@FieldDefaults(level= AccessLevel.PRIVATE)
+public class NewDeliveryDto {
 
     @NotBlank
-    String firstName;
+    List<Double> startLocation;
 
     @NotBlank
-    String lastName;
+    List<Double> endLocation;
 
     @NotBlank
-    LocalDateTime startDate;
-
-    @NotBlank
-    LocalDateTime endDate;
-
-    Long id;
-
+    int frequency;
 }

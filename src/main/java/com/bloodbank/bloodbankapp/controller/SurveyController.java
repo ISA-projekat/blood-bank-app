@@ -17,19 +17,19 @@ public class SurveyController {
     private final SurveyService surveyService;
 
     @GetMapping("/getByUser/{id}")
-    public Survey getByUser(@PathVariable("id") Long id){
+    public Survey getByUser(@PathVariable("id") Long id) {
         return surveyService.getByUser(id);
     }
 
     @GetMapping
     @PreAuthorize("hasRole('SYS_ADMIN')")
-    public List<Survey> getAll(){
+    public List<Survey> getAll() {
         return surveyService.getAll();
     }
 
     @PostMapping
     @PreAuthorize("hasRole('REGISTERED')")
-    public Survey add(@RequestBody Survey survey){
+    public Survey add(@RequestBody Survey survey) {
         return surveyService.add(survey);
     }
 

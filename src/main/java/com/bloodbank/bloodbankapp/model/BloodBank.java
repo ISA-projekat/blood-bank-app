@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -15,6 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@Cacheable
+@Cache(usage= CacheConcurrencyStrategy.TRANSACTIONAL)
 @Table(name = "blood_bank")
 public class BloodBank {
 
@@ -54,7 +58,7 @@ public class BloodBank {
     }
 
     public void updateBloodStock(BloodStock bloodStock) {
-        if (bloodStocks == null) {
+        if (bloodStocks==null) {
             bloodStocks = new ArrayList<>();
         }
         if (bloodStocks.stream().noneMatch(bs -> bs.getType().equals(bloodStock.getType()) && bs.getRhFactor().equals(bloodStock.getRhFactor()))) {

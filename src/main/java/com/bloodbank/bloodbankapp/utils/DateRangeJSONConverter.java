@@ -22,8 +22,7 @@ public class DateRangeJSONConverter implements AttributeConverter<DateRange, Str
         objectMapper.registerModule(new ParameterNamesModule()).registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
         try {
             jsonString = objectMapper.writeValueAsString(object);
-        }
-        catch (final JsonProcessingException e) {
+        } catch (final JsonProcessingException e) {
             throw new RuntimeException("JSON writing error", e);
         }
 
@@ -35,9 +34,9 @@ public class DateRangeJSONConverter implements AttributeConverter<DateRange, Str
         DateRange object = null;
         objectMapper.registerModule(new ParameterNamesModule()).registerModule(new Jdk8Module()).registerModule(new JavaTimeModule());
         try {
-            object = objectMapper.readValue(jsonString, new TypeReference<DateRange>() {});
-        }
-        catch (final IOException e) {
+            object = objectMapper.readValue(jsonString, new TypeReference<DateRange>() {
+            });
+        } catch (final IOException e) {
             throw new RuntimeException("JSON reading error", e);
         }
 

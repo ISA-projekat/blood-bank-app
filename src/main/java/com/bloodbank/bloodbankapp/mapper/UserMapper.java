@@ -7,7 +7,7 @@ import com.bloodbank.bloodbankapp.model.User;
 
 public class UserMapper {
 
-    public static User DtoToEntity(RegistrationDto dto){
+    public static User DtoToEntity(RegistrationDto dto) {
 
         final var address = Address.builder()
                 .street(dto.getStreet())

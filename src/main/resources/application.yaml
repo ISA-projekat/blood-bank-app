@@ -5,6 +5,11 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  security:
+    user:
+      name: prometheus
+      password: prometheus
+
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
@@ -12,6 +17,11 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+    show-sql: true
+
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
 
 server:
   port: 8080
@@ -20,3 +30,13 @@ server:
 
 jwt:
   secret: mitrogol
+
+management:
+  endpoint:
+    health:
+      show-details: "ALWAYS"
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        exclude: "env,beans"

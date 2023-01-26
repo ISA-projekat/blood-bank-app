@@ -12,10 +12,14 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.BloodBankRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,8 +30,10 @@ public class BloodBankService {
     private final BloodBankRepository bloodBankRepository;
     private final UserRepository userRepository;
 
+    private final Logger LOG = LoggerFactory.getLogger(BloodBankService.class);
+
     public void edit(BloodBank bloodBank) {
-        if (bloodBank == null) throw new BloodBankException("Invalid blood bank passed for edit");
+        if (bloodBank==null) throw new BloodBankException("Invalid blood bank passed for edit");
         var oldBloodBank = bloodBankRepository.findById(bloodBank.getId()).orElseThrow(() -> new BloodBankException("Blood bank you want to edit doesn't exist"));
         updateBloodBank(oldBloodBank, bloodBank);
         bloodBankRepository.save(oldBloodBank);
@@ -39,9 +45,12 @@ public class BloodBankService {
         oldBloodBank.setName(bloodBank.getName());
     }
 
+    @Cacheable(value = "blood_bank")
     public BloodBank getByUser(Long userId) {
         var user = userRepository.findById(userId).orElseThrow(() -> new UserException("The user doesn't exist"));
-        return bloodBankRepository.findById(user.getBloodBankId()).orElseThrow(() -> new UserException("The user isn't a blood bank admin"));
+        BloodBank bb = bloodBankRepository.findById(user.getBloodBankId()).orElseThrow(() -> new UserException("The user isn't a blood bank admin"));
+        LOG.info("Product with id: " + bb.getId() + " successfully cached!");
+        return bb;
     }
 
     public List<BloodBank> getAll() {
@@ -54,13 +63,15 @@ public class BloodBankService {
         return bloodBankRepository.searchBloodBanks(name, city);
     }
 
+    @Cacheable(value = "blood_bank")
     public BloodBank get(Long id) {
+        LOG.info("Product with id: " + id + " successfully cached!");
         return bloodBankRepository.findById(id).orElseThrow(() -> new BloodBankException("No banks found with that id"));
     }
 
-    public BloodBank createBloodBank(CreateBloodBankDto dto){
+    public BloodBank createBloodBank(CreateBloodBankDto dto) {
 
-        if(dataIsValid(dto) == false) throw new BloodBankException("Data is incorrect1");
+        if (dataIsValid(dto)==false) throw new BloodBankException("Data is incorrect1");
 
         BloodBank bloodBank = BloodBankMapper.DtoToEntity(dto);
 
@@ -70,31 +81,31 @@ public class BloodBankService {
 
     }
 
-    private boolean dataIsValid(CreateBloodBankDto dto){
+    private boolean dataIsValid(CreateBloodBankDto dto) {
 
         int result = dto.getEndTime().compareTo(dto.getStartTime());
-        return result > 0 ;
+        return result > 0;
 
 
     }
 
-    public BloodBank addAdministratorToBloodBank(long bloodBankId, long adminId){
+    public BloodBank addAdministratorToBloodBank(long bloodBankId, long adminId) {
 
         User administrator = userRepository.getById(adminId);
         BloodBank bloodBank = bloodBankRepository.getById(bloodBankId);
-        if(bloodBank == null && !administratorIsValid(administrator)){
+        if (bloodBank==null && !administratorIsValid(administrator)) {
             throw new BloodBankException("Admin or hospital does not exist");
         }
 
         administrator.setBloodBankId(bloodBankId);
         userRepository.save(administrator);
-        addAdministratorToList(bloodBank,administrator);
+        addAdministratorToList(bloodBank, administrator);
         return bloodBank;
     }
 
-    private boolean administratorIsValid(User admin){
+    private boolean administratorIsValid(User admin) {
 
-        if(admin != null && admin.getBloodBankId() == null && admin.getRole().equals(Role.BLOOD_BANK_ADMIN)) {
+        if (admin!=null && admin.getBloodBankId()==null && admin.getRole().equals(Role.BLOOD_BANK_ADMIN)) {
             return true;
         }
         return false;
@@ -102,11 +113,11 @@ public class BloodBankService {
 
     private void addAdministratorToList(BloodBank bloodBank, User administrator) {
 
-       List<User> administrators = bloodBank.getAdministrators();
+        List<User> administrators = bloodBank.getAdministrators();
 
-       if(administrators == null){
-           administrators = new ArrayList<User>();
-       }
+        if (administrators==null) {
+            administrators = new ArrayList<User>();
+        }
 
         administrators.add(administrator);
 
@@ -127,9 +138,14 @@ public class BloodBankService {
         bloodBank.updateBloodStock(bloodStock);
     }
 
-    public Long getBloodBankIdByAdminId(Long adminId){
+    public Long getBloodBankIdByAdminId(Long adminId) {
 
-        User admin =  userRepository.getById(adminId);
+        User admin = userRepository.getById(adminId);
         return admin.getBloodBankId();
+    }
+
+    @CacheEvict(cacheNames = {"bank"}, allEntries = true)
+    void removeFromCache() {
+        LOG.info("Products removed from cache!");
     }
 }

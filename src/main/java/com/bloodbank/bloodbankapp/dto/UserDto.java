@@ -6,18 +6,16 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class AppointmentPreviewDto {
+public class UserDto {
 
     private Long id;
 
-    private LocalDateTime startTime;
+    private String firstName;
 
-    private LocalDateTime endTime;
+    private String lastName;
 
-    private String bloodBankName;
-
-    private Long bloodBankId;
+    private LocalDateTime donationDate;
 }
