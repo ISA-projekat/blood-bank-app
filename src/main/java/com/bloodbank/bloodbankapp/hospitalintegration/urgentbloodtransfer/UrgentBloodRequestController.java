@@ -13,7 +13,7 @@ public class UrgentBloodRequestController {
 
     @CrossOrigin
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public UrgentBloodResponse UrgentBloodRequest(@RequestBody UrgentBloodRequest request){
+    public UrgentBloodResponse UrgentBloodRequest(@RequestBody UrgentBloodRequest request) {
         return new UrgentBloodResponse(service.hasBlood(request.BloodType, request.Amount));
     }
 }

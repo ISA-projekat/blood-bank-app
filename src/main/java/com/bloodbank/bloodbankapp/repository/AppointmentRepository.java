@@ -26,4 +26,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     @Query("SELECT app FROM Appointment app WHERE (app.user.id = :userId) and (app.status = 'FINISHED')")
     Page<Appointment> findAllFinishedByUser(@Param("userId") Long userId, Pageable page);
+
+    @Query("SELECT app FROM Appointment app WHERE app.status = :status and app.appointmentSlot.id = :id")
+    Appointment findByAppointmentSlotId(@Param("status") AppointmentStatus status, @Param("id") Long appointmentSlotId);
 }

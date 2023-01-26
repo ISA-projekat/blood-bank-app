@@ -6,12 +6,11 @@ import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.User;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class BloodBankMapper {
 
-    public static BloodBank DtoToEntity(CreateBloodBankDto dto){
+    public static BloodBank DtoToEntity(CreateBloodBankDto dto) {
 
         final var address = Address.builder()
                 .street(dto.getStreet())
@@ -30,7 +29,6 @@ public class BloodBankMapper {
                 .rating(0)
                 .administrators(users)
                 .build();
-
 
 
     }

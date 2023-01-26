@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+
 @Getter
 @Setter
 public class MonthlyTransfer {
+
     public LocalDate DateTime;
     public int APlus;
     public int AMinus;
@@ -17,7 +19,8 @@ public class MonthlyTransfer {
     public int OPlus;
     public int OMinus;
 
-    public MonthlyTransfer(){}
+    public MonthlyTransfer() {
+    }
 
 
 }

@@ -5,9 +5,9 @@ import com.bloodbank.bloodbankapp.dto.SetAdministratorToBloodBankDto;
 import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.service.BloodBankService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class BloodBankController {
     @CrossOrigin
     @PostMapping("/create")
     @PreAuthorize("hasRole('SYS_ADMIN')")
-    public BloodBank create(@RequestBody  CreateBloodBankDto dto){
+    public BloodBank create(@RequestBody CreateBloodBankDto dto) {
 
         return bloodBankService.createBloodBank(dto);
     }
@@ -63,20 +63,20 @@ public class BloodBankController {
     @CrossOrigin
     @PostMapping("/setAdministrator")
     @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
-    public BloodBank addAdministratorToBloodBank(@RequestBody  SetAdministratorToBloodBankDto dto){
-        return bloodBankService.addAdministratorToBloodBank(dto.getBloodBankId(),dto.getAdministratorId());
+    public BloodBank addAdministratorToBloodBank(@RequestBody SetAdministratorToBloodBankDto dto) {
+        return bloodBankService.addAdministratorToBloodBank(dto.getBloodBankId(), dto.getAdministratorId());
     }
 
     @CrossOrigin
     @GetMapping("/page")
-    public Page<BloodBank> getPage(Pageable page){
+    public Page<BloodBank> getPage(Pageable page) {
         return bloodBankService.getPage(page);
     }
 
     @CrossOrigin
     @GetMapping("/by-admin/{id}")
     @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN')")
-    public Long getBloodBankIdByAdminId(@PathVariable("id") Long adminId){
+    public Long getBloodBankIdByAdminId(@PathVariable("id") Long adminId) {
         return bloodBankService.getBloodBankIdByAdminId(adminId);
     }
 }

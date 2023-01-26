@@ -27,5 +27,9 @@ public class Address {
 
     private String number;
 
+    private Double longitude;
+
+    private Double latitude;
+
 //    private Location location;
 }

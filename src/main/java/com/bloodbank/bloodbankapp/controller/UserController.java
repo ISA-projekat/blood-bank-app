@@ -2,6 +2,7 @@ package com.bloodbank.bloodbankapp.controller;
 
 import com.bloodbank.bloodbankapp.dto.ChangePasswordDTO;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.dto.UserDto;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.UserService;
@@ -37,27 +38,31 @@ public class UserController {
     @CrossOrigin
     @PostMapping("registerAdmin")
     @PreAuthorize("hasRole('SYS_ADMIN')")
-    public User registerAdmin(@Valid @RequestBody RegistrationDto dto) { return userService.registerAdmin(dto); }
+    public User registerAdmin(@Valid @RequestBody RegistrationDto dto) {
+        return userService.registerAdmin(dto);
+    }
 
 
     @CrossOrigin
     @GetMapping
     @PreAuthorize("hasRole('SYS_ADMIN') or hasRole('BLOOD_BANK_ADMIN')")
-    public List<User> getAll() { return userService.getAll(); }
+    public List<User> getAll() {
+        return userService.getAll();
+    }
 
 
     @CrossOrigin
     @GetMapping("/search")
     @PreAuthorize("hasRole('SYS_ADMIN')")
     public List<User> search(@RequestParam(required = false) String firstName,
-                                            @RequestParam(required = false) String lastName) {
+                             @RequestParam(required = false) String lastName) {
         return userService.search(firstName, lastName);
     }
 
     @CrossOrigin
-    @GetMapping ("/availableAdministrators")
+    @GetMapping("/availableAdministrators")
     @PreAuthorize("hasRole('SYS_ADMIN')")
-    public List<User> getAvailableAdministrators(){
+    public List<User> getAvailableAdministrators() {
         return userService.getAvailableAdministrators();
     }
 
@@ -68,30 +73,37 @@ public class UserController {
             User user = userService.add(dto);
             MailJetMailer.SendActivateAccountMail(dto.getEmail());
             return user;
-        } catch (MailjetException e){
+        } catch (MailjetException e) {
             return null;
         }
     }
 
     @PutMapping("/activate")
     @CrossOrigin
-    public User activateAccount(@RequestBody String email){
+    public User activateAccount(@RequestBody String email) {
         return userService.activate(email);
     }
 
     @GetMapping("/check-if-first-login-completed/{email}")
     @CrossOrigin
-    public Boolean CheckIfFirstLoginCompleted(@PathVariable("email") String email){
+    public Boolean CheckIfFirstLoginCompleted(@PathVariable("email") String email) {
         return userService.IsFirstTimeLoginCompleted(email);
     }
 
     @CrossOrigin
     @PostMapping("/admin/change-password")
-    public Boolean ChangeAdminPassword(@RequestBody ChangePasswordDTO dto){
-        if(!dto.getNewPassword().equals(dto.getConfirmPassword())){
+    public Boolean ChangeAdminPassword(@RequestBody ChangePasswordDTO dto) {
+        if (!dto.getNewPassword().equals(dto.getConfirmPassword())) {
             throw new UserException("Passwords are not matching");
         }
         return userService.ChangeAdminPassword(dto);
 
+    }
+
+    @CrossOrigin
+    @GetMapping("/donators/{bloodBankId}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
+    public List<UserDto> getAlDonators(@PathVariable("bloodBankId") Long bloodBankId) {
+        return userService.getAllDonators(bloodBankId);
     }
 }

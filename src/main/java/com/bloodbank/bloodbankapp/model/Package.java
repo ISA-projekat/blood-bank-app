@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Package {
+
     private LocalDateTime date;
     private BloodStock bloodStock;
     private Location location;

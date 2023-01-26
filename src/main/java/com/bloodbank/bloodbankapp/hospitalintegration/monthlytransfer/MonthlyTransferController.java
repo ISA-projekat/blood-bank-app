@@ -15,7 +15,7 @@ import java.util.concurrent.TimeoutException;
 public class MonthlyTransferController {
 
     @CrossOrigin
-    @PostMapping(value="/send", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/send", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void monthlyTransfer(@RequestBody MonthlyTransfer mt) throws IOException, TimeoutException {
         // Sending monthly reports using
 
@@ -27,7 +27,7 @@ public class MonthlyTransferController {
 
         channel.queueDeclare("monthly", false, false, false, null);
 
-        var message = "A_PLUS:"+mt.APlus+"-"+"A_MINUS:"+mt.AMinus+"-"+"B_PLUS:"+mt.BPlus+"-"+"B_MINUS:"+mt.BMinus+"-"+"AB_PLUS:"+mt.ABPlus+"-"+"AB_MINUS:"+mt.ABMinus+"-"+"O_PLUS:"+mt.OPlus+"-"+"O_MINUS:"+mt.OMinus;
+        var message = "A_PLUS:" + mt.APlus + "-" + "A_MINUS:" + mt.AMinus + "-" + "B_PLUS:" + mt.BPlus + "-" + "B_MINUS:" + mt.BMinus + "-" + "AB_PLUS:" + mt.ABPlus + "-" + "AB_MINUS:" + mt.ABMinus + "-" + "O_PLUS:" + mt.OPlus + "-" + "O_MINUS:" + mt.OMinus;
 
         byte[] body = message.getBytes(StandardCharsets.UTF_8);
 

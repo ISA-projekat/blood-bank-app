@@ -4,11 +4,13 @@ CREATE TABLE address (
     city varchar(255) not null,
     street varchar(255) not null,
     number varchar(255) not null,
+    longitude float,
+    latitude float,
     PRIMARY KEY(id)
 );
 
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Gunduliceva', '12');
-INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23');
+INSERT INTO address (country, city, street, number, longitude, latitude) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23', 20.457, 44.787);
 INSERT INTO address (country, city, street, number) VALUES ('Indonesia', 'Jakarta', 'Java', '19');
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Milana Savica', '12');
 
@@ -45,7 +47,7 @@ INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"star
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:50:00.000Z", "end": "2022-12-21T17:00:00.000Z"}', 2, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:50:00.000Z", "end": "2022-12-22T17:00:00.000Z"}', 2, 'TAKEN');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2023-08-25T16:50:00.000Z", "end": "2023-08-25T17:00:00.000Z"}', 2, 'FREE');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-08-25T16:50:00.000Z", "end": "2022-08-25T17:00:00.000Z"}', 2, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-26T16:50:00.000Z", "end": "2022-12-26T17:00:00.000Z"}', 2, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-27T16:50:00.000Z", "end": "2022-12-27T17:00:00.000Z"}', 2, 'FREE');
 INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-28T16:50:00.000Z", "end": "2022-12-28T17:00:00.000Z"}', 2, 'FREE');
@@ -134,6 +136,10 @@ INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, s
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (5, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (6, 11, 'SCHEDULED');
 INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (3, 2, 'SCHEDULED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (7, 1, 5, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (8, 1, 6, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (9, 1, 7, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (10, 1, 8, 'FINISHED');
 
 
 CREATE TABLE survey (
@@ -169,3 +175,17 @@ CREATE TABLE blood_stock (
 );
 
 INSERT INTO blood_stock (blood_bank_id, type, rh_factor, quantity) VALUES (2, 'B', 'PLUS', 0.0);
+
+CREATE TABLE monthly_blood_transfer (
+    id bigint not null auto_increment,
+    blood_bank_mq_name varchar(255),
+    amount float,
+    blood_type enum('A', 'B', 'AB', 'O'),
+    rh_factor enum('PLUS', 'MINUS'),
+    _day int,
+    _month int,
+    warned Boolean,
+    PRIMARY KEY(id)
+);
+
+INSERT INTO monthly_blood_transfer (blood_bank_mq_name, blood_type, rh_factor, amount, _day, _month, warned) VALUES ("care connect", "A", "PLUS", 10, 29, 1, false);

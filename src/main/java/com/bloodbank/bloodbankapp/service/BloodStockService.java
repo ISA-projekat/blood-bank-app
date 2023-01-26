@@ -2,7 +2,6 @@ package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.enums.BloodType;
 import com.bloodbank.bloodbankapp.enums.RhFactor;
-import com.bloodbank.bloodbankapp.model.BloodBank;
 import com.bloodbank.bloodbankapp.model.BloodStock;
 import com.bloodbank.bloodbankapp.repository.BloodStockRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +12,23 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BloodStockService {
+
     private final BloodStockRepository repo;
 
     public RhFactor parseRhFactor(String bloodType) {
         String rhFactor = "Minus";
-        if(!bloodType.contains(rhFactor)) { rhFactor = "Plus"; }
+        if (!bloodType.contains(rhFactor)) {
+            rhFactor = "Plus";
+        }
 
         return RhFactor.valueOf(rhFactor);
     }
 
     public BloodType parseType(String bloodType) {
         String rhFactor = "Minus";
-        if(!bloodType.contains(rhFactor)) { rhFactor = "Plus"; }
+        if (!bloodType.contains(rhFactor)) {
+            rhFactor = "Plus";
+        }
 
         String type = bloodType.replace(rhFactor, "");
 

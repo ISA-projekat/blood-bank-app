@@ -2,15 +2,18 @@ package com.bloodbank.bloodbankapp.service;
 
 import com.bloodbank.bloodbankapp.dto.ChangePasswordDTO;
 import com.bloodbank.bloodbankapp.dto.RegistrationDto;
+import com.bloodbank.bloodbankapp.dto.UserDto;
+import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.enums.Role;
 import com.bloodbank.bloodbankapp.exception.NotFoundException;
 import com.bloodbank.bloodbankapp.exception.UserException;
 import com.bloodbank.bloodbankapp.mapper.UserMapper;
+import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AddressRepository;
+import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
+import com.bloodbank.bloodbankapp.repository.AppointmentSlotRepository;
 import com.bloodbank.bloodbankapp.repository.UserRepository;
-import com.bloodbank.bloodbankapp.utils.MailJetMailer;
-import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final AppointmentSlotRepository appointmentSlotRepository;
 
     public User getByUser(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User doesn't exist"));
@@ -51,7 +56,7 @@ public class UserService {
 
     public User add(RegistrationDto dto) {
         var existingUser = userRepository.findByEmail(dto.getEmail());
-        if (existingUser != null) throw new UserException("User with that email already exists");
+        if (existingUser!=null) throw new UserException("User with that email already exists");
 
         User newUser = UserMapper.DtoToEntity(dto);
         newUser.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
@@ -65,31 +70,31 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public List<User> search(String firstName, String lastName){
+    public List<User> search(String firstName, String lastName) {
 
-        List<User> users = userRepository.search(firstName,lastName);
-        if(users.isEmpty())
+        List<User> users = userRepository.search(firstName, lastName);
+        if (users.isEmpty())
             users = new ArrayList<User>();
         return users;
     }
 
-    public List<User> getAdministrators(){
+    public List<User> getAdministrators() {
         return userRepository.findByRole(Role.BLOOD_BANK_ADMIN);
     }
 
-    public List<User> getAvailableAdministrators(){
+    public List<User> getAvailableAdministrators() {
         List<User> allAdministrators = getAdministrators();
         List<User> availableAdministrators = new ArrayList<User>();
-        for(User u: allAdministrators){
-            if(u.getBloodBankId() == null)
+        for (User u : allAdministrators) {
+            if (u.getBloodBankId()==null)
                 availableAdministrators.add(u);
         }
         return availableAdministrators;
     }
 
-    public User registerAdmin(RegistrationDto dto){
+    public User registerAdmin(RegistrationDto dto) {
         var existingUser = userRepository.findByEmail(dto.getEmail());
-        if (existingUser != null) throw new UserException("User with that email already exists");
+        if (existingUser!=null) throw new UserException("User with that email already exists");
 
         User newUser = UserMapper.DtoToEntity(dto);
         newUser.setRole(Role.BLOOD_BANK_ADMIN);
@@ -113,17 +118,18 @@ public class UserService {
         return user;
     }
 
-    public Boolean IsFirstTimeLoginCompleted(String email){
+    public Boolean IsFirstTimeLoginCompleted(String email) {
         User user = userRepository.findByEmail(email);
-        if(user.getFirstTime() == false && user.getRole() == Role.BLOOD_BANK_ADMIN){
+        if (user.getFirstTime()==false && user.getRole()==Role.BLOOD_BANK_ADMIN) {
             return false;
         }
         return true;
     }
-    public Boolean ChangeAdminPassword(ChangePasswordDTO dto){
+
+    public Boolean ChangeAdminPassword(ChangePasswordDTO dto) {
 
         User admin = userRepository.getById(dto.getAdminId());
-        if(admin == null){
+        if (admin==null) {
             throw new UserException("User does not exist");
         }
 
@@ -132,5 +138,25 @@ public class UserService {
         userRepository.save(admin);
         return true;
 
+    }
+
+    public List<UserDto> getAllDonators(Long bloodBankId) {
+        var appointmentSlots = appointmentSlotRepository.findAllByBloodBankId(bloodBankId);
+        var userDtos = new ArrayList<UserDto>();
+        for (AppointmentSlot a : appointmentSlots) {
+            var appointment = appointmentRepository.findByAppointmentSlotId(AppointmentStatus.FINISHED, a.getId());
+            if (appointment==null) continue;
+            var user = appointment.getUser();
+            var exists = false;
+            for (UserDto u : userDtos) {
+                if (u.getId().equals(user.getId())) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (exists) continue;
+            userDtos.add(new UserDto(user.getId(), user.getFirstName(), user.getLastName(), a.getDateRange().getStart()));
+        }
+        return userDtos;
     }
 }
