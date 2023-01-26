@@ -31,4 +31,7 @@ public class AppointmentSlot {
     @Column(columnDefinition = "ENUM('FREE', 'TAKEN')")
     @Enumerated(EnumType.STRING)
     private AppointmentSlotStatus status;
+
+    @Version
+    private Integer version;
 }

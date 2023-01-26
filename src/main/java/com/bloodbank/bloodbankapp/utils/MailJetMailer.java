@@ -1,11 +1,14 @@
 package com.bloodbank.bloodbankapp.utils;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.google.zxing.WriterException;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
 import com.mailjet.client.MailjetResponse;
 import com.mailjet.client.errors.MailjetException;
 import com.mailjet.client.resource.Email;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,8 +51,10 @@ public class MailJetMailer {
                 .property(Email.FROMEMAIL, "psw.hospital.2022@gmail.com")
                 .property(Email.FROMNAME, "Blood Bank Team")
                 .property(Email.SUBJECT, "Successful Appointment Scheduling")
+                .property(Email.ATTACHMENTS, generateAttachment())
                 .property(Email.HTMLPART, template)
                 .property(Email.TO, recipient);
+        System.out.println(request.toString());
         response = client.post(request);
         System.out.println(response.getStatus());
         System.out.println(response.getData());
@@ -76,7 +81,7 @@ public class MailJetMailer {
         request = new MailjetRequest(Email.resource)
                 .property(Email.FROMEMAIL, "psw.hospital.2022@gmail.com")
                 .property(Email.FROMNAME, "Blood Bank Team")
-                .property(Email.SUBJECT, "Successful Appointment Scheduling")
+                .property(Email.SUBJECT, "Account verification")
                 .property(Email.HTMLPART, template)
                 .property(Email.TO, recipient);
         response = client.post(request);
@@ -84,4 +89,22 @@ public class MailJetMailer {
         System.out.println(response.getData());
     }
 
+    public static JSONArray generateAttachment() {
+        try {
+            java.nio.file.Path pdfPath = java.nio.file.Paths.get("C:\\FAKS\\Cetvrta godina\\ISA\\Projekat\\blood-bank-app\\static\\confirmationQR.png");
+            byte[] filecontent = java.nio.file.Files.readAllBytes(pdfPath);
+            String fileData = com.mailjet.client.Base64.encode(filecontent);
+
+            JSONObject obj = new JSONObject().put("Base64Content", fileData).put("ContentType", "image/png")
+                    .put("Filename", "confirmation.png");
+            JSONArray arr = new JSONArray("["+obj.toString()+"]");
+                                                       ;
+            System.out.println(arr);
+            return arr;
+        } catch (Exception e) {
+            System.out.println("GRESKA");
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

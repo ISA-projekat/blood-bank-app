@@ -37,6 +37,7 @@ CREATE TABLE appointment_slot (
     date_range varchar(255) not null,
     blood_bank_id bigint,
     status enum('FREE', 'TAKEN') DEFAULT 'FREE',
+    version int,
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
 );
@@ -119,6 +120,7 @@ CREATE TABLE appointment (
     user_id bigint,
     appointment_slot_id bigint,
     status enum('SCHEDULED', 'CANCELED', 'FINISHED', 'NOT_ALLOWED') DEFAULT 'SCHEDULED',
+    version int,
     PRIMARY KEY(id),
     CONSTRAINT FOREIGN KEY (appointment_details_id) REFERENCES appointment_details(id),
     CONSTRAINT FOREIGN KEY (user_id) REFERENCES user(id),

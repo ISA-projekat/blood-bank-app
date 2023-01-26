@@ -11,8 +11,10 @@ import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.service.AppointmentService;
 import com.bloodbank.bloodbankapp.service.AppointmentSlotService;
 import com.bloodbank.bloodbankapp.service.UserService;
+import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -108,5 +110,14 @@ public class AppointmentController {
         return appointmentService.findFinishedByUser(id, page);
     }
 
+    @GetMapping("/attachment")
+    public void generateAttachment() {
+        try {
+            MailJetMailer.SendScheduleAppointmentMail("hepih44976@breazeim.com");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }
