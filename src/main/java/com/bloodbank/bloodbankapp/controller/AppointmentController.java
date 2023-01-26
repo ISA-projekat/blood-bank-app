@@ -14,12 +14,14 @@ import com.bloodbank.bloodbankapp.service.UserService;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.json.JSONArray;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -32,6 +34,9 @@ public class AppointmentController {
     private final AppointmentSlotService appointmentSlotService;
 
     private final UserService userService;
+
+    @Autowired
+    private MailJetMailer mailJetMailer;
 
     @GetMapping
     public List<Appointment> getAll() {
@@ -96,20 +101,23 @@ public class AppointmentController {
         return appointmentService.findAllByBloodBank(bloodBankId);
     }
 
+    @CrossOrigin
+    @PostMapping("/generate-qr")
+    public void generateQrForAppointment() throws MessagingException {
+        appointmentService.generateQRCodeForAppointment();
+        Appointment appointment = appointmentService.getLastScheduledAppointment();
+        String toEmail = appointment.getUser().getEmail();
+        String id = appointment.getId().toString();
+        mailJetMailer.sendQRReservation(toEmail,
+                "Thank you for being loyal to our blood bank!",
+                "Appointment Reservation",
+                "static/confirmation_"+id+"_QR.png");
+    }
+    
     @GetMapping("/user/finished")
     @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
     public Page<Appointment> findFinishedAppointmentsForUser(Long id, Pageable page) {
         return appointmentService.findFinishedByUser(id, page);
-    }
-
-    @GetMapping("/attachment")
-    public void generateAttachment() {
-        try {
-            MailJetMailer.SendScheduleAppointmentMail("hepih44976@breazeim.com");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
 }

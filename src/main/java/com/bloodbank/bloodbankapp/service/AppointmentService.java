@@ -17,6 +17,8 @@ import com.bloodbank.bloodbankapp.model.Survey;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
 import com.bloodbank.bloodbankapp.utils.MailJetMailer;
+import com.bloodbank.bloodbankapp.utils.QRCodeGenerator;
+import com.google.zxing.WriterException;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Not;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -179,6 +182,23 @@ public class AppointmentService {
 
     public Page<Appointment> findFinishedByUser(Long id, Pageable page) {
         return appointmentRepository.findAllFinishedByUser(id, page);
+    }
+
+    public void generateQRCodeForAppointment(){
+        List<Appointment>  appointments= appointmentRepository.findAll();
+        Appointment appointment = appointments.get(appointments.size()-1);
+        try {
+            QRCodeGenerator.generateQRForAppointment(appointment.getId());
+        } catch (WriterException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Appointment getLastScheduledAppointment(){
+        List<Appointment> appointments = appointmentRepository.findAll();
+        return appointments.get(appointments.size()-1);
     }
 
 }
