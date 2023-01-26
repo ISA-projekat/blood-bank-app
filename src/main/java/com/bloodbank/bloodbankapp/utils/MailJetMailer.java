@@ -51,7 +51,6 @@ public class MailJetMailer {
                 .property(Email.FROMEMAIL, "psw.hospital.2022@gmail.com")
                 .property(Email.FROMNAME, "Blood Bank Team")
                 .property(Email.SUBJECT, "Successful Appointment Scheduling")
-                .property(Email.ATTACHMENTS, generateAttachment())
                 .property(Email.HTMLPART, template)
                 .property(Email.TO, recipient);
         System.out.println(request.toString());

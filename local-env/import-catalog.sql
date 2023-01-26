@@ -42,28 +42,28 @@ CREATE TABLE appointment_slot (
     CONSTRAINT FOREIGN KEY (blood_bank_id) REFERENCES blood_bank(id)
 );
 
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:50:00.000Z", "end": "2022-12-21T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:50:00.000Z", "end": "2022-12-22T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-08-25T16:50:00.000Z", "end": "2022-08-25T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-26T16:50:00.000Z", "end": "2022-12-26T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-27T16:50:00.000Z", "end": "2022-12-27T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-28T16:50:00.000Z", "end": "2022-12-28T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-29T16:50:00.000Z", "end": "2022-12-29T17:00:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-21T16:40:00.000Z", "end": "2022-12-21T16:50:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-22T16:00:00.000Z", "end": "2022-12-22T16:10:00.000Z"}', 2, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-23T16:50:00.000Z", "end": "2022-12-23T17:00:00.000Z"}', 3, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-24T16:50:00.000Z", "end": "2022-12-24T17:00:00.000Z"}', 3, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-25T16:50:00.000Z", "end": "2022-12-25T17:00:00.000Z"}', 3, 'FREE');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-12-31T16:50:00.000Z", "end": "2022-12-31T17:00:00.000Z"}', 3, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2022-06-30T16:50:00.000Z", "end": "2022-06-30T17:00:00.000Z"}', 3, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2021-12-31T16:50:00.000Z", "end": "2021-12-31T17:00:00.000Z"}', 1, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2021-06-30T16:50:00.000Z", "end": "2021-06-30T17:00:00.000Z"}', 3, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2020-12-31T16:50:00.000Z", "end": "2020-12-31T17:00:00.000Z"}', 2, 'TAKEN');
-INSERT INTO appointment_slot (date_range, blood_bank_id, status) VALUES ('{"start": "2020-06-30T16:50:00.000Z", "end": "2020-06-30T17:00:00.000Z"}', 4, 'TAKEN');
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-20T16:48:00.000Z", "end": "2022-12-20T16:49:00.000Z"}', 1, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-21T16:50:00.000Z", "end": "2022-12-21T17:00:00.000Z"}', 2, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-22T16:50:00.000Z", "end": "2022-12-22T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-20T16:50:00.000Z", "end": "2022-12-20T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-08-25T16:50:00.000Z", "end": "2022-08-25T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-26T16:50:00.000Z", "end": "2022-12-26T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-27T16:50:00.000Z", "end": "2022-12-27T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-28T16:50:00.000Z", "end": "2022-12-28T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-29T16:50:00.000Z", "end": "2022-12-29T17:00:00.000Z"}', 2, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-21T16:40:00.000Z", "end": "2022-12-21T16:50:00.000Z"}', 2, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-22T16:00:00.000Z", "end": "2022-12-22T16:10:00.000Z"}', 2, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-23T16:50:00.000Z", "end": "2022-12-23T17:00:00.000Z"}', 3, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-24T16:50:00.000Z", "end": "2022-12-24T17:00:00.000Z"}', 3, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-25T16:50:00.000Z", "end": "2022-12-25T17:00:00.000Z"}', 3, 'FREE', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-12-31T16:50:00.000Z", "end": "2022-12-31T17:00:00.000Z"}', 3, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2022-06-30T16:50:00.000Z", "end": "2022-06-30T17:00:00.000Z"}', 3, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2021-12-31T16:50:00.000Z", "end": "2021-12-31T17:00:00.000Z"}', 1, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2021-06-30T16:50:00.000Z", "end": "2021-06-30T17:00:00.000Z"}', 3, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2020-12-31T16:50:00.000Z", "end": "2020-12-31T17:00:00.000Z"}', 2, 'TAKEN', 0);
+INSERT INTO appointment_slot (date_range, blood_bank_id, status, version) VALUES ('{"start": "2020-06-30T16:50:00.000Z", "end": "2020-06-30T17:00:00.000Z"}', 4, 'TAKEN', 0);
 
 CREATE TABLE appointment_details (
     id bigint not null auto_increment,
@@ -127,21 +127,21 @@ CREATE TABLE appointment (
     CONSTRAINT FOREIGN KEY (appointment_slot_id) REFERENCES appointment_slot(id)
 );
 
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (1, 1, 2, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (2, 1, 3, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (17, 2, 11, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (18, 3, 11, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (19, 4, 11, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (20, 5, 11, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (21, 6, 11, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (22, 7, 11, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (5, 11, 'SCHEDULED');
-INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (6, 11, 'SCHEDULED');
-INSERT INTO appointment (appointment_slot_id, user_id, status) VALUES (3, 2, 'SCHEDULED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (7, 1, 5, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (8, 1, 6, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (9, 1, 7, 'FINISHED');
-INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status) VALUES (10, 1, 8, 'FINISHED');
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (1, 1, 2, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (2, 1, 3, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (17, 2, 11, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (18, 3, 11, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (19, 4, 11, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (20, 5, 11, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (21, 6, 11, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (22, 7, 11, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, user_id, status, version) VALUES (5, 11, 'SCHEDULED', 0);
+INSERT INTO appointment (appointment_slot_id, user_id, status, version) VALUES (6, 11, 'SCHEDULED', 0);
+INSERT INTO appointment (appointment_slot_id, user_id, status, version) VALUES (3, 2, 'SCHEDULED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (7, 1, 5, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (8, 1, 6, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (9, 1, 7, 'FINISHED', 0);
+INSERT INTO appointment (appointment_slot_id, appointment_details_id, user_id, status, version) VALUES (10, 1, 8, 'FINISHED', 0);
 
 
 CREATE TABLE survey (
