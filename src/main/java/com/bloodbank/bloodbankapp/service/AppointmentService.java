@@ -3,6 +3,7 @@ package com.bloodbank.bloodbankapp.service;
 import com.bloodbank.bloodbankapp.dto.AppointmentCalendarItemDTO;
 import com.bloodbank.bloodbankapp.dto.AppointmentPreviewDto;
 import com.bloodbank.bloodbankapp.dto.AppointmentReviewDto;
+import com.bloodbank.bloodbankapp.enums.AppointmentSlotStatus;
 import com.bloodbank.bloodbankapp.enums.AppointmentStatus;
 import com.bloodbank.bloodbankapp.exception.AppointmentSlotException;
 import com.bloodbank.bloodbankapp.exception.CancelationFailedException;
@@ -11,6 +12,7 @@ import com.bloodbank.bloodbankapp.exception.ScheduleFailedException;
 import com.bloodbank.bloodbankapp.mapper.AppointmentCalendarItemMapper;
 import com.bloodbank.bloodbankapp.mapper.AppointmentMapper;
 import com.bloodbank.bloodbankapp.model.Appointment;
+import com.bloodbank.bloodbankapp.model.AppointmentSlot;
 import com.bloodbank.bloodbankapp.model.Survey;
 import com.bloodbank.bloodbankapp.model.User;
 import com.bloodbank.bloodbankapp.repository.AppointmentRepository;
@@ -19,6 +21,9 @@ import com.bloodbank.bloodbankapp.utils.QRCodeGenerator;
 import com.google.zxing.WriterException;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.ast.Not;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +95,7 @@ public class AppointmentService {
 
     private Appointment findLatestUserAppointment(Long userId) {
         List<Appointment> appointments = getAllByUserApp(userId);
+        if (appointments.isEmpty()) return null;
         Appointment latest = appointments.get(0);
 
         for (Appointment appointment : appointments) {
@@ -103,28 +109,34 @@ public class AppointmentService {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public Appointment schedule(Appointment appointment) throws MailjetException {
-        User user = appointment.getUser();
+    public Appointment schedule(AppointmentSlot appointmentSlot, User user) throws MailjetException {
         try {
             Survey survey = surveyService.getByUser(user.getId());
-
-            if (getAllByUserApp(user.getId()).isEmpty()) {
-                appointment.getAppointmentSlot().setStatus(TAKEN);
-                MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
-                return appointmentRepository.save(appointment);
+            if (survey == null) {
+                throw new ScheduleFailedException("Survey is not found");
             }
-
             Appointment latest = findLatestUserAppointment(user.getId());
-            if (!appointment.getAppointmentSlot().getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6))) {
-                appointment.getAppointmentSlot().setStatus(TAKEN);
-                MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
-                return appointmentRepository.save(appointment);
+            if (getAllByUserApp(user.getId()).isEmpty() || latest == null) {
+                appointmentSlot.setStatus(TAKEN);
             }
 
-            appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
-            throw new ScheduleFailedException("Last appointment was less than 6 months ago");
+            if (latest != null && !appointmentSlot.getDateRange().dateIsAfter(latest.getAppointmentSlot().getDateRange().getEnd().plusMonths(6))) {
+                appointmentSlot.setStatus(TAKEN);
+            }
+
+            if (appointmentSlot.getStatus() == AppointmentSlotStatus.FREE) {
+                throw new ScheduleFailedException("Last appointment was less than 6 months ago");
+            }
+
+            Appointment app = Appointment.builder()
+                                        .appointmentSlot(appointmentSlot)
+                                        .user(user)
+                                        .status(SCHEDULED)
+                                        .build();
+            MailJetMailer.SendScheduleAppointmentMail(user.getEmail());
+            appointmentRepository.save(app);
+            return app;
         } catch (NotFoundException e) {
-            appointmentSlotService.cancelAppointment(appointment.getAppointmentSlot().getId());
             throw new ScheduleFailedException("Survey is not found");
         }
     }
@@ -166,7 +178,10 @@ public class AppointmentService {
             appointmentDtos.add(AppointmentCalendarItemMapper.DtoToEntity(a));
         }
         return appointmentDtos;
+    }
 
+    public Page<Appointment> findFinishedByUser(Long id, Pageable page) {
+        return appointmentRepository.findAllFinishedByUser(id, page);
     }
 
     public void generateQRCodeForAppointment(){

@@ -1,5 +1,6 @@
 package com.bloodbank.bloodbankapp.utils;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.google.zxing.WriterException;
 import com.mailjet.client.MailjetClient;
 import com.mailjet.client.MailjetRequest;
@@ -16,7 +17,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -67,6 +69,7 @@ public class MailJetMailer {
                 .property(Email.SUBJECT, "Successful Appointment Scheduling")
                 .property(Email.HTMLPART, template)
                 .property(Email.TO, recipient);
+        System.out.println(request.toString());
         response = client.post(request);
         System.out.println(response.getStatus());
         System.out.println(response.getData());
@@ -93,7 +96,7 @@ public class MailJetMailer {
         request = new MailjetRequest(Email.resource)
                 .property(Email.FROMEMAIL, "psw.hospital.2022@gmail.com")
                 .property(Email.FROMNAME, "Blood Bank Team")
-                .property(Email.SUBJECT, "Successful Appointment Scheduling")
+                .property(Email.SUBJECT, "Account verification")
                 .property(Email.HTMLPART, template)
                 .property(Email.TO, recipient);
 
@@ -119,5 +122,6 @@ public class MailJetMailer {
 
         System.out.println("Mail succesfully sent");
     }
+
 
 }

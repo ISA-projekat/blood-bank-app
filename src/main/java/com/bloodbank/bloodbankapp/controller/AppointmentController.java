@@ -15,6 +15,9 @@ import com.bloodbank.bloodbankapp.utils.MailJetMailer;
 import com.mailjet.client.errors.MailjetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.json.JSONArray;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +50,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/review")
-    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
+//    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN')")
     public void review(@RequestBody AppointmentReviewDto appointmentReviewDto) {
         appointmentService.review(appointmentReviewDto);
     }
@@ -58,16 +61,8 @@ public class AppointmentController {
     public Appointment schedule(@RequestBody AppointmentDTO appointmentDTO) {
         User user = userService.getByUser(appointmentDTO.getUserId());
         AppointmentSlot appointmentSlot = appointmentSlotService.get(appointmentDTO.getAppointmentSlotId());
-        appointmentSlotService.takeSlot(appointmentSlot.getId());
-        Appointment appointment = Appointment.builder()
-                .status(AppointmentStatus.SCHEDULED)
-                .details(null)
-                .appointmentSlot(appointmentSlot)
-                .user(user)
-                .build();
-
         try {
-            return appointmentService.schedule(appointment)==null ? null:appointment;
+            return appointmentService.schedule(appointmentSlot, user);
         } catch (MailjetException e) {
             System.out.println("Mailjet exception, couldn't schedule because of it");
             return null;
@@ -90,6 +85,7 @@ public class AppointmentController {
     }
 
     @GetMapping("/user/{id}/{status}")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
     public List<Appointment> findAllAppointmentsByStatusByUserId(@PathVariable("status") AppointmentStatus status, @PathVariable("id") Long userId) {
         return appointmentService.findAllAppointmentsByStatusByUserId(status, userId);
     }
@@ -115,7 +111,13 @@ public class AppointmentController {
         mailJetMailer.sendQRReservation(toEmail,
                 "Thank you for being loyal to our blood bank!",
                 "Appointment Reservation",
-                "C://Users//Ilija//Desktop//Faks//Isa//blood-bank-app//static/confirmation_"+id+"_QR.png");
+                "static/confirmation_"+id+"_QR.png");
+    }
+    
+    @GetMapping("/user/finished")
+    @PreAuthorize("hasRole('BLOOD_BANK_ADMIN') or hasRole('SYS_ADMIN') or hasRole('REGISTERED')")
+    public Page<Appointment> findFinishedAppointmentsForUser(Long id, Pageable page) {
+        return appointmentService.findFinishedByUser(id, page);
     }
 
 }

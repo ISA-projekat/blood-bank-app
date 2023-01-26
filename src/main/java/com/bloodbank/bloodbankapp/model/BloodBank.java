@@ -4,6 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalTime;
@@ -15,6 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Entity
+@Cacheable
+@Cache(usage= CacheConcurrencyStrategy.TRANSACTIONAL)
 @Table(name = "blood_bank")
 public class BloodBank {
 
@@ -38,7 +44,7 @@ public class BloodBank {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "blood_bank_id")
     private List<User> administrators;
 
