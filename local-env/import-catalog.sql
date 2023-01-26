@@ -10,7 +10,7 @@ CREATE TABLE address (
 );
 
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Gunduliceva', '12');
-INSERT INTO address (country, city, street, number, longitude, latitude) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23', 20.457, 44.787);
+INSERT INTO address (country, city, street, number, longitude, latitude) VALUES ('Srbija', 'Beograd', 'Knez Mihailova', '23', 19.796963, 45.240372);
 INSERT INTO address (country, city, street, number) VALUES ('Indonesia', 'Jakarta', 'Java', '19');
 INSERT INTO address (country, city, street, number) VALUES ('Srbija', 'Novi Sad', 'Milana Savica', '12');
 
