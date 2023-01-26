@@ -56,16 +56,8 @@ public class AppointmentController {
     public Appointment schedule(@RequestBody AppointmentDTO appointmentDTO) {
         User user = userService.getByUser(appointmentDTO.getUserId());
         AppointmentSlot appointmentSlot = appointmentSlotService.get(appointmentDTO.getAppointmentSlotId());
-        appointmentSlotService.takeSlot(appointmentSlot.getId());
-        Appointment appointment = Appointment.builder()
-                .status(AppointmentStatus.SCHEDULED)
-                .details(null)
-                .appointmentSlot(appointmentSlot)
-                .user(user)
-                .build();
-
         try {
-            return appointmentService.schedule(appointment)==null ? null:appointment;
+            return appointmentService.schedule(appointmentSlot, user);
         } catch (MailjetException e) {
             System.out.println("Mailjet exception, couldn't schedule because of it");
             return null;
